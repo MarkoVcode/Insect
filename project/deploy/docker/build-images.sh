@@ -1,9 +1,16 @@
 #!/bin/sh
 
-mkdir -pf jetty-web/artifacts
-mkdir -pf jetty-ws/artifacts
-mkdir -pf nodejs/artifacts
+### PREPARE ARTIFACTS
+mkdir -p project/deploy/docker/jetty-web/artifacts
+mkdir -p project/deploy/docker/jetty-ws/artifacts
+mkdir -p project/deploy/docker/nodejs/artifacts
+cp -f ins_webapp/build/libs/InserProxy_WebApplication.war project/deploy/docker/jetty-web/artifacts/ROOT.war
+cp -f ins_websockets/build/libs/InserProxy_WebSockets.war project/deploy/docker/jetty-ws/artifacts/ROOT.war
+tar -czvf project/deploy/docker/nodejs/artifacts/nodejsapp.tar ins_proxy/src
 
-tar  nodejs/artifacts/nodejsapp.tar ../../ins_proxy/
-mv ../../ins_webapp/build/libs/InserProxy_WebApplication.war jetty-web/artifacts/ROOT.war
-mv ../../ins_websockets/build/libs/InserProxy_WebSockets.war jetty-ws/artifacts/ROOT.war
+### CREATE IMAGES
+
+
+### SAVE IMAGES TO REGISTRY
+
+
