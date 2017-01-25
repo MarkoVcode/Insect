@@ -1,0 +1,85 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+# All Vagrant configuration is done below. The "2" in Vagrant.configure
+# configures the configuration version (we support older styles for
+# backwards compatibility). Please don't change it unless you know what
+# you're doing.
+Vagrant.configure(2) do |config|
+  config.vm.box = "ubuntu/xenial64"
+  config.vm.hostname = "toc-dev.box"
+  config.vm.network "private_network", ip: "192.168.56.100"
+  config.vm.provider "virtualbox" do |vb|
+	 vb.name = "Insect Development"
+	 vb.memory = "4096"
+	 vb.cpus = 2
+	 vb.customize ["modifyvm", :id, "--cpuexecutioncap", "90"]
+	 vb.customize ["modifyvm", :id, "--boot1", "disk"]
+	 vb.customize ["modifyvm", :id, "--description", "Insect Development image. \n\n# IP: 192.168.56.100\n# ssh: developer/developer"]
+  end
+  config.vm.provision "shell", inline: <<-SHELL
+  	# ---------------------------------------
+	#   Installing Generic Packages
+	# ---------------------------------------
+	add-apt-repository ppa:webupd8team/java
+	apt-get -y update && apt-get dist-upgrade -y
+	apt-get -y upgrade
+	apt-get -y install git tree zip unzip screen firefox csh dos2unix nodejs npm docker.io
+	apt-get -y install linux-headers-$(uname -r)
+	apt-get -y install libxtst6 libglu1-mesa
+	apt-get -y install ruby ruby-dev make build-essential libicu-dev libz-dev
+	#Disable auto updates
+	sed -i 's/"\${distro_id}\:\${distro_codename}-security"\;/\/\/       "\${distro_id}\:\${distro_codename}-security"\;/g' /etc/apt/apt.conf.d/50unattended-upgrades
+
+	# ---------------------------------------
+	#          Create User
+	# ---------------------------------------
+	useradd -d /home/developer -m developer -s /bin/bash
+	echo -e "developer\ndeveloper\n" | sudo passwd --quiet developer
+	adduser developer sudo
+
+	# ---------------------------------------
+	#          JAVA Setup
+	# ---------------------------------------
+	echo debconf shared/accepted-oracle-license-v1-1 select true | sudo debconf-set-selections
+	echo debconf shared/accepted-oracle-license-v1-1 seen true | sudo debconf-set-selections
+	apt-get install -y oracle-java8-installer
+	apt-get install -y oracle-java8-set-default
+	wget http://code.softcognito.org/jce_policy-8.zip
+	unzip jce_policy-8.zip
+	cp UnlimitedJCEPolicyJDK8/* /usr/lib/jvm/java-8-oracle/jre/lib/security/
+    # ---------------------------------------
+	#          Google Chrome
+	# ---------------------------------------
+	echo "deb http://dl.google.com/linux/chrome/deb/ stable main" | sudo tee /etc/apt/sources.list.d/google-chrome.list
+    wget -q -O - https://dl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
+    apt-get update
+    apt-get -y install google-chrome-stable
+
+	# ---------------------------------------
+	#            Load Sources
+	# ---------------------------------------
+    #clone from git here
+
+ 	# ---------------------------------------
+	#          IntelliJ Setup
+	# ---------------------------------------
+	mkdir -p /opt/intellij
+	wget http://code.softcognito.org/ideaIC-2016.2.4.tar.gz
+	wget http://code.softcognito.org/IdeaIC2016.2.tar.gz
+	tar -zxvf ideaIC-2016.2.4.tar.gz -C /opt/intellij
+	tar -zxvf IdeaIC2016.2.tar.gz -C /home/developer
+	mv -f /opt/intellij/idea-IC-162.2032.8/* /opt/intellij
+	chown -R developer:developer /home/developer/.IdeaIC2016.2
+	rm -f ideaIC-2016.2.4.tar.gz
+	rm -f IdeaIC2016.2.tar.gz
+
+	# ---------------------------------------
+	#          Final message
+	# ---------------------------------------
+	echo "# ------------------------------------------------------------"
+	echo "#       Insect Development image is ready:"
+	echo "# IP: 192.168.56.100"
+	echo "# ssh: developer/developer"
+	echo "# ------------------------------------------------------------"
+	SHELL
+end

@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<!--[if IE 8]> <html lang="en" class="ie8 no-js"> <![endif]-->
+<!--[if IE 9]> <html lang="en" class="ie9 no-js"> <![endif]-->
+<!--[if !IE]><!-->
+<html lang="en">
+<!--<![endif]-->
+<!-- BEGIN HEAD -->
+<head>
+<meta charset="utf-8"/>
+<title>proxy</title>
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<meta http-equiv="Content-type" content="text/html; charset=utf-8">
+<meta content="" name="description"/>
+<meta content="" name="author"/>
+</head>
+<body class="page-404-full-page">
+<h1> peek </h1>
+<br>
+<div id="proxy-sid" data-proxy-sid="{{psid}}">{{psid}}</div>
+<br>
+<input type="text" value="{{new_api_endpoint}}" size="80" disabled>
+<br>
+{{#has_ownership}}
+    owner
+{{/has_ownership}}
+<br>
+                    {{^has_ownership}}
+<input type="text" id="api-endpoint" value="{{proxy_api_endpoint}}" size="80" disabled>
+                    {{/has_ownership}}
+                    {{#has_ownership}}
+<br>
+{{^is_active}}
+    <input type="text" id="api-endpoint" value="{{proxy_api_endpoint}}" size="80">
+    <button id="proxy-activation" data-activation-state="activate">activate</button>
+{{/is_active}}
+{{#is_active}}
+    <input type="text" id="api-endpoint" value="{{proxy_api_endpoint}}" size="80" disabled>
+    <button id="proxy-activation" data-activation-state="deactivate">deactivate</button>
+{{/is_active}}
+                    {{/has_ownership}}
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+        <script>
+
+$(document).ready(function(){
+
+        var exampleSocket = new WebSocket("ws://192.168.56.95:3333/tocpush");
+        exampleSocket.onopen = function (event) {
+            var wsid = getCookie("JSESSIONID");
+            var psid = $('#proxy-sid').data("proxy-sid");
+            var object = {psId: psid, wsId: wsid};
+            exampleSocket.send(JSON.stringify(object));
+        };
+
+        exampleSocket.onmessage = function (event) {
+            console.log(event.data);
+        }
+
+        if($('#api-endpoint').val().length == 0) {
+            $('#api-endpoint').val(localStorage.getItem('endpoint'));
+        }
+        $('#proxy-activation').click(function (e) {
+            e.preventDefault();
+            var operation = $('#proxy-activation').data("activation-state");
+            var endpoint = $('#api-endpoint').val();
+            var postData = {
+                    proxyurl: endpoint,
+                    activity: operation
+                    };
+            $.ajax({
+                url: window.location.href,
+                method: 'POST',
+                dataType: 'json',
+                data: postData
+            }).done(function (data) {
+                if(data.active) {
+                    updateActivePresentation();
+                    localStorage.setItem('endpoint', endpoint);
+                } else {
+                    updateInactivePresentation();
+                }
+            }).fail(function (xhr, ajaxOptions, thrownError) {
+                showRequestError();
+            });
+        });
+
+    function updateActivePresentation() {
+        $('#proxy-activation').data('activation-state', 'deactivate');
+        $('#proxy-activation').html('deactivate');
+        $('#api-endpoint').prop('disabled', true);
+    }
+
+    function updateInactivePresentation() {
+        $('#proxy-activation').data('activation-state', 'activate');
+        $('#proxy-activation').html('activate');
+        $('#api-endpoint').prop('disabled', false);
+    }
+
+    function getCookie(name) {
+        var value = "; " + document.cookie;
+        var parts = value.split("; " + name + "=");
+        if (parts.length == 2) return parts.pop().split(";").shift();
+    }
+
+    function showRequestError() {
+
+    }
+});
+
+        </script>
+</body>
+</html>

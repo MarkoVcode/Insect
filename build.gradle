@@ -1,0 +1,189 @@
+buildscript {
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        classpath 'com.github.jengelman.gradle.plugins:shadow:1.2.3'
+        classpath 'net.researchgate:gradle-release:2.4.0'
+    }
+}
+
+subprojects {
+    apply plugin: 'java'
+    apply plugin: 'application'
+    apply plugin: 'war'
+    apply plugin: 'com.github.johnrengelman.shadow'
+    apply plugin: 'net.researchgate.release'
+    apply plugin: 'jacoco'
+ //   apply plugin: 'findbugs'
+ //   apply plugin: 'checkstyle'
+  //  apply plugin: 'pmd'
+
+    group = 'org.gradle.sample'
+   // version = '1.0'
+    version = new ProjectVersion(0,7,System.env.BUILD_NUMBER)
+    //versionFlat = new ProjectVersion(0,7,"")
+
+    repositories {
+    	jcenter()
+    }
+
+    configurations {
+        mainClassName = ''
+    }
+
+    ext {
+		logbackVersion="1.1.3"
+		slf4jVersion = "1.7.21"
+		junitVersion = "4.12"
+		restletVersion = "2.3.3"
+		beanUtilsVersion = "1.9.2"
+		configurationVersion = "1.10"
+    }
+
+}
+
+project(':ins_common') {
+
+    dependencies {
+        compile "commons-lang:commons-lang:2.6"
+        compile "commons-io:commons-io:2.4"
+        compile "commons-configuration:commons-configuration:${configurationVersion}"
+        compile "com.fasterxml.jackson.core:jackson-databind:2.4.4"
+        compile "org.slf4j:slf4j-api:${slf4jVersion}"
+        compile "ch.qos.logback:logback-classic:${logbackVersion}"
+        compile "ch.qos.logback:logback-core:${logbackVersion}"
+        compile group: 'com.googlecode.json-simple', name: 'json-simple', version: '1.1.1'
+        testCompile "junit:junit:${junitVersion}"
+    }
+
+    jacocoTestReport {
+        reports {
+            xml.enabled = false
+            html.enabled = true
+        }
+    }
+
+    check.dependsOn jacocoTestReport
+
+}
+
+project(':ins_db') {
+
+    dependencies {
+        compile project(':ins_common')
+        compile "redis.clients:jedis:2.9.0"
+        compile "commons-validator:commons-validator:1.4.1"
+        testCompile "junit:junit:${junitVersion}"
+    }
+
+    jacocoTestReport {
+        reports {
+            xml.enabled = false
+            html.enabled = true
+        }
+    }
+
+    check.dependsOn jacocoTestReport
+}
+
+project(':ins_webapp') {
+
+    //Used for deployment - do not change the name!
+    war.version=''
+    war.baseName='InserProxy_WebApplication'
+
+    war {
+        rootSpec.exclude("**/slf4j-simple-1.7.12.jar")
+    }
+
+    configurations {
+        mainClassName = 'org.scg.webapp.run.WebappDriver'
+    }
+
+    dependencies {
+       	compile project(':ins_common')
+        compile project(':ins_db')
+		compile "org.ocpsoft.prettytime:prettytime:3.2.7.Final"
+		compile 'com.sparkjava:spark-core:2.3'
+		compile 'com.sparkjava:spark-template-mustache:1.0.0'
+		compile "commons-beanutils:commons-beanutils:${beanUtilsVersion}"
+		testCompile "junit:junit:${junitVersion}"
+    }
+
+    jacocoTestReport {
+        reports {
+            xml.enabled = false
+            html.enabled = true
+        }
+    }
+
+    check.dependsOn jacocoTestReport
+}
+
+project(':ins_websockets') {
+
+    //Used for deployment - do not change the name!
+    war.version=''
+    war.baseName='InserProxy_WebSockets'
+
+    jar {
+        archivesBaseName = 'TOC_WEBSOCKETS_SERVICE'
+        //version = sdkjarVersion
+        group = 'example'
+        include 'org/scg/**'
+        manifest {
+            attributes 'Implementation-Title': 'WebSocketsService', 'Implementation-Version': version, 'Main-Class': 'org.scg.websockets.run.WebsocketsDriver'
+        }
+    }
+
+    configurations {
+        mainClassName = 'org.scg.websockets.run.WebsocketsDriver'
+    }
+
+    dependencies {
+        compile project(':ins_common')
+        compile project(':ins_db')
+        compile 'org.eclipse.jetty:jetty-server:9.3.9.M1'
+        compile 'org.eclipse.jetty:jetty-servlet:9.3.9.M1'
+        compile 'org.eclipse.jetty.websocket:websocket-client:9.3.9.M1'
+        compile 'org.eclipse.jetty.websocket:websocket-servlet:9.3.9.M1'
+        compile 'org.eclipse.jetty.websocket:websocket-server:9.3.9.M1'
+        compile "org.nanohttpd:nanohttpd:2.2.0"
+        compile "commons-beanutils:commons-beanutils:${beanUtilsVersion}"
+        testCompile "junit:junit:${junitVersion}"
+    }
+
+    jacocoTestReport {
+        reports {
+            xml.enabled = false
+            html.enabled = true
+        }
+    }
+
+    check.dependsOn jacocoTestReport
+}
+
+class ProjectVersion {
+
+    Integer major
+    Integer minor
+    String build
+
+    ProjectVersion(Integer major, Integer minor, String build) {
+        this.major = major
+        this.minor = minor
+        this.build = build
+    }
+
+    @Override
+    String toString() {
+        String fullVersion = "$major.$minor"
+        if(build) {
+            fullVersion += ".$build"
+        }
+        fullVersion
+    }
+}
+
+

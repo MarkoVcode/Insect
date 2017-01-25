@@ -1,0 +1,66 @@
+#######################################
+version: "2"
+services:
+    nginx:
+        build: ./nginx
+        links:
+            - web1:web1
+            - web2:web2
+            - api1:api1
+            - api2:api2
+            - ws1:ws1
+            - ws2:ws2
+        ports:
+            - "81:80"
+            - "443:443"
+
+    redis:
+        build: ./redis
+        ports:
+            - "8080"
+
+    web1:
+        build: ./jetty-web
+        links:
+            - redis
+        ports:
+            - "8080"
+
+    web2:
+        build: ./jetty-web
+        links:
+            - redis
+        ports:
+            - "8080"
+
+    api1:
+        build: ./nodejs
+        links:
+            - redis
+            - ws1
+            - ws2
+        ports:
+            - "8080"
+
+    api2:
+        build: ./nodejs
+        links:
+            - redis
+            - ws1
+            - ws2
+        ports:
+            - "8080"
+
+    ws1:
+        build: ./jetty-ws
+        links:
+            - redis
+        ports:
+            - "8080"
+
+    ws2:
+        build: ./jetty-ws
+        links:
+            - redis
+        ports:
+            - "8080"

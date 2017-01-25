@@ -1,0 +1,15 @@
+.gradle/
+.project
+.settings
+.idea
+*.iml
+*/*.iml
+ins_*/bin
+ins_*/build
+ins_*/.classpath
+ins_*/.project
+ins_*/.settings
+*/*.DS_Store
+project/deploy/docker/jetty-web/artifacts
+project/deploy/docker/jetty-ws/artifacts
+project/deploy/docker/nodejs/artifacts
