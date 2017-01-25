@@ -1,4 +1,5 @@
 #!/bin/sh
+REGISTRY_HOST=213.32.67.176
 
 ### PREPARE ARTIFACTS
 mkdir -p project/deploy/docker/jetty-web/artifacts
@@ -14,19 +15,19 @@ docker build -t webapp_insect_${BUILD_NUMBER} project/deploy/docker/jetty-web
 docker build -t websockets_insect_${BUILD_NUMBER} project/deploy/docker/jetty-ws
 docker build -t api_insect_${BUILD_NUMBER} project/deploy/docker/nodejs
 
-docker tag api_insect_${BUILD_NUMBER} 213.32.67.176:5000/api_insect:${BUILD_NUMBER}
-docker tag websockets_insect_${BUILD_NUMBER} 213.32.67.176:5000/websockets_insect:${BUILD_NUMBER}
-docker tag webapp_insect_${BUILD_NUMBER} 213.32.67.176:5000/webapp_insect:${BUILD_NUMBER}
+docker tag api_insect_${BUILD_NUMBER} ${REGISTRY_HOST}:5000/api_insect:${BUILD_NUMBER}
+docker tag websockets_insect_${BUILD_NUMBER} ${REGISTRY_HOST}:5000/websockets_insect:${BUILD_NUMBER}
+docker tag webapp_insect_${BUILD_NUMBER} ${REGISTRY_HOST}:5000/webapp_insect:${BUILD_NUMBER}
 
 ### PUSH IMAGES TO REGISTRY
 
-docker push 213.32.67.176:5000/webapp_insect:${BUILD_NUMBER}
-docker push 213.32.67.176:5000/websockets_insect:${BUILD_NUMBER}
-docker push 213.32.67.176:5000/api_insect:${BUILD_NUMBER}
+docker push ${REGISTRY_HOST}:5000/webapp_insect:${BUILD_NUMBER}
+docker push ${REGISTRY_HOST}:5000/websockets_insect:${BUILD_NUMBER}
+docker push ${REGISTRY_HOST}:5000/api_insect:${BUILD_NUMBER}
 
-docker rmi 213.32.67.176:5000/webapp_insect:${BUILD_NUMBER}
-docker rmi 213.32.67.176:5000/websockets_insect:${BUILD_NUMBER}
-docker rmi 213.32.67.176:5000/api_insect:${BUILD_NUMBER}
+docker rmi ${REGISTRY_HOST}:5000/webapp_insect:${BUILD_NUMBER}
+docker rmi ${REGISTRY_HOST}:5000/websockets_insect:${BUILD_NUMBER}
+docker rmi ${REGISTRY_HOST}:5000/api_insect:${BUILD_NUMBER}
 
 docker rmi webapp_insect_${BUILD_NUMBER}
 docker rmi websockets_insect_${BUILD_NUMBER}
