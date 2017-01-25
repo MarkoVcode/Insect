@@ -1,4 +1,4 @@
-package org.scg.websockets.json;
+package org.scg.common.tool;
 
 /**
  *  Copyright 2015 MarkoV
@@ -24,15 +24,15 @@ package org.scg.websockets.json;
  * @version <RELEASEVERSION>
  */
 
-    import com.fasterxml.jackson.annotation.JsonInclude.Include;
-    import com.fasterxml.jackson.core.JsonGenerationException;
-    import com.fasterxml.jackson.databind.JsonMappingException;
-    import com.fasterxml.jackson.databind.ObjectMapper;
-    import org.slf4j.Logger;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
+import com.fasterxml.jackson.core.JsonGenerationException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.slf4j.Logger;
 
-    import java.io.IOException;
-    import java.io.Serializable;
-    import java.io.StringWriter;
+import java.io.IOException;
+import java.io.Serializable;
+import java.io.StringWriter;
 
 public class JSONHelper {
 

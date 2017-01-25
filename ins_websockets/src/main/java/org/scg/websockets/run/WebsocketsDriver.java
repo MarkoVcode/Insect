@@ -4,7 +4,7 @@ import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
 import org.scg.common.Properties;
-import org.scg.websockets.servlet.TOCPushServiceSocketServlet;
+import org.scg.websockets.servlet.PushServiceSocketServlet;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -24,7 +24,7 @@ public class WebsocketsDriver implements Runnable {
         wsd.run();
     }
 
-    public WebsocketsDriver() {
+    private WebsocketsDriver() {
         init();
         setupServlets();
     }
@@ -41,7 +41,7 @@ public class WebsocketsDriver implements Runnable {
     }
 
     private void setupServlets() {
-        ServletHolder sh = ctx.addServlet(TOCPushServiceSocketServlet.class, PROP.getWebsocketsServletPath());
+        ServletHolder sh = ctx.addServlet(PushServiceSocketServlet.class, PROP.getWebsocketsServletPath());
         sh.setInitOrder(1);
         server.setHandler(ctx);
     }

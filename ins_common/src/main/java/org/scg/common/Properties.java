@@ -10,6 +10,7 @@ public class Properties {
     public static final String BUILDTAG = "<BUILDTAG>";
     public static final String BUILDDATE = "<BUILDDATE>";
     public static final String RELEASEVERSION = "<RELEASEVERSION>";
+    private static final String ENVIRONMENT = "<ENVIRONMENT>";
 
     private static Properties INSTANCE;
 

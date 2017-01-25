@@ -3,9 +3,9 @@ package org.scg.websockets.servlet;
 import org.eclipse.jetty.websocket.api.Session;
 import org.eclipse.jetty.websocket.api.annotations.*;
 import org.scg.common.Properties;
+import org.scg.common.tool.JSONHelper;
 import org.scg.common.tool.SIDTool;
 import org.scg.db.DB;
-import org.scg.websockets.json.JSONHelper;
 import org.scg.websockets.message.SubInboundMessage;
 import org.scg.websockets.message.SubOutboundMessage;
 import org.scg.websockets.registry.WSSessionRegistry;
@@ -18,11 +18,11 @@ import java.io.IOException;
  * Created by developer on 15/03/16.
  */
 @WebSocket(maxIdleTime=800000)
-public class TOCPushServiceWebSocket {
+public class PushServiceWebSocket {
 
     private static final Properties PROP = Properties.getInstance();
     private static final DB DB_INSTANCE = DB.getInstance();
-    private static final Logger LOG = LoggerFactory.getLogger(TOCPushServiceWebSocket.class);
+    private static final Logger LOG = LoggerFactory.getLogger(PushServiceWebSocket.class);
     private Session session;
     //private SubInboundMessage message;
 

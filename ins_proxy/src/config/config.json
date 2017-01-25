@@ -1,0 +1,16 @@
+{
+    "ENVIRONMENT": "<ENVIRONMENT>",
+    "BUILD": {
+        "TAG": "<BUILDTAG>",
+        "DATE": "<BUILDDATE>",
+        "VERSION": "<RELEASEVERSION>"
+    },
+    "TOKEN_LENGTH": 11,
+    "SERVICE_PATH": "/service/proxy/",
+    "PORT": 8080,
+    "REDIS_PORT": 6379,
+    "REDIS_HOST": "127.0.0.1",
+    "PRODUCTION": {
+        "REDIS_HOST": "redis"
+    }
+}

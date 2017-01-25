@@ -2,13 +2,13 @@
 <web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://java.sun.com/xml/ns/javaee"
          xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
          id="WebApp_ID" version="2.5">
-    <display-name>ThingOnCloud WebSockets service</display-name>
+    <display-name>Insect WebSockets service</display-name>
     <description>
-        This is Scalable WebSocket for ThingOnCloud.com online service.
+        This is Scalable WebSocket for Insect online service.
     </description>
     <servlet>
-        <servlet-name>TOCWebSockets</servlet-name>
-        <servlet-class>com.thingoncloud.websockets.servlet.TOCPushServiceSocketServlet</servlet-class>
+        <servlet-name>InsectWebSockets</servlet-name>
+        <servlet-class>org.scg.websockets.servlet.PushServiceSocketServlet</servlet-class>
         <load-on-startup>1</load-on-startup>
     </servlet>
     <servlet-mapping>

@@ -12,15 +12,15 @@ import javax.servlet.ServletException;
 /**
  * Created by developer on 15/03/16.
  */
-public class TOCPushServiceSocketServlet extends WebSocketServlet {
+public class PushServiceSocketServlet extends WebSocketServlet {
 
-    private static final Logger LOG = LoggerFactory.getLogger(TOCPushServiceSocketServlet.class);
+    private static final Logger LOG = LoggerFactory.getLogger(PushServiceSocketServlet.class);
 
     @Override
     public void configure(WebSocketServletFactory factory) {
         factory.getPolicy().setIdleTimeout(800000);
-        factory.register(TOCPushServiceWebSocket.class);
-        LOG.info("Servlet configure TOCPushServiceWebSocket.class: " + this.toString());
+        factory.register(PushServiceWebSocket.class);
+        LOG.info("Servlet configure PushServiceWebSocket.class: " + this.toString());
     }
 
     @Override
