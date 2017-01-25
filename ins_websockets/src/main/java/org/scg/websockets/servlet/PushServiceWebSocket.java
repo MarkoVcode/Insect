@@ -52,6 +52,9 @@ public class PushServiceWebSocket {
         obm.setSubmesage("OK");
         obm.setPsId(messageIn.getPsId());
         obm.setWsId(messageIn.getWsId());
+        obm.setBuild(PROP.BUILDTAG);
+        obm.setBuilddate(PROP.BUILDDATE);
+        obm.setVersion(PROP.RELEASEVERSION);
         try {
             session.getRemote().sendString(JSONHelper.getInstance().serialize(obm));
         } catch (IOException e) {
