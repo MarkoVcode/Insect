@@ -1,0 +1,15 @@
+{
+    "name": "api_proxy",
+    "version": "1.0.0",
+    "description": "api_proxy for Insect service",
+    "author": "MarkoV",
+    "main": "app.js",
+    "scripts": {
+        "start": "node app.js"
+    },
+    "dependencies": {
+        "redis": "2.6.5",
+        "url": "0.11.0",
+        "crypto": "0.0.3"
+    }
+}
