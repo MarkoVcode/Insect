@@ -24,7 +24,7 @@ public class MessagesListener extends NanoHTTPD implements Runnable {
 
     public MessagesListener() throws IOException {
         super(PROP.getWebsocketInstanceInternalPort());
-        System.out.println("\nWebSockets Messages Listener Running! " + PROP.getWebsocketsInternalURL()+"\n");  //what is my IP????
+        System.out.println("\nWebSockets Messages Listener Running! " + PROP.getWebsocketsInternalURL()+"\n");
     }
 
     @Override
