@@ -8,7 +8,7 @@
     </description>
     <filter>
         <filter-name>default</filter-name>
-        <filter-class>org.scg.webapp.filter.StaticFilter</filter-class>
+        <filter-class>org.scg.webapp.run.filter.StaticFilter</filter-class>
     </filter>
     <filter-mapping>
         <filter-name>default</filter-name>
