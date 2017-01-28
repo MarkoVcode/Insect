@@ -2,15 +2,16 @@ var http = require('http');
 var redis = require('redis');
 var urlObj = require('url');
 var session = require('./lib/session.js');
+var config = require('./lib/config.js')
 var ws;
 
 const TOKEN_LENGTH=11;
 const SERVICE_PATH='/service/proxy/';
-const PORT=8080; 
-const REDIS_PORT=6379;
-const REDIS_HOST='127.0.0.1';
+const PORT=8080;
 
-var client = redis.createClient(REDIS_PORT, REDIS_HOST);
+var client = redis.createClient(config.getRedisPort(), config.getRedisHost());
+console.log(config.environment());
+console.log(config.getRedisHost());
 client.on('connect', function() {
     console.log('redis connected');
 });
@@ -37,7 +38,7 @@ function handleRequest(request, response){
         });
     } else {
         response.writeHead(404);
-        response.end("");      
+        response.end("");
     }
 }
 
@@ -91,7 +92,7 @@ const proxy = function(proxyOptions, body) {
     });
     // handle connection errors of the request
     proxyReq.on('error', (err) => reject(err));
-    
+
     proxyReq.write(body);
     proxyReq.end();
     })
@@ -131,8 +132,8 @@ function fetchProxyConfig(sessionConfig, proxyTo) {
         var proxyPath = parsedUrl.path + sessionConfig.uri;
         return {sessionId: sessionConfig.sessionId,
             protocol: parsedUrl.protocol,
-            uri: sessionConfig.uri, 
-            configEndpoint: proxyTo, 
+            uri: sessionConfig.uri,
+            configEndpoint: proxyTo,
             host: host,
             port: port,
             path: proxyPath};
