@@ -1,112 +1,165 @@
 <!DOCTYPE html>
-<!--[if IE 8]> <html lang="en" class="ie8 no-js"> <![endif]-->
-<!--[if IE 9]> <html lang="en" class="ie9 no-js"> <![endif]-->
-<!--[if !IE]><!-->
 <html lang="en">
-<!--<![endif]-->
-<!-- BEGIN HEAD -->
-<head>
-<meta charset="utf-8"/>
-<title>proxy</title>
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<meta http-equiv="Content-type" content="text/html; charset=utf-8">
-<meta content="" name="description"/>
-<meta content="" name="author"/>
-</head>
-<body class="page-404-full-page">
-<h1> peek </h1>
-<br>
-<div id="proxy-sid" data-proxy-sid="{{psid}}">{{psid}}</div>
-<br>
-<input type="text" value="{{new_api_endpoint}}" size="80" disabled>
-<br>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="keywords" content="">
+
+    <title>Insect - Peek</title>
+
+    <!-- Styles -->
+    <link href="/assets/css/theDocs.all.min.css" rel="stylesheet">
+    <link href="/assets/css/custom.css" rel="stylesheet">
+    <link href="/assets/insect/css/insect.css" rel="stylesheet">
+    <!-- Fonts -->
+    <link href='http://fonts.googleapis.com/css?family=Raleway:100,300,400,500%7CLato:300,400' rel='stylesheet' type='text/css'>
+
+  </head>
+
+  <body>
+
+    <header class="site-header">
+
+      <!-- Top navbar & branding -->
+      <nav class="navbar navbar-default">
+        <div class="container-fluid">
+
+          <!-- Toggle buttons and brand -->
+          <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar" aria-expanded="true" aria-controls="navbar">
+              <span class="glyphicon glyphicon-option-vertical"></span>
+            </button>
+
+          </div>
+          <!-- END Toggle buttons and brand -->
+
+          <!-- Top navbar -->
+          <div id="navbar" class="navbar-collapse collapse" aria-expanded="true" role="banner">
+            <ul class="nav navbar-nav navbar-right">
+                <li>
+                <button type="button" class="btn btn-lg btn-default">{{psid}}</button>
+                <button type="button" class="btn btn-lg btn-danger" id="indicator-ws">Offline</button>
 {{#has_ownership}}
-    owner
+                {{^is_active}}
+                    <button type="button" class="btn btn-lg btn-danger" id="indicator-proxy">Proxy Inactive</button>
+                {{/is_active}}
+                {{#is_active}}
+                    <button type="button" class="btn btn-lg btn-success" id="indicator-proxy">Proxy Active</button>
+                {{/is_active}}
+                <button type="button" class="btn btn-lg btn-info" id="session-timeout">23:59:59</button>
 {{/has_ownership}}
-<br>
-                    {{^has_ownership}}
-<input type="text" id="api-endpoint" value="{{proxy_api_endpoint}}" size="80" disabled>
-                    {{/has_ownership}}
-                    {{#has_ownership}}
-<br>
-{{^is_active}}
-    <input type="text" id="api-endpoint" value="{{proxy_api_endpoint}}" size="80">
-    <button id="proxy-activation" data-activation-state="activate">activate</button>
-{{/is_active}}
-{{#is_active}}
-    <input type="text" id="api-endpoint" value="{{proxy_api_endpoint}}" size="80" disabled>
-    <button id="proxy-activation" data-activation-state="deactivate">deactivate</button>
-{{/is_active}}
-                    {{/has_ownership}}
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-        <script>
+                </li>
+            </ul>
+          </div>
+          <!-- END Top navbar -->
 
-$(document).ready(function(){
+        </div>
+      </nav>
+      <!-- END Top navbar & branding -->
 
-        var exampleSocket = new WebSocket("ws://192.168.56.95:3333/tocpush");
-        exampleSocket.onopen = function (event) {
-            var wsid = getCookie("JSESSIONID");
-            var psid = $('#proxy-sid').data("proxy-sid");
-            var object = {psId: psid, wsId: wsid};
-            exampleSocket.send(JSON.stringify(object));
+    </header>
+
+
+    <main class="container-fluid">
+      <div class="row">
+
+        <article class="col-md-12 main-content" role="main">
+            <table class="table table-bordered table-striped table-info">
+                <tbody>
+                <tr>
+                    <td>Endpoint:</td>
+                    <td><strong>{{new_api_endpoint}}</strong></td>
+                    <td><button type="button" id="proxy-reset" class="btn btn-xs btn-primary">{{^has_ownership}}Get yourself own session!{{/has_ownership}}
+{{#has_ownership}}Get yourself a new session!{{/has_ownership}}</button></td>
+                </tr>
+                <tr>
+                    <td>Upstream:</td>
+                    <td>
+                        {{^has_ownership}}
+                            <input type="text" id="api-endpoint" value="{{proxy_api_endpoint}}" size="70" disabled>
+                        {{/has_ownership}}
+                        {{#has_ownership}}
+                            {{^is_active}}
+                                <input type="text" id="api-endpoint" value="{{proxy_api_endpoint}}" size="80">
+                            {{/is_active}}
+                            {{#is_active}}
+                                <input type="text" id="api-endpoint" value="{{proxy_api_endpoint}}" size="80" disabled>
+                            {{/is_active}}
+                        {{/has_ownership}}
+                    </td>
+                    <td></td>
+                </tr>
+                {{#has_ownership}}
+                    <tr>
+                        <td></td>
+                        <td>
+                            {{^is_active}}
+                                <button type="button" id="proxy-start" class="btn btn-lg btn-success"><i class="fa fa-caret-square-o-right"></i> Start</button>
+                                <button type="button" id="proxy-stop" class="btn btn-lg btn-danger" disabled><i class="fa fa-square"></i> Stop</button>
+                            {{/is_active}}
+                            {{#is_active}}
+                                <button type="button" id="proxy-start" class="btn btn-lg btn-success" disabled><i class="fa fa-caret-square-o-right"></i> Start</button>
+                                <button type="button" id="proxy-stop" class="btn btn-lg btn-danger"><i class="fa fa-square"></i> Stop</button>
+                            {{/is_active}}
+                        </td>
+                        <td></td>
+                    </tr>
+                {{/has_ownership}}
+                </tbody>
+            </table>
+        </article>
+
+          <article id="proxy-updates" class="col-md-12 main-content">
+<!--              <table class="table table-bordered table-striped table-info">
+                  <tbody>
+                  <tr>
+                      <td>Request:</td>
+                      <td>jjjj</td>
+                      <td></td>
+                  </tr>
+                  <tr>
+                      <td>Response:</td>
+                      <td>kkkkk</td>
+                      <td></td>
+                  </tr>
+                  </tbody>
+              </table>-->
+          </article>
+        <!-- END Main content -->
+      </div>
+    </main>
+
+
+    <!-- Footer -->
+    <footer class="site-footer">
+      <div class="container-fluid">
+        <a id="scroll-up" href="#"><i class="fa fa-angle-up"></i></a>
+
+        <div class="row">
+          <div class="col-md-6 col-sm-6">
+            <p>Copyright &copy; 2016. All right reserved</p>
+          </div>
+          <div class="col-md-6 col-sm-6">
+            <ul class="footer-menu">
+            </ul>
+          </div>
+        </div>
+      </div>
+    </footer>
+    <!-- END Footer -->
+
+    <!-- Scripts -->
+    <script>
+    var configObj = {
+        websocketsURL: '{{config_websockets_url}}',
+        sessionTimeout: '{{config_session_timeout}}',
+        psid: '{{psid}}'
         };
-
-        exampleSocket.onmessage = function (event) {
-            console.log(event.data);
-        }
-
-        if($('#api-endpoint').val().length == 0) {
-            $('#api-endpoint').val(localStorage.getItem('endpoint'));
-        }
-        $('#proxy-activation').click(function (e) {
-            e.preventDefault();
-            var operation = $('#proxy-activation').data("activation-state");
-            var endpoint = $('#api-endpoint').val();
-            var postData = {
-                    proxyurl: endpoint,
-                    activity: operation
-                    };
-            $.ajax({
-                url: window.location.href,
-                method: 'POST',
-                dataType: 'json',
-                data: postData
-            }).done(function (data) {
-                if(data.active) {
-                    updateActivePresentation();
-                    localStorage.setItem('endpoint', endpoint);
-                } else {
-                    updateInactivePresentation();
-                }
-            }).fail(function (xhr, ajaxOptions, thrownError) {
-                showRequestError();
-            });
-        });
-
-    function updateActivePresentation() {
-        $('#proxy-activation').data('activation-state', 'deactivate');
-        $('#proxy-activation').html('deactivate');
-        $('#api-endpoint').prop('disabled', true);
-    }
-
-    function updateInactivePresentation() {
-        $('#proxy-activation').data('activation-state', 'activate');
-        $('#proxy-activation').html('activate');
-        $('#api-endpoint').prop('disabled', false);
-    }
-
-    function getCookie(name) {
-        var value = "; " + document.cookie;
-        var parts = value.split("; " + name + "=");
-        if (parts.length == 2) return parts.pop().split(";").shift();
-    }
-
-    function showRequestError() {
-
-    }
-});
-
-        </script>
-</body>
+    </script>
+    <script src="/assets/js/theDocs.all.min.js"></script>
+    <script src="/assets/js/custom.js"></script>
+    <script src="/assets/insect/js/peek.js"></script>
+  </body>
 </html>

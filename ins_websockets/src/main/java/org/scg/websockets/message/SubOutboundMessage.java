@@ -6,7 +6,7 @@ package org.scg.websockets.message;
 public class SubOutboundMessage extends SubInboundMessage {
 
     private boolean subscribed;
-    private String submesage;
+    private String submessage;
     private String build;
     private String builddate;
     private String version;
@@ -20,11 +20,11 @@ public class SubOutboundMessage extends SubInboundMessage {
     }
 
     public String getSubmesage() {
-        return submesage;
+        return submessage;
     }
 
     public void setSubmesage(String submesage) {
-        this.submesage = submesage;
+        this.submessage = submesage;
     }
 
     public String getBuild() {

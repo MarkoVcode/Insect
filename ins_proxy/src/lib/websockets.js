@@ -41,7 +41,7 @@ var processError = function(err) {
 const dispatchPayload = function(payload, url) {
     return new Promise((resolve, reject) => {
         const lib = require('http');
-        const proxyReq = lib.request(generateRequestOptions(url), (response) => {
+        const proxyReq = lib.request(generateRequestOptions(url, payload), (response) => {
             const body = [];
             response.on('data', (chunk) => body.push(chunk));
             response.on('end', () => resolve(response));
@@ -56,8 +56,8 @@ var generateWSUrl = function(sessionId, wsURL) {
     return wsURL + "/push/" + sessionId;
 }
 
-var generateRequestOptions = function(url) {
-    var parsedUrl = urlObj.parse(url); 
+var generateRequestOptions = function(url, payload) {
+    var parsedUrl = urlObj.parse(url);
     var host = parsedUrl.host;
     var ind = host.indexOf(":");
     if(ind !== -1) {
@@ -68,7 +68,12 @@ var generateRequestOptions = function(url) {
         port: parsedUrl.port,
         host: host,
         protocol: parsedUrl.protocol,
-        timeout: 500};
+        timeout: 500,
+        headers: {
+            "Content-Type": "application/json",
+            "Content-Length": Buffer.byteLength(payload)
+        }
+        };
 }
 
 var assemblyWSPayload = function(responseObj) {

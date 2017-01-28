@@ -12,7 +12,7 @@
         <load-on-startup>1</load-on-startup>
     </servlet>
     <servlet-mapping>
-        <servlet-name>TOCWebSockets</servlet-name>
-        <url-pattern>/tocpush/*</url-pattern>
+        <servlet-name>InsectWebSockets</servlet-name>
+        <url-pattern>/inspush/*</url-pattern>
     </servlet-mapping>
 </web-app>

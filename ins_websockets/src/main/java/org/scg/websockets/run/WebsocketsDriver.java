@@ -35,8 +35,8 @@ public class WebsocketsDriver implements Runnable {
     }
 
     private void init() {
-        LOG.info("Starting WebSocket: " + PROP.getPublicWebsocketsUrl());
-        server = new Server(PROP.getPublicWebsocketsPort());
+        LOG.info("Starting WebSocket: " + PROP.getWebWebsocketsHost());
+        server = new Server(PROP.getWebWebsocketsPort());
         ctx.setContextPath(PROP.getWebsocketsRoot());
     }
 

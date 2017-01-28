@@ -35,6 +35,8 @@ public class PeekModel {
         model.put("new_api_endpoint", PROP.getProxyAPIEndpoint() + psid);
         model.put("proxy_api_endpoint", getProxyApiEndpoint());
         model.put("is_active", db.isProxyActive(psid));
+        model.put("config_websockets_url", PROP.getWebWebsocketsUrl());
+        model.put("config_session_timeout", PROP.getRedisDefaultSessionExpiration());
         model.put("has_ownership", db.isSessionOwner(sessionId ,psid));
     }
 

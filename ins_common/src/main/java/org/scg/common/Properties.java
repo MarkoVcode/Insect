@@ -18,6 +18,7 @@ public class Properties {
     public static final String RELEASEVERSION = "<RELEASEVERSION>";
 
     private static final String DEV_ENVIRONMENT = "DEVELOPMENT";
+    private static final String DEV_ENVIRONMENT_INDICATOR = "<ENVIRONMENT>";
     private static final String ENVIRONMENT = "<ENVIRONMENT>";
     private static Properties INSTANCE;
 
@@ -27,18 +28,31 @@ public class Properties {
      * THESE PROPERTIES ARE GOING TO BE IN EXT FILE:
      */
     private static final Integer REDIS_PORT= 6379;
-    private static final String  REDIS_HOST= "127.0.0.1";
-    private static final Integer REDIS_DEFAULT_SESSION_EXPIRATION = 60*60*24;
-    private static final Integer WEBSOCKETS_PUBLIC_PORT = 3333;
+    private static String REDIS_HOST= "127.0.0.1";
+    private static Integer REDIS_DEFAULT_SESSION_EXPIRATION = 60*60*24; //24 hours from start
+    private static Integer WEBSOCKETS_WEB_PORT = 3333;
     private static final Integer WEBSOCKETS_INTERNAL_PORT = 8090;
-    private static final String  WEBSOCKETS_PUBLIC_URL = "";
     private static final String  WEBSOCKETS_ROOT = "";
-    private static final String  WEBSOCKETS_SERVLET_PATH = "/tocpush";
+    private static final String  WEBSOCKETS_SERVLET_PATH = "/inspush";
     private static final String  WEBSOCKETS_HOST = "127.0.0.1";
+    private static String WEBSOCKETS_WEB_PROTO = "ws";
+    private static String WEBSOCKETS_WEB_HOST = "192.168.56.95";
     private static final Integer WEBAPP_PUBLIC_PORT = 8088;
-    private static final String  WEBAPP_STATIC_DIR = "/toc_webapp/src/main/webapp";
+    private static final String  WEBAPP_STATIC_DIR = "/ins_webapp/src/main/webapp";
     private static final String  WEBAPP_TEMPLATES_DIR = "ins_webapp/src/main/resources/templates";
-    private static final String  PROXY_API_ENDPOINT = "https://192.168.56.95:8080/service/proxy/";
+    private static String PROXY_API_ENDPOINT = "http://192.168.56.95:8080/service/proxy/";
+
+    //PRODUCTION SETTINGS
+    static {
+        if(!isDevEnvironment()) {
+            REDIS_HOST= "redis";
+            REDIS_DEFAULT_SESSION_EXPIRATION = 60*60; //1 hour from start
+            PROXY_API_ENDPOINT = "https://api.insectin.space/service/proxy/";
+            WEBSOCKETS_WEB_PROTO = "wss";
+            WEBSOCKETS_WEB_HOST = "ws.insectin.space";
+            WEBSOCKETS_WEB_PORT = 443;
+        }
+    }
 
     private Properties() {
         getHostIpAddress(); //run it when instantiated and put in cache
@@ -104,13 +118,21 @@ public class Properties {
         return REDIS_DEFAULT_SESSION_EXPIRATION;
     }
 
-    public int getPublicWebsocketsPort()
+    public int getWebWebsocketsPort()
     {
-        return WEBSOCKETS_PUBLIC_PORT;
+        return WEBSOCKETS_WEB_PORT;
     }
-    public String getPublicWebsocketsUrl()
+    public String getWebWebsocketsHost()
     {
-        return WEBSOCKETS_PUBLIC_URL;
+        return WEBSOCKETS_WEB_HOST;
+    }
+    public String getWebWebsocketsUrl()
+    {
+        String baseUrl = WEBSOCKETS_WEB_PROTO + "://" + WEBSOCKETS_WEB_HOST;
+        if(isDevEnvironment()) {
+            return baseUrl + ":" + WEBSOCKETS_WEB_PORT + WEBSOCKETS_SERVLET_PATH;
+        }
+        return baseUrl + WEBSOCKETS_SERVLET_PATH;
     }
     public String getWebsocketsRoot()
     {
@@ -188,5 +210,12 @@ public class Properties {
             }
         }
         return "HOST_IP_ADDRESS";
+    }
+
+    private static boolean isDevEnvironment() {
+        if(DEV_ENVIRONMENT_INDICATOR.equals(ENVIRONMENT)) {
+            return true;
+        }
+        return false;
     }
 }

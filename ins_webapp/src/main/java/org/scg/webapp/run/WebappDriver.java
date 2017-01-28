@@ -9,9 +9,7 @@ import spark.ModelAndView;
 import spark.servlet.SparkApplication;
 import spark.template.mustache.MustacheTemplateEngine;
 
-import static spark.Spark.exception;
-import static spark.Spark.externalStaticFileLocation;
-import static spark.Spark.port;
+import static spark.Spark.*;
 
 /**
  * Created by developer on 1/18/17.
@@ -52,7 +50,8 @@ public class WebappDriver implements SparkApplication {
         port(PROP.getPublicWebapplicationPort());
         String projectDir = System.getProperty("user.dir");
         String staticDir = PROP.getWebappStaticDir();
-        externalStaticFileLocation(projectDir + staticDir);
+        String externalFolder = projectDir + staticDir;
+        externalStaticFileLocation(externalFolder);
         wa.init();
     }
 }
