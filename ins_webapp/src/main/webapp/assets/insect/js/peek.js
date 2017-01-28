@@ -34,11 +34,31 @@ var fiveMinutes = 60 * 5,
 
     function contentProxyResponse(data) {
         var tid = Math.random().toString(36).substring(7);
+        var color1;
+        if(data.proxy.request.method == 'GET') {
+            color1 = "success";
+        } else if (data.proxy.request.method == 'POST') {
+            color1 = "info";
+        } else if (data.proxy.request.method == 'PUT') {
+            color1 = "warning";
+        } else if (data.proxy.request.method == 'DELETE') {
+            color1 = "danger";
+        } else {
+            color1 = "purple";
+        }
+        var colorProto;
+        if(data.proxy.request.protocol == 'http:') {
+            colorProto = "danger";
+        } else if (data.proxy.request.protocol == 'https:') {
+            colorProto = "warning";
+        } else {
+            colorProto = "danger";
+        }
         var reqHPart = "<span class=\"label label-default\">Header</span>&nbsp;" + atob(data.proxy.request.header);
-        var reqMPart = "<span class=\"label label-primary\">Method</span>&nbsp;" + data.proxy.request.method;
+        var reqMPart = "<span class=\"label label-"+color1+"\">Method</span>&nbsp;" + data.proxy.request.method;
         var reqHoPart = "<span class=\"label label-primary\">Host</span>&nbsp;" + data.proxy.request.host;
         var reqPPart = "<span class=\"label label-primary\">Path</span>&nbsp;" + data.proxy.request.path;
-        var reqPrPart = "<span class=\"label label-primary\">Protocol</span>&nbsp;" + data.proxy.request.protocol;
+        var reqPrPart = "<span class=\"label label-"+colorProto+"\">Protocol</span>&nbsp;" + data.proxy.request.protocol;
         var reqBPart = "<span class=\"label label-purple\">Body</span>&nbsp;" + atob(data.proxy.request.body);
         var requestHeader = reqHPart +"<br>"+ reqMPart +"<br>"+ reqHoPart +"<br>"+ reqPPart +"<br>"+ reqPrPart +"<br>"+ reqBPart;
         var resHPart = "<span class=\"label label-default\">Header</span>&nbsp;" + atob(data.proxy.response.header);
