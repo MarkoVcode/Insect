@@ -1,5 +1,5 @@
 #!/bin/sh
-REGISTRY_HOST=213.32.67.176
+REGISTRY_HOST=doc-reg
 
 ### PREPARE ARTIFACTS
 mkdir -p project/deploy/docker/jetty-web/artifacts
