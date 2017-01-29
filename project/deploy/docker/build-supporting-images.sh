@@ -3,7 +3,7 @@ REGISTRY_HOST=doc-reg
 
 ### CREATE IMAGES
 
-docker build -t nginx_insect_${BUILD_NUMBER} project/deploy/docker/nginx
+docker build -t nginx_insect_${BUILD_NUMBER} ${WORKSPACE}/../999_pull_infrastructure/insect/nginx
 
 docker tag nginx_insect_${BUILD_NUMBER} ${REGISTRY_HOST}:5000/nginx_insect:${BUILD_NUMBER}
 
