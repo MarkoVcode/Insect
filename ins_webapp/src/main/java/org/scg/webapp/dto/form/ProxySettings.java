@@ -21,30 +21,32 @@
  * @date <BUILDDATE>
  * @version <RELEASEVERSION>
  */
-package org.scg.webapp.run.filter;
-
-import javax.servlet.*;
-import java.io.IOException;
+package org.scg.webapp.dto.form;
 
 /**
- * Created by developer on 1/24/17.
+ * Created by developer on 1/22/17.
  */
-public class StaticFilter implements Filter {
 
-    private RequestDispatcher defaultRequestDispatcher;
+/**
+ * RESPONSIBILITY Proxy settings DTO - handling data from settings POST
+ */
+public class ProxySettings {
+    private String proxyurl;
+    private String activity;
 
-    @Override
-    public void destroy() {}
-
-    @Override
-    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
-        throws IOException, ServletException {
-        defaultRequestDispatcher.forward(request, response);
+    public String getProxyurl() {
+        return proxyurl;
     }
 
-    @Override
-    public void init(FilterConfig filterConfig) throws ServletException {
-        this.defaultRequestDispatcher =
-            filterConfig.getServletContext().getNamedDispatcher("default");
+    public void setProxyurl(String proxyurl) {
+        this.proxyurl = proxyurl;
+    }
+
+    public String getActivity() {
+        return activity;
+    }
+
+    public void setActivity(String activity) {
+        this.activity = activity;
     }
 }

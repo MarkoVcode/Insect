@@ -21,30 +21,32 @@
  * @date <BUILDDATE>
  * @version <RELEASEVERSION>
  */
-package org.scg.webapp.run.filter;
-
-import javax.servlet.*;
-import java.io.IOException;
+package org.scg.webapp.dto.ajax;
 
 /**
- * Created by developer on 1/24/17.
+ * Created by developer on 1/23/17.
  */
-public class StaticFilter implements Filter {
 
-    private RequestDispatcher defaultRequestDispatcher;
+/**
+ * RESPONSIBILITY Ajax response DTO - handling data coming back from ajax request
+ */
+public class AjaxResponse {
+    private Integer code = 200;
+    private String body;
 
-    @Override
-    public void destroy() {}
-
-    @Override
-    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
-        throws IOException, ServletException {
-        defaultRequestDispatcher.forward(request, response);
+    public Integer getCode() {
+        return code;
     }
 
-    @Override
-    public void init(FilterConfig filterConfig) throws ServletException {
-        this.defaultRequestDispatcher =
-            filterConfig.getServletContext().getNamedDispatcher("default");
+    public void setCode(Integer code) {
+        this.code = code;
+    }
+
+    public String getBody() {
+        return body;
+    }
+
+    public void setBody(String body) {
+        this.body = body;
     }
 }
