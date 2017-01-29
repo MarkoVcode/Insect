@@ -1,5 +1,3 @@
-package org.scg.common.tool;
-
 /**
  *  Copyright 2015 MarkoV
  *
@@ -15,14 +13,15 @@ package org.scg.common.tool;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  *
- *                                      ThingOnCloud.com SDK
+ * InsectIn.space
  *
- * Project home: https://github.com/MarkoVcode/ThingOnCloudSDK
+ * Project home: https://github.com/MarkoVcode/Insect
  *
  * @build <BUILDTAG>
  * @date <BUILDDATE>
  * @version <RELEASEVERSION>
  */
+package org.scg.common.tool;
 
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.core.JsonGenerationException;
@@ -34,6 +33,9 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.io.StringWriter;
 
+/**
+ * RESPONSIBILITY Handling JSON to DTO transition
+ */
 public class JSONHelper {
 
     private static final Logger LOG = org.slf4j.LoggerFactory.getLogger(JSONHelper.class);
