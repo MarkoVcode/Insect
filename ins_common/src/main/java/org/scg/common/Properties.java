@@ -131,6 +131,10 @@ public class Properties {
         return ENV;
     }
 
+    public String getAppSignature() {
+        return getCurrentEnvironment() + " " + getEnvHostname() + " " + BUILDTAG + " " + BUILDDATE + " " + RELEASEVERSION;
+    }
+
     public String getEnvHostname() { return ENV.get("HOSTNAME");}
 
     public int getRedisPort()

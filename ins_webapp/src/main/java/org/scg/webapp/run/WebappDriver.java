@@ -53,6 +53,8 @@ public class WebappDriver implements SparkApplication {
     @Override
     public void init() {
 
+        System.out.println(PROP.getAppSignature());
+
         LOG.trace("TRACE");
         LOG.debug("DEBUG");
         LOG.info("INFO");
