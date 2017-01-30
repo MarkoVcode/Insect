@@ -69,7 +69,7 @@ public class WebappDriver implements SparkApplication {
             LOG.error("500 server error page shown: " + e);
             e.printStackTrace();
             MustacheTemplateEngine m = new MustacheTemplateEngine();
-            ModelAndView mv = new ModelAndView(null, PROP.getWebappTemplatesDir()+"/errors/error500.mustache");
+            ModelAndView mv = new ModelAndView(null, PROP.getWebappTemplatesDir()+"errors/error500.mustache");
             response.body(m.render(mv));
         });
     }
