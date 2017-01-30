@@ -23,14 +23,9 @@
  */
 package org.scg.db;
 
-import org.apache.commons.lang.RandomStringUtils;
 import org.scg.common.Properties;
 import org.scg.common.tool.SIDTool;
 import redis.clients.jedis.Jedis;
-
-import java.io.UnsupportedEncodingException;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 
 /**
  * Created by developer on 1/22/17.
@@ -41,8 +36,8 @@ import java.security.NoSuchAlgorithmException;
  */
 public class DB {
 
-    private static String CHARS_KEYS = "qazwsxedcrfvtgbyhnujmikolp1234567890QAZWSXEDCRFVTGBYHNUJMIKOLP";
     private static Properties PROP = Properties.getInstance();
+
     private static Jedis JEDIS;
     private static DB INSTANCE;
 
@@ -62,7 +57,7 @@ public class DB {
     }
 
     public boolean isValidProxySession(String pSessionId) {
-        if(isValidProxySessionId(pSessionId)) {
+        if(SIDTool.isValidProxySessionId(pSessionId)) {
             if (JEDIS.exists(pSessionId)) {
                 return true;
             }
@@ -71,7 +66,7 @@ public class DB {
     }
 
     public String createProxySession() {
-        String key = generateProxySessionId();
+        String key = SIDTool.generateProxySessionId();
         JEDIS.set(key, "");
         JEDIS.expire(key, PROP.getRedisDefaultSessionExpiration());
         return key;
@@ -102,21 +97,6 @@ public class DB {
         JEDIS.expire(skey, PROP.getRedisDefaultSessionExpiration());
     }
 
-    private String generateProxySessionId() {
-        String base = RandomStringUtils.random(9, CHARS_KEYS);
-        String generated = calculatePrefix(base) + base;
-        return generated;
-    }
-
-    private boolean isValidProxySessionId(String pSessionId) {
-        String key = pSessionId.substring(2,pSessionId.length());
-        String regenId = calculatePrefix(key) + key;
-        if(pSessionId.equals(regenId)) {
-            return true;
-        }
-        return false;
-    }
-
     public boolean isProxyActive(String pSessionId) {
         if(getProxyApiEndpoint(pSessionId).length() != 0) {
             return true;
@@ -141,25 +121,4 @@ public class DB {
         }
     }
 
-    private String calculatePrefix(String key) {
-        byte[] bytesOfMessage = new byte[0];
-        try {
-            bytesOfMessage = key.getBytes("UTF-8");
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }
-        MessageDigest md = null;
-        try {
-            md = MessageDigest.getInstance("MD5");
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-        }
-        byte[] thedigest = md.digest(bytesOfMessage);
-
-        StringBuffer sb = new StringBuffer();
-        for (int i = 0; i < 1; i++) {
-            sb.append(Integer.toString((thedigest[i] & 0xff) + 0x100, 16).substring(1));
-        }
-        return sb.toString();
-    }
 }

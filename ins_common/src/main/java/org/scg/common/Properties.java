@@ -201,7 +201,7 @@ public class Properties {
 
     /**
      * ENV FOR DOCKER:
-     *     APP_NAME=websockets_insect OR APP_NAME=api_insect OR APP_NAME=webapp_insect
+     *     SERVICE_NAME=websockets_insect OR SERVICE_NAME=api_insect OR SERVICE_NAME=webapp_insect
      *     CONSUL_URL=consul:8500
      *     Only websockets_insect - needs IP discovery to operate - for other is optional
      *     could be used for logging or so. But the environment settings should be present for
@@ -209,7 +209,7 @@ public class Properties {
      * @return
      */
     public String getHostIpAddress() {
-        if(DEV_ENVIRONMENT.equals(getCurrentEnvironment()) || null == ENV.get("CONSUL_URL") || null == ENV.get("APP_NAME")) {
+        if(DEV_ENVIRONMENT.equals(getCurrentEnvironment()) || null == ENV.get("CONSUL_URL") || null == ENV.get("SERVICE_NAME")) {
             return "localhost";
         }
         if(HOST_IP_ADDRESS_CACHE.containsKey(getEnvHostname())) {
@@ -217,7 +217,7 @@ public class Properties {
         } else {
             List<String> ip4s = discoverAllHostIP4s();
             //curl -s  http://consul:8500/v1/catalog/service/websockets_testpreview
-            String url = "http://" + ENV.get("CONSUL_URL") + "/v1/catalog/service/" + ENV.get("APP_NAME");
+            String url = "http://" + ENV.get("CONSUL_URL") + "/v1/catalog/service/" + ENV.get("SERVICE_NAME");
             String responseFromConsul = "";
             try {
                 responseFromConsul = HttpRequest.get(url);

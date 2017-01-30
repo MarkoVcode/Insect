@@ -6,7 +6,7 @@ WORKDIR /usr/src/app/ins_proxy/src
 
 RUN npm install
 
-ENV APP_NAME api_insect
+ENV SERVICE_NAME api_insect
 ENV CONSUL_URL consul:8500
 
 EXPOSE 8080
