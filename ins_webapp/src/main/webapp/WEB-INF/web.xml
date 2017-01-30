@@ -13,7 +13,9 @@
     <filter-mapping>
         <filter-name>default</filter-name>
         <url-pattern>/assets/*</url-pattern>
-        <url-pattern>*.ico</url-pattern>
+        <url-pattern>/robots.txt</url-pattern>
+        <url-pattern>/.well-known/pki-validation/gsdv.txt</url-pattern>
+        <url-pattern>/favicon.ico</url-pattern>
     </filter-mapping>
     <filter>
         <filter-name>InsectWeb</filter-name>
