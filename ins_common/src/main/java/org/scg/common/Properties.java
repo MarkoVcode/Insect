@@ -45,10 +45,8 @@ public class Properties {
     public static final String BUILDDATE = "<BUILDDATE>";
     public static final String RELEASEVERSION = "<RELEASEVERSION>";
 
-    private static final String DEV_ENVIRONMENT = "DEVELOPMENT";
-    private static final String DEV_ENVIRONMENT_INDICATOR = "<ENVIRONMENT>";
-    private static final String ENVIRONMENT = "<ENVIRONMENT>";
     private static Properties INSTANCE;
+    private static final String DEV_ENVIRONMENT = "DEVELOPMENT";
 
     private static final Map<String, String> ENV = System.getenv();
     private static Map<String, String> HOST_IP_ADDRESS_CACHE = new HashMap<>();
@@ -120,11 +118,11 @@ public class Properties {
         return INSTANCE;
     }
 
-    public String getCurrentEnvironment() {
-        if("<ENVIRONMENT>".equals(ENVIRONMENT)) {
-            return DEV_ENVIRONMENT;
+    public static String getCurrentEnvironment() {
+        if(null != ENV.get("ENVIRONMENT")) {
+            return ENV.get("ENVIRONMENT");
         }
-        return ENVIRONMENT;
+        return DEV_ENVIRONMENT;
     }
 
     public Map<String, String> getSystemEnvironment() {
@@ -215,7 +213,7 @@ public class Properties {
      * @return
      */
     public String getHostIpAddress() {
-        if(DEV_ENVIRONMENT.equals(getCurrentEnvironment()) || null == ENV.get("CONSUL_URL") || null == ENV.get("SERVICE_NAME")) {
+        if(isDevEnvironment() || null == ENV.get("CONSUL_URL") || null == ENV.get("SERVICE_NAME")) {
             return "localhost";
         }
         if(HOST_IP_ADDRESS_CACHE.containsKey(getEnvHostname())) {
@@ -247,9 +245,6 @@ public class Properties {
     }
 
     private static boolean isDevEnvironment() {
-        if(DEV_ENVIRONMENT_INDICATOR.equals(ENVIRONMENT)) {
-            return true;
-        }
-        return false;
+        return DEV_ENVIRONMENT.equals(getCurrentEnvironment());
     }
 }
