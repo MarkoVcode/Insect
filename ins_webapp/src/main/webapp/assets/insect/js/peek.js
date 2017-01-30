@@ -84,7 +84,7 @@ $(document).ready(function(){
         var reqHoPart = "<span class=\"label label-primary\">Host</span>&nbsp;" + data.proxy.request.host;
         var reqPPart = "<span class=\"label label-primary\">Path</span>&nbsp;" + data.proxy.request.path;
         var reqPrPart = "<span class=\"label label-"+colorProto+"\">Protocol</span>&nbsp;" + data.proxy.request.protocol;
-        var reqBPart = "<span class=\"label label-purple\">Body</span>&nbsp;" + atob(data.proxy.request.body);
+        var reqBPart = "<span class=\"label label-purple\">Body</span><code class=\"language-json\">" + atob(data.proxy.request.body) + "</code>";
         var requestHeader = reqHPart +"<br>"+ reqMPart +"<br>"+ reqHoPart +"<br>"+ reqPPart +"<br>"+ reqPrPart +"<br>"+ reqBPart;
         var resHPart = "<span class=\"label label-default\">Header</span>&nbsp;" + atob(data.proxy.response.header);
         var color;
@@ -100,7 +100,7 @@ $(document).ready(function(){
         var resCPart = "<span class=\"label label-"+color+"\">Code</span>&nbsp;" + data.proxy.response.code;
         var resMPart = "<span class=\"label label-"+color+"\">Message</span>&nbsp;" + data.proxy.response.message;
 
-        var resBPart = "<span class=\"label label-purple\">Body</span>&nbsp;" + atob(data.proxy.response.body);
+        var resBPart = "<span class=\"label label-purple\">Body</span><code class=\"language-json\">" + atob(data.proxy.response.body) + "</code>";
         var responseHeader = resHPart +"<br>"+ resCPart +"<br>"+ resMPart +"<br>"+ resBPart;
         return "<table id=\""+tid+"\" class=\"table table-bordered table-striped table-info\"><tbody><tr><td></td><td></td><td><button type=\"button\" class=\"btn btn-xs btn-outline btn-danger remove-line\"><i class=\"fa fa-close\"></i></button></td></tr><tr><tr><td>Request:</td><td>"+requestHeader+"</td><td></td></tr><tr><td>Response:</td><td>"+responseHeader+"</td><td></td></tr></tbody></table>";
     }
