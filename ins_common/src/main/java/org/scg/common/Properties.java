@@ -66,8 +66,8 @@ public class Properties {
     private static String WEBSOCKETS_WEB_PROTO = "ws";
     private static String WEBSOCKETS_WEB_HOST = "192.168.56.95";
     private static final Integer WEBAPP_PUBLIC_PORT = 8088;
-    private static final String  WEBAPP_STATIC_DIR = "/ins_webapp/src/main/webapp";
-    private static final String  WEBAPP_TEMPLATES_DIR = "ins_webapp/src/main/resources/templates";
+    private static String WEBAPP_STATIC_DIR = "/ins_webapp/src/main/webapp";
+    private static String  WEBAPP_TEMPLATES_DIR = "ins_webapp/src/main/resources/templates";
     private static String PROXY_API_ENDPOINT = "http://192.168.56.95:8080/service/proxy/";
 
     //PRODUCTION SETTINGS
@@ -79,6 +79,8 @@ public class Properties {
             WEBSOCKETS_WEB_PROTO = "wss";
             WEBSOCKETS_WEB_HOST = "ws.insectin.space";
             WEBSOCKETS_WEB_PORT = 443;
+            WEBAPP_STATIC_DIR = "/webapp";
+            WEBAPP_TEMPLATES_DIR = "/resources/templates";
         }
     }
 
