@@ -48,7 +48,7 @@
                 {{#is_active}}
                     <button type="button" class="btn btn-lg btn-success" id="indicator-proxy">Proxy Active</button>
                 {{/is_active}}
-                <button type="button" class="btn btn-lg btn-info" id="session-timeout">23:59:59</button>
+                <button type="button" class="btn btn-lg btn-danger" id="session-timeout">00:00</button>
 {{/has_ownership}}
                 </li>
             </ul>
@@ -154,7 +154,7 @@
     <script>
     var configObj = {
         websocketsURL: '{{config_websockets_url}}',
-        sessionTimeout: '{{config_session_timeout}}',
+        sessionTimeout: {{config_session_timeout}},
         psid: '{{psid}}'
         };
     </script>

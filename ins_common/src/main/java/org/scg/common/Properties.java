@@ -55,7 +55,7 @@ public class Properties {
      */
     private static final Integer REDIS_PORT= 6379;
     private static String REDIS_HOST= "127.0.0.1";
-    private static Integer REDIS_DEFAULT_SESSION_EXPIRATION = 60*60*24; //24 hours from start
+    private static Integer REDIS_DEFAULT_SESSION_EXPIRATION = 60*60; //24 hours from start
     private static Integer WEBSOCKETS_WEB_PORT = 3333;
     private static final Integer WEBSOCKETS_INTERNAL_PORT = 8090;
     private static final String  WEBSOCKETS_ROOT = "";
@@ -73,7 +73,7 @@ public class Properties {
         if(!isDevEnvironment()) {
             REDIS_HOST= "redis";
             REDIS_DEFAULT_SESSION_EXPIRATION = 60*60; //1 hour from start
-            PROXY_API_ENDPOINT = "https://api.insectin.space/service/proxy/";
+            PROXY_API_ENDPOINT = "http://api.insectin.space/service/proxy/";
             WEBSOCKETS_WEB_PROTO = "ws";
             WEBSOCKETS_WEB_HOST = "ws.insectin.space";
             WEBSOCKETS_WEB_PORT = 443;

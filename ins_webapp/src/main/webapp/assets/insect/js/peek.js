@@ -1,25 +1,50 @@
 $(document).ready(function(){
 
-var fiveMinutes = 60 * 5,
-        display = $('#session-timeout');
-    startTimer(fiveMinutes, display);
+    var websocket;
+    setSessionTimer();
+    establishWSConnection();
 
-    var exampleSocket = new WebSocket(configObj.websocketsURL);
-    exampleSocket.onopen = function (event) {
-        var wsid = getCookie("JSESSIONID");
-        var object = {psId: configObj.psid, wsId: wsid};
-        exampleSocket.send(JSON.stringify(object));
-    };
-
-    exampleSocket.onmessage = function (event) {
-        var resp = JSON.parse(event.data);
-        if(resp.proxy) {
-            console.log("proxy message");
-            prependProxyResponse(resp);
+    function setSessionTimer() {
+        var currentTimestamp = (((new Date().getTime()) / 1000) | 0);
+        if(localStorage.getItem('created-'+configObj.psid) == null) {
+            localStorage.setItem('created-'+configObj.psid, currentTimestamp);
+        }
+        var storageTime = parseInt(localStorage.getItem('created-'+configObj.psid));
+        var configTime = configObj.sessionTimeout;
+        var timeout = storageTime + configTime - currentTimestamp;
+        if(timeout < 0) {
+            window.open("/peek","_self");
         } else {
-            if(resp.subscribed) {
-                updateWSIndicator(true);
+            var display = $('#session-timeout');
+            startTimer(timeout, display);
+        }
+    }
+
+    function establishWSConnection() {
+        websocket = new WebSocket(configObj.websocketsURL);
+
+        websocket.onopen = function (event) {
+            var wsid = getCookie("JSESSIONID");
+            var object = {psId: configObj.psid, wsId: wsid};
+            websocket.send(JSON.stringify(object));
+        };
+
+        websocket.onmessage = function (event) {
+            var resp = JSON.parse(event.data);
+            if(resp.proxy) {
+                console.log("proxy message");
+                prependProxyResponse(resp);
+            } else {
+                if(resp.subscribed) {
+                    updateWSIndicator(true);
+                }
             }
+        }
+
+        websocket.onclose = function (event) {
+            updateWSIndicator(false);
+            console.log("Reconnecting to WS");
+            establishWSConnection();
         }
     }
 
@@ -78,10 +103,6 @@ var fiveMinutes = 60 * 5,
         var resBPart = "<span class=\"label label-purple\">Body</span>&nbsp;" + atob(data.proxy.response.body);
         var responseHeader = resHPart +"<br>"+ resCPart +"<br>"+ resMPart +"<br>"+ resBPart;
         return "<table id=\""+tid+"\" class=\"table table-bordered table-striped table-info\"><tbody><tr><td></td><td></td><td><button type=\"button\" class=\"btn btn-xs btn-outline btn-danger remove-line\"><i class=\"fa fa-close\"></i></button></td></tr><tr><tr><td>Request:</td><td>"+requestHeader+"</td><td></td></tr><tr><td>Response:</td><td>"+responseHeader+"</td><td></td></tr></tbody></table>";
-    }
-
-    exampleSocket.onclose = function (event) {
-        updateWSIndicator(false);
     }
 
     function updateWSIndicator(state) {
@@ -178,6 +199,7 @@ var fiveMinutes = 60 * 5,
     }
 
     function startTimer(duration, display) {
+    var timerElement = $('#session-timeout');
     var start = Date.now(),
         diff,
         minutes,
@@ -195,6 +217,22 @@ var fiveMinutes = 60 * 5,
         seconds = seconds < 10 ? "0" + seconds : seconds;
 
         display.html(minutes + ":" + seconds);
+
+        if (minutes <= 0 && seconds <= 0) {
+            window.open("/peek","_self");
+        } else if (minutes < 5) {
+            timerElement.removeClass("btn-warning");
+            timerElement.removeClass("btn-success");
+            timerElement.addClass("btn-danger");
+        } else if (minutes < 10) {
+            timerElement.removeClass("btn-danger");
+            timerElement.removeClass("btn-success");
+            timerElement.addClass("btn-warning");
+        } else {
+            timerElement.removeClass("btn-danger");
+            timerElement.removeClass("btn-warning");
+            timerElement.addClass("btn-success");
+        }
 
         if (diff <= 0) {
             // add one second so that the count down starts at the full duration

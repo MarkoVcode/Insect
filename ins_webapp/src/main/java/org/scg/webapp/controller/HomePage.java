@@ -76,5 +76,12 @@ public class HomePage {
             rs.redirect("/peek/"+key);
             halt();
         });
+        before("/peek/", (rq, rs) -> {
+            DB db = DB.getInstance();
+            String key = db.createProxySession();
+            db.setSessionOwnership(rq.session().id(), key);
+            rs.redirect("/peek/"+key);
+            halt();
+        });
     }
 }
