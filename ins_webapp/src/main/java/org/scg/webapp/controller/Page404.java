@@ -46,7 +46,7 @@ public class Page404 {
 
     protected void setupRoutes() {
         get("*", (rq, rs) -> {
-            if(rq.pathInfo().matches("../../assets.*|/assets.*|/.well-known.*|favicon.ico")) {
+            if(rq.pathInfo().matches("../../assets.*|/assets.*|/robots.txt|/.well-known/pki-validation/gsdv.txt|favicon.ico")) {
                 return null;
             }
             rs.status(404);
