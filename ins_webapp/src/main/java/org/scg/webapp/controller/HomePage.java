@@ -23,6 +23,7 @@
  */
 package org.scg.webapp.controller;
 
+import org.scg.common.Properties;
 import org.scg.db.DB;
 import org.scg.webapp.dto.ajax.AjaxResponse;
 import org.scg.webapp.model.PeekModel;
@@ -39,13 +40,13 @@ import static spark.Spark.*;
  * RESPONSIBILITY Setting up the routes for the site
  */
 public class HomePage {
-
+    private static final Properties PROP = Properties.getInstance();
     public HomePage() {
         setupRoutes();
     }
 
     protected void setupRoutes() {
-        get("/", (rq, rs) -> new ModelAndView(null, "ins_webapp/src/main/resources/templates/home/home.mustache"), new MustacheTemplateEngine());
+        get("/", (rq, rs) -> new ModelAndView(null, PROP.getWebappTemplatesDir()+"home/home.mustache"), new MustacheTemplateEngine());
         before("/peek/:psid", (rq, rs) -> {
             DB db = DB.getInstance();
             if(!db.isValidProxySession(rq.params(":psid"))) {
@@ -58,7 +59,7 @@ public class HomePage {
             PeekModel pm = new PeekModel(rq);
             MustacheTemplateEngine m = new MustacheTemplateEngine();
             pm.generateModel();
-            ModelAndView mv = new ModelAndView(pm.getModel(), "ins_webapp/src/main/resources/templates/peek/peek.mustache");
+            ModelAndView mv = new ModelAndView(pm.getModel(), PROP.getWebappTemplatesDir()+"peek/peek.mustache");
             return m.render(mv);
         });
         post("/peek/:psid", (rq, rs) -> {

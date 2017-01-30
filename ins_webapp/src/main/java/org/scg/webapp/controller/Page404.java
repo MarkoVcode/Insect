@@ -23,6 +23,7 @@
  */
 package org.scg.webapp.controller;
 
+import org.scg.common.Properties;
 import spark.ModelAndView;
 import spark.template.mustache.MustacheTemplateEngine;
 
@@ -36,7 +37,7 @@ import static spark.Spark.get;
  * RESPONSIBILITY Setup route for 404 case
  */
 public class Page404 {
-
+    private static final Properties PROP = Properties.getInstance();
     private static final org.slf4j.Logger LOG = org.slf4j.LoggerFactory.getLogger(Page404.class);
 
     public Page404() {
@@ -51,7 +52,7 @@ public class Page404 {
             rs.status(404);
             LOG.error("Page not found: " + rq.pathInfo());
             MustacheTemplateEngine m = new MustacheTemplateEngine();
-            ModelAndView mv = new ModelAndView(null, "ins_webapp/src/main/resources/templates/errors/error404.mustache");
+            ModelAndView mv = new ModelAndView(null, PROP.getWebappTemplatesDir()+"errors/error404.mustache");
             return m.render(mv);
         });
     }
