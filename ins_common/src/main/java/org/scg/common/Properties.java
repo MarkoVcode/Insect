@@ -73,7 +73,7 @@ public class Properties {
         if(!isDevEnvironment()) {
             REDIS_HOST= "redis";
             REDIS_DEFAULT_SESSION_EXPIRATION = 60*60; //1 hour from start
-            PROXY_API_ENDPOINT = "http://api.insectin.space/service/proxy/";
+            PROXY_API_ENDPOINT = "https://api.insectin.space/service/proxy/";
             WEBSOCKETS_WEB_PROTO = "wss";
             WEBSOCKETS_WEB_HOST = "ws.insectin.space";
             WEBSOCKETS_WEB_PORT = 443;

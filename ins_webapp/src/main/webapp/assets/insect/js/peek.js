@@ -185,11 +185,13 @@ $(document).ready(function(){
     }
 
     function validateEndpoint(endpoint) {
-        // no qyery string
-        // no self domain
-        //
-        //
+        if(endpoint.indexOf("insectin.space") !== -1) {
+            return "Selfie not allowed!";
+        } else if (/[#~<>\?&]+$/.test(endpoint)) {
+            return "Sorry this endpoint doesn't seem to be valid!";
+        }
         return "OK";
+        //~<>&\$\?@ - doesnt work !!!
     }
 
     function updateActivePresentation() {
