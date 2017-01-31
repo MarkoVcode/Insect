@@ -2,7 +2,8 @@ var http = require('http');
 var redis = require('redis');
 var urlObj = require('url');
 var session = require('./lib/session.js');
-var config = require('./lib/config.js')
+var config = require('./lib/config.js');
+var zlib = require("zlib");
 var ws;
 
 const TOKEN_LENGTH=11;
@@ -100,8 +101,30 @@ const proxy = function(proxyOptions, body) {
 
 function handleProxyResponse(response, body){
     var returnObject = {'body': body.join(''), 'code': response.statusCode, 'message': response.statusMessage, 'headers': response.headers};
-    ws.pushWebSocketMessage(returnObject);
+    //here  check for header gzip if is
+    //unzip like in gz.js
+    const buffer = [];
+    var gunzip = zlib.createGunzip();
+    response.pipe(gunzip);
+    gunzip.on('data', function(data) {
+        // decompression chunk ready, add it to the buffer
+        buffer.push(data.toString())
+    }).on("end", function() {
+        // response and decompression complete, join the buffer and return
+       // callback(null, buffer.join(""));
+        pushDecrypted(buffer.join(""), returnObject);
+    }).on("error", function(e) {
+       // callback(e);
+        pushDecrypted("", returnObject);
+    });
     return returnObject;
+}
+
+function pushDecrypted(data, returnObject) {
+    if(data.length > 0) {
+        returnObject.body = data;
+    }
+    ws.pushWebSocketMessage(returnObject);
 }
 
 function extractSessionConfig(url) {
