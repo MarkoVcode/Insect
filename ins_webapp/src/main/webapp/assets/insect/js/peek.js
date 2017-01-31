@@ -187,13 +187,17 @@ $(document).ready(function(){
     }
 
     function validateEndpoint(endpoint) {
-        if(endpoint.indexOf("insectin.space") !== -1) {
+        if (endpoint.length === 0){
+            return "Provide upstream endpoint to start proxy!";
+        } else if(endpoint.indexOf("insectin.space") !== -1) {
             return "Selfie not allowed!";
+        } else if(endpoint.indexOf("http://") === -1 && endpoint.indexOf("https://") === -1 ) {
+            return "This must be a valid URL with protocol.";
         } else if (/[#~<>\?&]+$/.test(endpoint)) {
             return "Sorry this endpoint doesn't seem to be valid!";
         }
         return "OK";
-        //~<>&\$\?@ - doesnt work !!!
+        //~<>&\$\?@ - doesnt work properly !!!
     }
 
     function updateActivePresentation() {
