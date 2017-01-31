@@ -60,13 +60,15 @@ $(document).ready(function(){
     function contentProxyResponse(data) {
         var tid = Math.random().toString(36).substring(7);
         var color1;
-        if(data.proxy.request.method == 'GET') {
+        if(data.proxy.request.method === 'GET') {
             color1 = "success";
-        } else if (data.proxy.request.method == 'POST') {
+        } else if (data.proxy.request.method === 'POST') {
             color1 = "info";
-        } else if (data.proxy.request.method == 'PUT') {
+        } else if (data.proxy.request.method === 'PUT') {
             color1 = "warning";
-        } else if (data.proxy.request.method == 'DELETE') {
+        } else if (data.proxy.request.method === 'PATCH') {
+            color1 = "warning";
+        } else if (data.proxy.request.method === 'DELETE') {
             color1 = "danger";
         } else {
             color1 = "purple";
