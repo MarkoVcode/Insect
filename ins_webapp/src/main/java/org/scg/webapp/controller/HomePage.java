@@ -44,11 +44,11 @@ public class HomePage {
     public HomePage() {
         setupRoutes();
     }
+    private DB db = DB.getInstance();
 
     protected void setupRoutes() {
         get("/", (rq, rs) -> new ModelAndView(null, PROP.getWebappTemplatesDir()+"home/home.mustache"), new MustacheTemplateEngine());
         before("/peek/:psid", (rq, rs) -> {
-            DB db = DB.getInstance();
             if(!db.isValidProxySession(rq.params(":psid"))) {
                 rs.redirect("/peek");
                 halt();
@@ -70,14 +70,12 @@ public class HomePage {
             return response.getBody();
         });
         before("/peek", (rq, rs) -> {
-            DB db = DB.getInstance();
             String key = db.createProxySession();
             db.setSessionOwnership(rq.session().id(), key);
             rs.redirect("/peek/"+key);
             halt();
         });
         before("/peek/", (rq, rs) -> {
-            DB db = DB.getInstance();
             String key = db.createProxySession();
             db.setSessionOwnership(rq.session().id(), key);
             rs.redirect("/peek/"+key);

@@ -152,28 +152,44 @@ $(document).ready(function(){
 
     function changeProxyState(state) {
         var endpoint = $('#api-endpoint').val();
-        var postData = {
-                proxyurl: endpoint,
-                activity: state
-                };
-        $.ajax({
-            url: window.location.href,
-            method: 'POST',
-            dataType: 'json',
-            data: postData
-        }).done(function (data) {
-            if(data.active) {
-                updateActivePresentation();
-                localStorage.setItem('endpoint-'+configObj.psid, endpoint);
-                localStorage.setItem('endpoint-latest', endpoint);
-                updateProxyIndicator(true);
-            } else {
-                updateInactivePresentation();
-                updateProxyIndicator(false);
-            }
-        }).fail(function (xhr, ajaxOptions, thrownError) {
-            showRequestError();
-        });
+        var validation = validateEndpoint(endpoint);
+        if(validation === 'OK') {
+            var postData = {
+                    proxyurl: endpoint,
+                    activity: state
+                    };
+            $.ajax({
+                url: window.location.href,
+                method: 'POST',
+                dataType: 'json',
+                data: postData
+            }).done(function (data) {
+                if(data.active) {
+                    updateActivePresentation();
+                    localStorage.setItem('endpoint-'+configObj.psid, endpoint);
+                    localStorage.setItem('endpoint-latest', endpoint);
+                    updateProxyIndicator(true);
+                    $('#api-endpoint-error').html("");
+                } else {
+                    updateInactivePresentation();
+                    updateProxyIndicator(false);
+                    $('#api-endpoint-error').html("");
+                }
+            }).fail(function (xhr, ajaxOptions, thrownError) {
+                showRequestError();
+                $('#api-endpoint-error').html("");
+            });
+        } else {
+            $('#api-endpoint-error').html(validation);
+        }
+    }
+
+    function validateEndpoint(endpoint) {
+        // no qyery string
+        // no self domain
+        //
+        //
+        return "OK";
     }
 
     function updateActivePresentation() {
