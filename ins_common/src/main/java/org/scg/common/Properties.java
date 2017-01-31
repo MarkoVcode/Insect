@@ -53,6 +53,7 @@ public class Properties {
     /**
      * THESE PROPERTIES ARE GOING TO BE IN EXT FILE:
      */
+    private static final String VERSION = "0.0";
     private static final Integer REDIS_PORT= 6379;
     private static String REDIS_HOST= "127.0.0.1";
     private static Integer REDIS_DEFAULT_SESSION_EXPIRATION = 60*60; //24 hours from start
@@ -133,6 +134,10 @@ public class Properties {
         return getCurrentEnvironment() + " " + getEnvHostname() + " " + BUILDTAG + " " + BUILDDATE + " " + RELEASEVERSION;
     }
 
+    public String getWebSignature() {
+        return BUILDTAG + " " + BUILDDATE + " " + RELEASEVERSION;
+    }
+
     public String getEnvHostname() { return ENV.get("HOSTNAME");}
 
     public int getRedisPort()
@@ -203,6 +208,9 @@ public class Properties {
 
     public int getWebsocketInstanceInternalPort() { return WEBSOCKETS_INTERNAL_PORT; }
 
+    public String getVersionForWeb() {
+        return "v."+VERSION;
+    }
     /**
      * ENV FOR DOCKER:
      *     SERVICE_NAME=websockets_insect OR SERVICE_NAME=api_insect OR SERVICE_NAME=webapp_insect

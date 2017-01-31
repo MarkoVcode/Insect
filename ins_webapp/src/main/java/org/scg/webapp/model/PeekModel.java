@@ -66,6 +66,8 @@ public class PeekModel {
         model.put("config_websockets_url", PROP.getWebWebsocketsUrl());
         model.put("config_session_timeout", PROP.getRedisDefaultSessionExpiration());
         model.put("has_ownership", db.isSessionOwner(sessionId ,psid));
+        model.put("version", PROP.getVersionForWeb());
+        model.put("build_info", PROP.getWebSignature());
     }
 
     public AjaxResponse processAjaxRequest() {
