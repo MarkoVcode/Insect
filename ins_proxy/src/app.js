@@ -72,28 +72,15 @@ const proxy = function(proxyOptions, body) {
     ws.setRequestObject(proxyOptions, body);
     // return new pending promise
     return new Promise((resolve, reject) => {
-    const lib = proxyOptions.protocol.startsWith('https') ? require('https') : require('http');
-    const proxyReq = lib.request(proxyOptions, (response) => {
-    const body = [];
-    var output;
-//    if( response.headers['content-encoding'] == 'gzip' ) { 
-//        var gzip = zlib.createGunzip();
-//        response.pipe(gzip);
-//        output = gzip;
-//    } else if (response.headers['content-encoding'] == 'deflate') {
-//        var infl = zlib.createInflate();
-//        response.pipe(infl);
-//       output = infl;
-//    } else {
-        output = response;
-//    }
-    output.on('data', (chunk) => body.push(chunk));
-    output.on('end', () => resolve(handleProxyResponse(response, body)));
-    });
-    proxyReq.on('error', (err) => reject(err));
-
-    proxyReq.write(body);
-    proxyReq.end();
+        const lib = proxyOptions.protocol.startsWith('https') ? require('https') : require('http');
+        const proxyReq = lib.request(proxyOptions, (response) => {
+            const body = [];
+            response.on('data', (chunk) => body.push(chunk));
+            response.on('end', () => resolve(handleProxyResponse(response, body)));
+        });
+        proxyReq.on('error', (err) => reject(err));
+        proxyReq.write(body);
+        proxyReq.end();
     })
 };
 

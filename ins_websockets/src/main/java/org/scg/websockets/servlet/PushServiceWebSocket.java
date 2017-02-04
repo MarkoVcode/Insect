@@ -72,7 +72,7 @@ public class PushServiceWebSocket {
         DB_INSTANCE.registerWSSession(messageIn.getPsId(), messageIn.getWsId(), PROP.getWebsocketsInternalURL());
         SubOutboundMessage obm = new SubOutboundMessage();
         obm.setSubscribed(true);
-        obm.setSubmesage("OK");
+        obm.setSubmessage("OK");
         obm.setPsId(messageIn.getPsId());
         obm.setWsId(messageIn.getWsId());
         obm.setBuild(PROP.BUILDTAG);

@@ -46,12 +46,12 @@ public class SubOutboundMessage extends SubInboundMessage {
         this.subscribed = subscribed;
     }
 
-    public String getSubmesage() {
+    public String getSubmessage() {
         return submessage;
     }
 
-    public void setSubmesage(String submesage) {
-        this.submessage = submesage;
+    public void setSubmessage(String submessage) {
+        this.submessage = submessage;
     }
 
     public String getBuild() {
