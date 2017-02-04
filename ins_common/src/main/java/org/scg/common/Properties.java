@@ -53,7 +53,7 @@ public class Properties {
     /**
      * THESE PROPERTIES ARE GOING TO BE IN EXT FILE:
      */
-    private static final String VERSION = "0.0";
+    private static final String VERSION = "0.1";
     private static final Integer REDIS_PORT= 6379;
     private static String REDIS_HOST= "127.0.0.1";
     private static Integer REDIS_DEFAULT_SESSION_EXPIRATION = 60*60; //24 hours from start
