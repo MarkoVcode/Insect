@@ -1,6 +1,6 @@
 var http = require('http');
 var urlObj = require('url');
-
+var zlib = require("zlib");
 var requestOptions;
 var requestBody;
 var urls;
@@ -17,7 +17,24 @@ WS.prototype.setRequestObject = function (proxyOptions, body) {
 }
 
 WS.prototype.pushWebSocketMessage = function (responseObj) {
-    var payload = assemblyWSPayload(responseObj);
+    if( responseObj.response.headers['content-encoding'] == 'gzip' ) {
+        var buffer = Buffer.concat(responseObj.body);
+        zlib.gunzip(buffer,  function (_, result) { 
+            prepareToDispatch(responseObj, result);
+        });
+    } else if (responseObj.response.headers['content-encoding'] == 'deflate') {
+        var buffer = Buffer.concat(responseObj.body);
+        zlib.inflate(buffer,  function (_, result) { 
+            prepareToDispatch(responseObj, result);
+        });
+    } else {
+        var body = responseObj.body.join('')
+        prepareToDispatch(responseObj, body);
+    }
+};
+
+var prepareToDispatch = function(responseObj, decompressedBody) {
+    var payload = assemblyWSPayload(responseObj, decompressedBody);
     for (var property in urls) {
         if (urls.hasOwnProperty(property)) {
             var url = generateWSUrl(property, urls[property]);
@@ -27,8 +44,7 @@ WS.prototype.pushWebSocketMessage = function (responseObj) {
             .catch((err) => processError(err));
         }
     }
-
-};
+}
 
 var processResponse = function(response) {
 
@@ -76,11 +92,11 @@ var generateRequestOptions = function(url, payload) {
         };
 }
 
-var assemblyWSPayload = function(responseObj) {
-    var responseHeader = base64String(JSON.stringify(responseObj.headers));
-    var responseBody = base64String(responseObj.body);
-    var responseCode = responseObj.code;
-    var responseMessage = responseObj.message;
+var assemblyWSPayload = function(responseObj, body) {
+    var responseHeader = base64String(JSON.stringify(responseObj.response.headers));
+    var responseBody = base64String(body);
+    var responseCode = responseObj.response.statusCode;
+    var responseMessage = responseObj.response.statusMessage;
 
     var requestHeader = base64String(JSON.stringify(requestOptions.headers));
     var requestBody2 = base64String(requestBody);
@@ -92,6 +108,10 @@ var assemblyWSPayload = function(responseObj) {
 
     var wsObject = {
         proxy: {
+            general: {
+                clientIP: "0.0.0.0",
+                responseTime: responseObj.responseTime
+            },
             request: {
                 header: requestHeader,
                 body: requestBody2,
@@ -105,6 +125,7 @@ var assemblyWSPayload = function(responseObj) {
                 header: responseHeader,
                 body: responseBody,
                 code: responseCode,
+                responseTime: responseObj.responseTime,
                 message: responseMessage
             }
         }

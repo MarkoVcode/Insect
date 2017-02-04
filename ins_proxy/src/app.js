@@ -3,8 +3,9 @@ var redis = require('redis');
 var urlObj = require('url');
 var session = require('./lib/session.js');
 var config = require('./lib/config.js');
-var zlib = require("zlib");
+
 var ws;
+var timer;
 
 const TOKEN_LENGTH=11;
 const SERVICE_PATH='/service/proxy/';
@@ -19,14 +20,6 @@ client.on('connect', function() {
 client.on('error', function() {
     console.log('redis NOT UP!');
 });
-
-// Request:
-//  http://localhost:8080/service/proxy/5aNA6ms7zNJ/system/environment
-//  http://192.168.56.95:8080/service/proxy/5aNA6ms7zNJ/system/environment
-// Proxy Config Endpoint:
-//  http://testprvapi.thingoncloud.com/v1
-// Proxy Translated:
-//  http://testprvapi.thingoncloud.com/v1/system/environment
 
 function handleRequest(request, response){
     ws = require('./lib/websockets.js');
@@ -44,8 +37,8 @@ function handleRequest(request, response){
 }
 
 function handleResponse(response, proxyResponse){
-    response.writeHead(proxyResponse.code, proxyResponse.message, proxyResponse.headers);
-    response.end(proxyResponse.body);
+    response.writeHead(proxyResponse.response.statusCode, proxyResponse.response.statusMessage, proxyResponse.response.headers);
+    response.end(proxyResponse.body.join(''));
 }
 
 var server = http.createServer(handleRequest);
@@ -58,10 +51,11 @@ function doProxyRequest(reply, wsUrls, sessionConfig, request, response) {
     console.log("Proxy to: " + reply);
     var proxyURLConfig = fetchProxyConfig(sessionConfig, reply); // this is going to be fetch from db on request based on sessionId
     if(proxyURLConfig == null || wsUrls == null) {
-        console.log("404 due to missing configuration (no WS or proxy config)");
+        console.log("404 due to missing configuration (no WS session open or proxy config)");
         response.writeHead(404);
         response.end("");
     } else {
+        timer = require('./lib/timecounter.js');
         ws.setUrls(wsUrls);
         var requestBody = [];
         request.on('data', function(chunk) {
@@ -78,20 +72,24 @@ const proxy = function(proxyOptions, body) {
     ws.setRequestObject(proxyOptions, body);
     // return new pending promise
     return new Promise((resolve, reject) => {
-        // select http or https module, depending on reqested url
-        const lib = proxyOptions.protocol.startsWith('https') ? require('https') : require('http');
-
-  //  lib.headers = headers;
-   // lib.body = body;
+    const lib = proxyOptions.protocol.startsWith('https') ? require('https') : require('http');
     const proxyReq = lib.request(proxyOptions, (response) => {
-      // temporary data holder
-      const body = [];
-      // on every content chunk, push it to the data array
-      response.on('data', (chunk) => body.push(chunk));
-      // we are done, resolve promise with those joined chunks
-      response.on('end', () => resolve(handleProxyResponse(response, body)));
+    const body = [];
+    var output;
+//    if( response.headers['content-encoding'] == 'gzip' ) { 
+//        var gzip = zlib.createGunzip();
+//        response.pipe(gzip);
+//        output = gzip;
+//    } else if (response.headers['content-encoding'] == 'deflate') {
+//        var infl = zlib.createInflate();
+//        response.pipe(infl);
+//       output = infl;
+//    } else {
+        output = response;
+//    }
+    output.on('data', (chunk) => body.push(chunk));
+    output.on('end', () => resolve(handleProxyResponse(response, body)));
     });
-    // handle connection errors of the request
     proxyReq.on('error', (err) => reject(err));
 
     proxyReq.write(body);
@@ -99,37 +97,13 @@ const proxy = function(proxyOptions, body) {
     })
 };
 
-function handleProxyResponse(response, body){
-    var returnObject = {'body': body.join(''), 'code': response.statusCode, 'message': response.statusMessage, 'headers': response.headers};
-    //here  check for header gzip if is
-    //unzip like in gz.js
-    const buffer = [];
-    var gunzip = zlib.createGunzip();
-    response.pipe(gunzip);
-    gunzip.on('data', function(data) {
-        // decompression chunk ready, add it to the buffer
-        buffer.push(data.toString())
-    }).on("end", function() {
-        // response and decompression complete, join the buffer and return
-       // callback(null, buffer.join(""));
-        pushDecrypted(buffer.join(""), returnObject);
-    }).on("error", function(e) {
-       // callback(e);
-        pushDecrypted("", returnObject);
-    });
+function handleProxyResponse(response, body) {
+    var returnObject = {'responseTime': timer.getElapsedTime(), 'body': body, 'response': response};
+    ws.pushWebSocketMessage(returnObject);
     return returnObject;
 }
 
-function pushDecrypted(data, returnObject) {
-    if(data.length > 0) {
-        returnObject.body = data;
-    }
-    ws.pushWebSocketMessage(returnObject);
-}
-
 function extractSessionConfig(url) {
-// Request:
-// /service/proxy/NA6ms7zNJ/system/environment
     var index = url.indexOf(SERVICE_PATH);
     var token = url.substring(index+SERVICE_PATH.length, index+SERVICE_PATH.length+TOKEN_LENGTH);
     var uri = url.substring(index+SERVICE_PATH.length+TOKEN_LENGTH, url.length);
@@ -142,8 +116,6 @@ function isSessionIDValid(sessionConfig) {
 }
 
 function fetchProxyConfig(sessionConfig, proxyTo) {
-    // /system/environment   port:80,
-    // var url = "http://testprvapi.thingoncloud.com/v1";
     if(proxyTo != null && proxyTo.length > 0) {
         var parsedUrl = urlObj.parse(proxyTo);
         var host = parsedUrl.host;
