@@ -13,3 +13,4 @@ ins_*/.settings
 project/deploy/docker/jetty-web/artifacts
 project/deploy/docker/jetty-ws/artifacts
 project/deploy/docker/nodejs/artifacts
+ins_proxy/src/node_modules
