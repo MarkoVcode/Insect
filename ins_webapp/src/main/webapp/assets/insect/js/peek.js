@@ -81,10 +81,9 @@ $(document).ready(function(){
         } else {
             colorProto = "danger";
         }
-        var frameInfoIP = "&nbsp;<span class=\"label label-primary\">IP</span>&nbsp;" + data.proxy.general.clientIP;
-        var frameInfoDate = "&nbsp;<span class=\"label label-primary\">Dispatch Date</span>&nbsp;" + data.proxy.general.dateDispatch;
+        var frameInfoDate = "&nbsp;<span class=\"label label-primary\">Dispatch Timestamp</span>&nbsp;" + data.proxy.general.dateDispatch;
         var frameInfoResponseTime = "&nbsp;<span class=\"label label-primary\">Response Time [us]</span>&nbsp;" + data.proxy.general.responseTime;
-        var frameInfo = frameInfoDate + frameInfoIP + frameInfoResponseTime;
+        var frameInfo = frameInfoDate + frameInfoResponseTime;
         var reqHPart = "<span class=\"label label-default\">Header</span>&nbsp;" + atob(data.proxy.request.header);
         var reqMPart = "<span class=\"label label-"+color1+"\">Method</span>&nbsp;" + data.proxy.request.method;
         var reqHoPart = "<span class=\"label label-primary\">Host</span>&nbsp;" + data.proxy.request.host;
