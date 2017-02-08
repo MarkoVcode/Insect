@@ -83,7 +83,7 @@ $(document).ready(function(){
         }
         var frameInfoIP = "&nbsp;<span class=\"label label-primary\">IP</span>&nbsp;" + data.proxy.general.clientIP;
         var frameInfoDate = "&nbsp;<span class=\"label label-primary\">Dispatch Date</span>&nbsp;" + data.proxy.general.dateDispatch;
-        var frameInfoResponseTime = "&nbsp;<span class=\"label label-primary\">Response Time</span>&nbsp;" + data.proxy.general.responseTime;
+        var frameInfoResponseTime = "&nbsp;<span class=\"label label-primary\">Response Time [us]</span>&nbsp;" + data.proxy.general.responseTime;
         var frameInfo = frameInfoDate + frameInfoIP + frameInfoResponseTime;
         var reqHPart = "<span class=\"label label-default\">Header</span>&nbsp;" + atob(data.proxy.request.header);
         var reqMPart = "<span class=\"label label-"+color1+"\">Method</span>&nbsp;" + data.proxy.request.method;
