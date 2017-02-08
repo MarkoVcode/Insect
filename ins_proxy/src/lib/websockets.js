@@ -109,7 +109,8 @@ var assemblyWSPayload = function(responseObj, body) {
     var wsObject = {
         proxy: {
             general: {
-                clientIP: "0.0.0.0",
+                clientIP: responseObj.request.connection.remoteAddress,
+                dateDispatch: new Date().getTime(),
                 responseTime: responseObj.responseTime
             },
             request: {

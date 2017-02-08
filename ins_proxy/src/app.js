@@ -63,13 +63,13 @@ function doProxyRequest(reply, wsUrls, sessionConfig, request, response) {
             requestBody.push(chunk);
         }).on('end', function() {
             var proxyOptions = prepareProxyOptions(request.method, proxyURLConfig, request.headers);
-            proxy(proxyOptions, requestBody.join(''))
+            proxy(request, proxyOptions, requestBody.join(''))
             .then((proxyResponse) => handleResponse(response, proxyResponse))
             .catch((err) => console.error(err));
         });
     }
 }
-const proxy = function(proxyOptions, body) {
+const proxy = function(request, proxyOptions, body) {
     ws.setRequestObject(proxyOptions, body);
     // return new pending promise
     return new Promise((resolve, reject) => {
@@ -77,7 +77,7 @@ const proxy = function(proxyOptions, body) {
         const proxyReq = lib.request(proxyOptions, (response) => {
             const body = [];
             response.on('data', (chunk) => body.push(chunk));
-            response.on('end', () => resolve(handleProxyResponse(response, body)));
+            response.on('end', () => resolve(handleProxyResponse(request, response, body)));
         });
         proxyReq.on('error', (err) => reject(err));
         proxyReq.write(body);
@@ -85,8 +85,8 @@ const proxy = function(proxyOptions, body) {
     })
 };
 
-function handleProxyResponse(response, body) {
-    var returnObject = {'responseTime': timer.getElapsedTime(), 'body': body, 'response': response};
+function handleProxyResponse(request, response, body) {
+    var returnObject = {'responseTime': timer.getElapsedTime(), 'body': body, 'response': response, 'request': request};
     ws.pushWebSocketMessage(returnObject);
     return returnObject;
 }
