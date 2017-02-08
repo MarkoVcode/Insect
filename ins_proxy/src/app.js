@@ -38,7 +38,8 @@ function handleRequest(request, response){
 
 function handleResponse(response, proxyResponse){
     response.writeHead(proxyResponse.response.statusCode, proxyResponse.response.statusMessage, proxyResponse.response.headers);
-    response.end(proxyResponse.body.join(''));
+    var buffer = Buffer.concat(proxyResponse.body);
+    response.end(buffer);
 }
 
 var server = http.createServer(handleRequest);
