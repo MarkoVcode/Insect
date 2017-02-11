@@ -73,7 +73,8 @@ Vagrant.configure(2) do |config|
 	sudo -u developer -H sh -c "mkdir -p /home/developer/IdeaProjects;"
 	sudo -u developer -H sh -c "git clone https://github.com/MarkoVcode/Insect.git /home/developer/IdeaProjects/Insect;"
 	cp /home/developer/IdeaProjects/Insect/project/script/home/* /home/developer
-	
+	sudo -u developer -H sh -c "cd /home/developer/IdeaProjects/Insect/ins_proxy/src; npm install;"
+
  	# ---------------------------------------
 	#          IntelliJ Setup
 	# ---------------------------------------
