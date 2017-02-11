@@ -26,7 +26,7 @@ Vagrant.configure(2) do |config|
 	apt-get -y install git tree zip unzip screen firefox csh dos2unix nodejs npm docker.io
 	apt-get -y install linux-headers-$(uname -r)
 	apt-get -y install libxtst6 libglu1-mesa
-	apt-get -y install ruby ruby-dev make build-essential libicu-dev libz-dev
+	apt-get -y install ruby ruby-dev make build-essential libicu-dev libz-dev libnotify4
 	#Disable auto updates
 	sed -i 's/"\${distro_id}\:\${distro_codename}-security"\;/\/\/       "\${distro_id}\:\${distro_codename}-security"\;/g' /etc/apt/apt.conf.d/50unattended-upgrades
 
@@ -57,31 +57,34 @@ Vagrant.configure(2) do |config|
 	#            Start Redis
 	# ---------------------------------------
     usermod -aG docker developer
-    docker run --name myredis -d redis:alpine
+    sudo -u developer -H sh -c "docker run --name insectredis -p 6379:6379 -d redis:alpine;"
 
 	# ---------------------------------------
 	#            Install Code
 	# ---------------------------------------
-	wget http://code.softcognito.org/code_1.9.0-1486023356_amd64.deb
-    dpkg -i code_1.9.0-1486023356_amd64.deb
-
+	ln -s /usr/bin/nodejs /usr/bin/node
+	wget http://code.softcognito.org/code_1.9.1-1486597190_amd64.deb
+    dpkg -i code_1.9.1-1486597190_amd64.deb
+	rm -f code_1.9.1-1486597190_amd64.deb
+	
 	# ---------------------------------------
 	#            Load Sources
 	# ---------------------------------------
-    #clone from git here
-
+	sudo -u developer -H sh -c "mkdir -p /home/developer/IdeaProjects;"
+	sudo -u developer -H sh -c "git clone https://github.com/MarkoVcode/Insect.git /home/developer/IdeaProjects/Insect;"
+	cp /home/developer/IdeaProjects/Insect/project/script/home/* /home/developer
+	
  	# ---------------------------------------
 	#          IntelliJ Setup
 	# ---------------------------------------
 	mkdir -p /opt/intellij
-	wget http://code.softcognito.org/ideaIC-2016.2.4.tar.gz
-	wget http://code.softcognito.org/IdeaIC2016.2.tar.gz
-	tar -zxvf ideaIC-2016.2.4.tar.gz -C /opt/intellij
-	tar -zxvf IdeaIC2016.2.tar.gz -C /home/developer
-	mv -f /opt/intellij/idea-IC-162.2032.8/* /opt/intellij
-	chown -R developer:developer /home/developer/.IdeaIC2016.2
-	rm -f ideaIC-2016.2.4.tar.gz
-	rm -f IdeaIC2016.2.tar.gz
+	wget http://code.softcognito.org/ideaIC-2016.3.4-no-jdk.tar.gz
+	wget http://code.softcognito.org/insect/IdeaIC2016.3.tgz
+	tar zxvf ideaIC-2016.3.4-no-jdk.tar.gz -C /opt/intellij
+	tar zxvf IdeaIC2016.3.tgz -C /home/developer
+	mv -f /opt/intellij/idea-IC-163.12024.16/* /opt/intellij
+	rm -f ideaIC-2016.3.4-no-jdk.tar.gz
+	rm -f IdeaIC2016.3.tgz
 
 	# ---------------------------------------
 	#          Final message
