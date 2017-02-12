@@ -53,6 +53,10 @@ public class Properties {
     /**
      * THESE PROPERTIES ARE GOING TO BE IN EXT FILE:
      */
+    // Use this when using VBOX
+    private static String HOST_IP = "192.168.56.100";
+    // Use this when working on localhost
+    //private static String HOST_IP = "localhost";
     private static final String VERSION = "0.1";
     private static final Integer REDIS_PORT= 6379;
     private static String REDIS_HOST= "127.0.0.1";
@@ -63,11 +67,11 @@ public class Properties {
     private static final String  WEBSOCKETS_SERVLET_PATH = "/inspush";
     private static final String  WEBSOCKETS_HOST = "127.0.0.1";
     private static String WEBSOCKETS_WEB_PROTO = "ws";
-    private static String WEBSOCKETS_WEB_HOST = "192.168.56.100";
+    private static String WEBSOCKETS_WEB_HOST = HOST_IP;
     private static final Integer WEBAPP_PUBLIC_PORT = 8088;
     private static String WEBAPP_STATIC_DIR = "/ins_webapp/src/main/webapp";
     private static String  WEBAPP_TEMPLATES_DIR = "ins_webapp/src/main/resources/templates/";
-    private static String PROXY_API_ENDPOINT = "http://192.168.56.100:8080/service/proxy/";
+    private static String PROXY_API_ENDPOINT = "http://"+HOST_IP+":8080/service/proxy/";
 
     //PRODUCTION SETTINGS
     static {
