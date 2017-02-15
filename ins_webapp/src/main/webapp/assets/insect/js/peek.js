@@ -155,6 +155,19 @@ $(document).ready(function(){
         changeProxyState("deactivate");
     });
 
+    $('#proxy-print-result').click(function(){
+        html2canvas($('#proxy-updates'),
+        {
+            onrendered: function (canvas) {
+                var a = document.createElement('a');
+                a.href = canvas.toDataURL("image/png");
+                a.download = 'screen-insectin-space-peek-'+Date.now()+'.png';
+                a.click();
+            }
+        });
+    });
+
+
     function changeProxyState(state) {
         var endpoint = $('#api-endpoint').val();
         var validation = validateEndpoint(endpoint);

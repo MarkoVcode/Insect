@@ -72,7 +72,9 @@
                     <td>Endpoint:</td>
                     <td><strong>{{new_api_endpoint}}</strong></td>
                     <td><button type="button" id="proxy-reset" class="btn btn-xs btn-primary">{{^has_ownership}}Get yourself own session!{{/has_ownership}}
-{{#has_ownership}}Get yourself a new session!{{/has_ownership}}</button></td>
+{{#has_ownership}}Get yourself a new session!{{/has_ownership}}</button>&nbsp;
+<button type="button" id="proxy-print-result" class="btn btn-xs btn-primary">Capture output!</button>
+</td>
                 </tr>
                 <tr>
                     <td>Upstream:</td>
@@ -112,22 +114,7 @@
             </table>
         </article>
 
-          <article id="proxy-updates" class="col-md-12 main-content">
-<!--              <table class="table table-bordered table-striped table-info">
-                  <tbody>
-                  <tr>
-                      <td>Request:</td>
-                      <td>jjjj</td>
-                      <td></td>
-                  </tr>
-                  <tr>
-                      <td>Response:</td>
-                      <td>kkkkk</td>
-                      <td></td>
-                  </tr>
-                  </tbody>
-              </table>-->
-          </article>
+          <article id="proxy-updates" class="col-md-12 main-content"></article>
         <!-- END Main content -->
       </div>
     </main>
@@ -161,6 +148,7 @@
     </script>
     <script src="/assets/js/theDocs.all.min.js"></script>
     <script src="/assets/js/custom.js"></script>
+    <script src="/assets/insect/js/html2canvas.js"></script>
     <script src="/assets/insect/js/peek.js"></script>
   </body>
 </html>

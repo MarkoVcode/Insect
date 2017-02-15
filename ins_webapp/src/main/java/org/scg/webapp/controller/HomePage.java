@@ -28,15 +28,13 @@ import org.scg.db.DB;
 import org.scg.webapp.dto.ajax.AjaxResponse;
 import org.scg.webapp.model.PeekModel;
 import spark.ModelAndView;
+import spark.Request;
 import spark.template.mustache.MustacheTemplateEngine;
 
 import static spark.Spark.*;
 
 /**
  * Created by developer on 1/22/17.
- */
-
-/**
  * RESPONSIBILITY Setting up the routes for the site
  */
 public class HomePage {
@@ -46,15 +44,16 @@ public class HomePage {
     }
     private DB db = DB.getInstance();
 
-    protected void setupRoutes() {
+    private void setupRoutes() {
         get("/", (rq, rs) -> new ModelAndView(null, PROP.getWebappTemplatesDir()+"home/home.mustache"), new MustacheTemplateEngine());
+
         before("/peek/:psid", (rq, rs) -> {
             if(!db.isValidProxySession(rq.params(":psid"))) {
                 rs.redirect("/peek");
                 halt();
             }
         });
-//        get("/peek/:psid", (rq, rs) -> new ModelAndView(null, "ins_webapp/src/main/resources/templates/peek/peek.mustache"), new MustacheTemplateEngine());
+
         get("/peek/:psid", (rq, rs) -> {
             PeekModel pm = new PeekModel(rq);
             MustacheTemplateEngine m = new MustacheTemplateEngine();
@@ -62,6 +61,7 @@ public class HomePage {
             ModelAndView mv = new ModelAndView(pm.getModel(), PROP.getWebappTemplatesDir()+"peek/peek.mustache");
             return m.render(mv);
         });
+
         post("/peek/:psid", (rq, rs) -> {
             rs.type("application/json");
             PeekModel pm = new PeekModel(rq);
@@ -69,17 +69,23 @@ public class HomePage {
             rs.status(response.getCode());
             return response.getBody();
         });
+
         before("/peek", (rq, rs) -> {
-            String key = db.createProxySession();
-            db.setSessionOwnership(rq.session().id(), key);
+            String key = generateActiveKey(rq);
             rs.redirect("/peek/"+key);
             halt();
         });
+
         before("/peek/", (rq, rs) -> {
-            String key = db.createProxySession();
-            db.setSessionOwnership(rq.session().id(), key);
+            String key = generateActiveKey(rq);
             rs.redirect("/peek/"+key);
             halt();
         });
+    }
+
+    private String generateActiveKey(Request rq) {
+        String key = db.createProxySession();
+        db.setSessionOwnership(rq.session().id(), key);
+        return key;
     }
 }
