@@ -74,7 +74,14 @@
                 <tr>
                     <td>Endpoint:</td>
                     <td><strong id="endpoint-url">{{new_api_endpoint}}</strong>&nbsp;&nbsp;<button type="button" id="proxy-endpoint-clipboard" class="btn btn-xs btn-purple" data-clipboard-action="copy" data-clipboard-target="#endpoint-url">Copy to clipboard</button></td>
-                    <td>{{#has_ownership}}<button type="button" id="proxy-endpoint-testget" class="btn btn-xs btn-purple" disabled>Make test GET request</button>{{/has_ownership}}</td>
+                    <td>{{#has_ownership}}
+                        {{^is_active}}
+                            <button type="button" id="proxy-endpoint-testget" class="btn btn-xs btn-purple" disabled>Make test GET request</button>
+                        {{/is_active}}
+                        {{#is_active}}
+                            <button type="button" id="proxy-endpoint-testget" class="btn btn-xs btn-purple">Make test GET request</button>
+                        {{/is_active}}
+                    {{/has_ownership}}</td>
                 </tr>
                 <tr>
                     <td>Upstream:</td>
@@ -92,7 +99,14 @@
                         {{/has_ownership}}
                         <div id="api-endpoint-error"></div>
                     </td>
-                    <td>{{#has_ownership}}<button type="button" id="proxy-upstream-selftest" class="btn btn-xs btn-purple">Use demo upstream</button>{{/has_ownership}}</td>
+                    <td>{{#has_ownership}}
+    {{^is_active}}
+        <button type="button" id="proxy-upstream-selftest" class="btn btn-xs btn-purple">Use demo upstream</button>
+    {{/is_active}}
+    {{#is_active}}
+        <button type="button" id="proxy-upstream-selftest" class="btn btn-xs btn-purple" disabled>Use demo upstream</button>
+    {{/is_active}}
+    {{/has_ownership}}</td>
                 </tr>
                 {{#has_ownership}}
                     <tr>
