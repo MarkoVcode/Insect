@@ -26,6 +26,7 @@ package org.scg.webapp.controller;
 import org.scg.common.Properties;
 import org.scg.db.DB;
 import org.scg.webapp.dto.ajax.AjaxResponse;
+import org.scg.webapp.model.ChangelogModel;
 import org.scg.webapp.model.PeekModel;
 import spark.ModelAndView;
 import spark.Request;
@@ -46,6 +47,7 @@ public class HomePage {
 
     private void setupRoutes() {
         get("/", (rq, rs) -> new ModelAndView(null, PROP.getWebappTemplatesDir()+"home/home.mustache"), new MustacheTemplateEngine());
+        get("/changelog", (rq, rs) -> new ModelAndView((new ChangelogModel()).getModel(), PROP.getWebappTemplatesDir()+"changelog/changelog.mustache"), new MustacheTemplateEngine());
 
         before("/peek/:psid", (rq, rs) -> {
             if(!db.isValidProxySession(rq.params(":psid"))) {

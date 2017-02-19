@@ -57,7 +57,7 @@ public class Properties {
     private static String HOST_IP = "192.168.56.100";
     // Use this when working on localhost
     //private static String HOST_IP = "localhost";
-    private static final String VERSION = "0.1";
+    private static final String VERSION = "0.1.1";
     private static final Integer REDIS_PORT= 6379;
     private static String REDIS_HOST= "127.0.0.1";
     private static Integer REDIS_DEFAULT_SESSION_EXPIRATION = 60*60; //24 hours from start
@@ -72,6 +72,7 @@ public class Properties {
     private static String WEBAPP_STATIC_DIR = "/ins_webapp/src/main/webapp";
     private static String  WEBAPP_TEMPLATES_DIR = "ins_webapp/src/main/resources/templates/";
     private static String PROXY_API_ENDPOINT = "http://"+HOST_IP+":8080/service/proxy/";
+    private static String SELFTEST_API = "http://"+HOST_IP+":8080/service/selftest";
 
     //PRODUCTION SETTINGS
     static {
@@ -79,6 +80,7 @@ public class Properties {
             REDIS_HOST= "redis";
             REDIS_DEFAULT_SESSION_EXPIRATION = 60*60; //1 hour from start
             PROXY_API_ENDPOINT = "https://api.insectin.space/service/proxy/";
+            SELFTEST_API = "https://api.insectin.space/service/selftest";
             WEBSOCKETS_WEB_PROTO = "wss";
             WEBSOCKETS_WEB_HOST = "ws.insectin.space";
             WEBSOCKETS_WEB_PORT = 443;
@@ -258,5 +260,9 @@ public class Properties {
 
     private static boolean isDevEnvironment() {
         return DEV_ENVIRONMENT.equals(getCurrentEnvironment());
+    }
+
+    public String getSelfTestUrl() {
+        return SELFTEST_API;
     }
 }

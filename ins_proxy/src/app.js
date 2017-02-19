@@ -3,12 +3,14 @@ var redis = require('redis');
 var urlObj = require('url');
 var session = require('./lib/session.js');
 var config = require('./lib/config.js');
+var representation = require('./lib/representation.js');
 
 var ws;
 var timer;
 
 const TOKEN_LENGTH=11;
 const SERVICE_PATH='/service/proxy/';
+const SERVICE_TEST_PATH='/service/selftest';
 const PORT=8080;
 
 var client = redis.createClient(config.getRedisPort(), config.getRedisHost());
@@ -22,17 +24,26 @@ client.on('error', function() {
 });
 
 function handleRequest(request, response){
-    ws = require('./lib/websockets.js');
-    var sessionConfig = extractSessionConfig(request.url);
-    if(isSessionIDValid(sessionConfig)) {
-        client.get(sessionConfig.sessionId, function(err1, pUrl) {
-            client.hgetall(sessionConfig.sessionId+'_WS', function(err2, wsUrls) {
-                doProxyRequest(pUrl, wsUrls, sessionConfig, request, response)
-            })
-        });
+    var url = request.url;
+    if(url.indexOf(SERVICE_TEST_PATH) != -1) {
+        var sendContent = JSON.stringify(representation.generate(request));
+        response.setHeader("Content-Type","application/json");
+        response.setHeader("Content-Length", Buffer.byteLength(sendContent));
+        response.writeHead(200);
+        response.end(sendContent);
     } else {
-        response.writeHead(404);
-        response.end("");
+        ws = require('./lib/websockets.js');
+        var sessionConfig = extractSessionConfig(url);
+        if(isSessionIDValid(sessionConfig)) {
+            client.get(sessionConfig.sessionId, function(err1, pUrl) {
+                client.hgetall(sessionConfig.sessionId+'_WS', function(err2, wsUrls) {
+                    doProxyRequest(pUrl, wsUrls, sessionConfig, request, response)
+                })
+            });
+        } else {
+            response.writeHead(404);
+            response.end("");
+        }
     }
 }
 

@@ -17,7 +17,7 @@
 
   </head>
 
-  <body>
+  <body id="screengrab-main-content">
 
     <header class="site-header">
 
@@ -63,18 +63,18 @@
 
 
     <main class="container-fluid">
+
       <div class="row">
 
         <article class="col-md-12 main-content" role="main">
+            <button type="button" id="proxy-reset" class="btn btn-xs btn-primary">{{^has_ownership}}Get yourself own session!{{/has_ownership}}
+                {{#has_ownership}}Get yourself a new session!{{/has_ownership}}</button>
             <table class="table table-bordered table-striped table-info">
                 <tbody>
                 <tr>
                     <td>Endpoint:</td>
-                    <td><strong>{{new_api_endpoint}}</strong></td>
-                    <td><button type="button" id="proxy-reset" class="btn btn-xs btn-primary">{{^has_ownership}}Get yourself own session!{{/has_ownership}}
-{{#has_ownership}}Get yourself a new session!{{/has_ownership}}</button>&nbsp;
-<button type="button" id="proxy-print-result" class="btn btn-xs btn-primary">Capture output!</button>
-</td>
+                    <td><strong id="endpoint-url">{{new_api_endpoint}}</strong>&nbsp;&nbsp;<button type="button" id="proxy-endpoint-clipboard" class="btn btn-xs btn-purple" data-clipboard-action="copy" data-clipboard-target="#endpoint-url">Copy to clipboard</button></td>
+                    <td>{{#has_ownership}}<button type="button" id="proxy-endpoint-testget" class="btn btn-xs btn-purple" disabled>Make test GET request</button>{{/has_ownership}}</td>
                 </tr>
                 <tr>
                     <td>Upstream:</td>
@@ -92,7 +92,7 @@
                         {{/has_ownership}}
                         <div id="api-endpoint-error"></div>
                     </td>
-                    <td></td>
+                    <td>{{#has_ownership}}<button type="button" id="proxy-upstream-selftest" class="btn btn-xs btn-purple">Use demo upstream</button>{{/has_ownership}}</td>
                 </tr>
                 {{#has_ownership}}
                     <tr>
@@ -114,8 +114,13 @@
             </table>
         </article>
 
-          <article id="proxy-updates" class="col-md-12 main-content"></article>
-        <!-- END Main content -->
+          <article class="col-md-12 main-content">
+              <div id="result-buttons" style="display: none;">
+                  <button type="button" id="proxy-print-result" class="btn btn-xs btn-purple">Capture output!</button>&nbsp;<button type="button" id="proxy-result-clearall" class="btn btn-xs btn-purple">Clear all</button>
+              </div>
+              <div id="proxy-updates"></div>
+          </article>
+        <!-- END Main content  -->
       </div>
     </main>
 
@@ -127,10 +132,11 @@
 
         <div class="row">
           <div class="col-md-6 col-sm-6">
-              <p><img src="/assets/insect/softcognito_f03.png" height="24" width="117">&nbsp;&nbsp;Copyright &copy; 2016. All right reserved&nbsp;&nbsp;{{version}}</p><p>{{build_info}}</p>
+              <p><img src="/assets/insect/softcognito_f03.png" height="24" width="117">&nbsp;&nbsp;Copyright &copy; 2016. All right reserved</p>
           </div>
           <div class="col-md-6 col-sm-6">
             <ul class="footer-menu">
+                <li><a class="active" href="/changelog">Changelog</a></li>
             </ul>
           </div>
         </div>
@@ -142,6 +148,7 @@
     <script>
     var configObj = {
         websocketsURL: '{{config_websockets_url}}',
+        selftestURL: '{{selftest_url}}',
         sessionTimeout: {{config_session_timeout}},
         psid: '{{psid}}'
         };
@@ -149,6 +156,7 @@
     <script src="/assets/js/theDocs.all.min.js"></script>
     <script src="/assets/js/custom.js"></script>
     <script src="/assets/insect/js/html2canvas.js"></script>
+    <script src="/assets/insect/js/clipboard.min.js"></script>
     <script src="/assets/insect/js/peek.js"></script>
   </body>
 </html>

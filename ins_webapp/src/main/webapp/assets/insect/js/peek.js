@@ -3,6 +3,7 @@ $(document).ready(function(){
     var websocket;
     setSessionTimer();
     establishWSConnection();
+    new Clipboard('#proxy-endpoint-clipboard');
 
     function setSessionTimer() {
         var currentTimestamp = (((new Date().getTime()) / 1000) | 0);
@@ -51,10 +52,13 @@ $(document).ready(function(){
     function prependProxyResponse(data) {
         $('#proxy-updates').prepend(contentProxyResponse(data));
         $('.remove-line').click(function (e) {
-            var tableId = e.target.parentNode.parentNode.parentNode.parentNode.parentNode.id;
+            var tableId = $(this).data("section-id");
             $('#' + tableId).remove();
-            console.log('delete');
+            if($('#proxy-updates').children().length == 0) {
+                $('#result-buttons').hide();
+            }
         });
+        $('#result-buttons').show();
     }
 
     function contentProxyResponse(data) {
@@ -107,7 +111,7 @@ $(document).ready(function(){
 
         var resBPart = "<span class=\"label label-purple\">Body</span><code class=\"language-json\">" + atob(data.proxy.response.body) + "</code>";
         var responseHeader = resHPart +"<br>"+ resCPart +"<br>"+ resMPart +"<br>"+ resBPart;
-        return "<table id=\""+tid+"\" class=\"table table-bordered table-striped table-info\"><tbody><tr><td></td><td>" + frameInfo + "</td><td><button type=\"button\" class=\"btn btn-xs btn-outline btn-danger remove-line\"><i class=\"fa fa-close\"></i></button></td></tr><tr><tr><td>Request:</td><td>"+requestHeader+"</td><td></td></tr><tr><td>Response:</td><td>"+responseHeader+"</td><td></td></tr></tbody></table>";
+        return "<table id=\""+tid+"\" class=\"table table-bordered table-striped table-info\"><tbody><tr><td></td><td>" + frameInfo + "</td><td><button type=\"button\" class=\"btn btn-xs btn-outline btn-danger remove-line\" data-section-id=\""+tid+"\"><i class=\"fa fa-close\"></i></button></td></tr><tr><tr><td>Request:</td><td>"+requestHeader+"</td><td></td></tr><tr><td>Response:</td><td>"+responseHeader+"</td><td></td></tr></tbody></table>";
     }
 
     function updateWSIndicator(state) {
@@ -127,10 +131,14 @@ $(document).ready(function(){
             $('#indicator-proxy').removeClass("btn-danger");
             $('#indicator-proxy').addClass("btn-success");
             $('#indicator-proxy').html("Proxy Active");
+            $('#proxy-endpoint-testget').prop('disabled', false);
+            $('#proxy-upstream-selftest').prop('disabled', true);
         } else {
             $('#indicator-proxy').removeClass("btn-success");
             $('#indicator-proxy').addClass("btn-danger");
             $('#indicator-proxy').html("Proxy Inactive");
+            $('#proxy-endpoint-testget').prop('disabled', true);
+            $('#proxy-upstream-selftest').prop('disabled', false);
         }
     }
 
@@ -156,7 +164,7 @@ $(document).ready(function(){
     });
 
     $('#proxy-print-result').click(function(){
-        html2canvas($('#proxy-updates'),
+        html2canvas($('#screengrab-main-content'),
         {
             onrendered: function (canvas) {
                 var a = document.createElement('a');
@@ -167,6 +175,19 @@ $(document).ready(function(){
         });
     });
 
+    $('#proxy-result-clearall').click(function(){
+        $('#proxy-updates').html("");
+        $('#result-buttons').hide();
+    });
+
+    $('#proxy-endpoint-testget').click(function(){
+        $.get( $('#endpoint-url').html(), function( data ) {});
+    });
+
+    $('#proxy-upstream-selftest').click(function(){
+        $('#api-endpoint').val(configObj.selftestURL);
+        changeProxyState("activate");
+    });
 
     function changeProxyState(state) {
         var endpoint = $('#api-endpoint').val();

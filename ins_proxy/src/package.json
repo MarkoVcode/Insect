@@ -10,6 +10,7 @@
     "dependencies": {
         "redis": "2.6.5",
         "url": "0.11.0",
-        "crypto": "0.0.3"
+        "crypto": "0.0.3",
+        "markovchain": "1.0.2"
     }
 }
