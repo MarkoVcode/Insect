@@ -226,7 +226,7 @@ $(document).ready(function(){
     function validateEndpoint(endpoint) {
         if (endpoint.length === 0){
             return "Provide upstream endpoint to start proxy!";
-        } else if(endpoint.indexOf("insectin.space") !== -1) {
+        } else if(endpoint.indexOf("insectin.space/service/proxy") !== -1) {
             return "Selfie not allowed!";
         } else if(endpoint.indexOf("http://") === -1 && endpoint.indexOf("https://") === -1 ) {
             return "This must be a valid URL with protocol.";
