@@ -57,7 +57,7 @@ public class Properties {
     private static String HOST_IP = "192.168.56.100";
     // Use this when working on localhost
     //private static String HOST_IP = "localhost";
-    private static final String VERSION = "0.1.1";
+    private static final String VERSION = "0.1.2";
     private static final Integer REDIS_PORT= 6379;
     private static String REDIS_HOST= "127.0.0.1";
     private static Integer REDIS_DEFAULT_SESSION_EXPIRATION = 60*60; //24 hours from start
