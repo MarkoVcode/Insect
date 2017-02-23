@@ -1,8 +1,10 @@
-var startingTime = new Date().getTime();
-
 var Timecounter = function () {};
 
-Timecounter.prototype.getElapsedTime = function () {
+Timecounter.prototype.getStartingTime = function () {
+    return new Date().getTime();
+}
+
+Timecounter.prototype.getElapsedTime = function (startingTime) {
     return (new Date().getTime()) - startingTime;
 }
 
