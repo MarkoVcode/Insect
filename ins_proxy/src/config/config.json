@@ -8,8 +8,8 @@
     "TOKEN_LENGTH": 11,
     "SERVICE_PATH": "/service/proxy/",
     "SERVICE_TEST_PATH": "/service/selftest",
-    "PORT": 8080,
-    "CONSOLE_OUT": false,
+    "PORT": 9180,
+    "CONSOLE_OUT": true,
     "REDIS_PORT": 6379,
     "REDIS_HOST": "127.0.0.1",
     "PRODUCTION": {

@@ -61,18 +61,18 @@ public class Properties {
     private static final Integer REDIS_PORT= 6379;
     private static String REDIS_HOST= "127.0.0.1";
     private static Integer REDIS_DEFAULT_SESSION_EXPIRATION = 60*60; //24 hours from start
-    private static Integer WEBSOCKETS_WEB_PORT = 3333;
-    private static final Integer WEBSOCKETS_INTERNAL_PORT = 8090;
+    private static Integer WEBSOCKETS_WEB_PORT = 9280;
+    private static final Integer WEBSOCKETS_INTERNAL_PORT = 4480;
     private static final String  WEBSOCKETS_ROOT = "";
     private static final String  WEBSOCKETS_SERVLET_PATH = "/inspush";
     private static final String  WEBSOCKETS_HOST = "127.0.0.1";
     private static String WEBSOCKETS_WEB_PROTO = "ws";
     private static String WEBSOCKETS_WEB_HOST = HOST_IP;
-    private static final Integer WEBAPP_PUBLIC_PORT = 8088;
+    private static final Integer WEBAPP_PUBLIC_PORT = 9080;
     private static String WEBAPP_STATIC_DIR = "/ins_webapp/src/main/webapp";
     private static String  WEBAPP_TEMPLATES_DIR = "ins_webapp/src/main/resources/templates/";
-    private static String PROXY_API_ENDPOINT = "http://"+HOST_IP+":8080/service/proxy/";
-    private static String SELFTEST_API = "http://"+HOST_IP+":8080/service/selftest";
+    private static String PROXY_API_ENDPOINT = "http://"+HOST_IP+":9180/service/proxy/";
+    private static String SELFTEST_API = "http://"+HOST_IP+":9180/service/selftest";
 
     //PRODUCTION SETTINGS
     static {
