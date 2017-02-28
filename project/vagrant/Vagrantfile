@@ -7,14 +7,19 @@
 Vagrant.configure(2) do |config|
   config.vm.box = "ubuntu/xenial64"
   config.vm.hostname = "ins-dev.box"
-  config.vm.network "private_network", ip: "192.168.56.100"
+  #config.vm.network "private_network", ip: "192.168.56.100"
+  config.vm.network :forwarded_port, guest: 22, host: 2242
+  config.vm.network :forwarded_port, guest: 8088, host: 8088
+  config.vm.network :forwarded_port, guest: 3333, host: 3333
+  config.vm.network :forwarded_port, guest: 8080, host: 8080
   config.vm.provider "virtualbox" do |vb|
 	 vb.name = "Insect Development"
 	 vb.memory = "4096"
 	 vb.cpus = 2
 	 vb.customize ["modifyvm", :id, "--cpuexecutioncap", "90"]
 	 vb.customize ["modifyvm", :id, "--boot1", "disk"]
-	 vb.customize ["modifyvm", :id, "--description", "Insect Development image. \n\n# IP: 192.168.56.100\n# ssh: developer/developer"]
+	# vb.customize ["modifyvm", :id, "--description", "Insect Development image. \n\n# IP: 192.168.56.100\n# ssh: developer/developer"]
+     vb.customize ["modifyvm", :id, "--description", "Insect Development image. \n\n# IP: localhost:2242\n# ssh: developer/developer"]
   end
   config.vm.provision "shell", inline: <<-SHELL
   	# ---------------------------------------
@@ -66,7 +71,7 @@ Vagrant.configure(2) do |config|
 	wget http://code.softcognito.org/code_1.9.1-1486597190_amd64.deb
     dpkg -i code_1.9.1-1486597190_amd64.deb
 	rm -f code_1.9.1-1486597190_amd64.deb
-	
+
 	# ---------------------------------------
 	#            Load Sources
 	# ---------------------------------------
@@ -92,7 +97,7 @@ Vagrant.configure(2) do |config|
 	# ---------------------------------------
 	echo "# ------------------------------------------------------------"
 	echo "#       Insect Development image is ready:"
-	echo "# IP: 192.168.56.100"
+	echo "# IP: localhost:2242"
 	echo "# ssh: developer/developer"
 	echo "# ------------------------------------------------------------"
 	SHELL
