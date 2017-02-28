@@ -1,6 +1,7 @@
 var http = require('http');
 var urlObj = require('url');
 var zlib = require("zlib");
+var iconsole = require('./iconsole.js');
 var requestOptions;
 var requestBody;
 var urls;
@@ -19,12 +20,12 @@ WS.prototype.setRequestObject = function (proxyOptions, body) {
 WS.prototype.pushWebSocketMessage = function (responseObj) {
     if( responseObj.response.headers['content-encoding'] == 'gzip' ) {
         var buffer = Buffer.concat(responseObj.body);
-        zlib.gunzip(buffer,  function (_, result) { 
+        zlib.gunzip(buffer,  function (_, result) {
             prepareToDispatch(responseObj, result);
         });
     } else if (responseObj.response.headers['content-encoding'] == 'deflate') {
         var buffer = Buffer.concat(responseObj.body);
-        zlib.inflate(buffer,  function (_, result) { 
+        zlib.inflate(buffer,  function (_, result) {
             prepareToDispatch(responseObj, result);
         });
     } else {
@@ -38,7 +39,7 @@ var prepareToDispatch = function(responseObj, decompressedBody) {
     for (var property in urls) {
         if (urls.hasOwnProperty(property)) {
             var url = generateWSUrl(property, urls[property]);
-            console.log("Message: " + payload + " To: " + url);
+            iconsole.log("Message: " + payload + " To: " + url);
             dispatchPayload(payload, url)
             .then((response) => processResponse(response))
             .catch((err) => processError(err));

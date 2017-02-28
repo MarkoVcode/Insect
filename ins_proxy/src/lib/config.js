@@ -16,8 +16,31 @@ Config.prototype.getRedisHost = function () {
     return config.PRODUCTION.REDIS_HOST;
 }
 
+Config.prototype.isConsoleOut = function () {
+    if(this.environment() == "DEVELOPMENT") {
+        return config.CONSOLE_OUT;
+    }
+    return config.PRODUCTION.CONSOLE_OUT;
+}
+
 Config.prototype.getRedisPort = function () {
     return config.REDIS_PORT;
+}
+
+Config.prototype.getTokenLength = function () {
+    return config.TOKEN_LENGTH;
+}
+
+Config.prototype.getServicePath = function () {
+    return config.SERVICE_PATH;
+}
+
+Config.prototype.getServiceTestPath = function () {
+    return config.SERVICE_TEST_PATH;
+}
+
+Config.prototype.getPort = function () {
+    return config.PORT;
 }
 
 module.exports = new Config();

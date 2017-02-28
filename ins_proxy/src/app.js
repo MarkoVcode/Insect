@@ -3,24 +3,25 @@ var redis = require('redis');
 var urlObj = require('url');
 var session = require('./lib/session.js');
 var config = require('./lib/config.js');
+var iconsole = require('./lib/iconsole.js');
 var representation = require('./lib/representation.js');
 var timecounter = require('./lib/timecounter.js');
 
 var ws;
 
-const TOKEN_LENGTH=11;
-const SERVICE_PATH='/service/proxy/';
-const SERVICE_TEST_PATH='/service/selftest';
-const PORT=8080;
+const TOKEN_LENGTH= config.getTokenLength();
+const SERVICE_PATH= config.getServicePath();
+const SERVICE_TEST_PATH= config.getServiceTestPath();
+const PORT= config.getPort();
 
 var client = redis.createClient(config.getRedisPort(), config.getRedisHost());
-console.log(config.environment());
-console.log(config.getRedisHost());
+iconsole.log(config.environment());
+iconsole.log(config.getRedisHost());
 client.on('connect', function() {
-    console.log('redis connected');
+    iconsole.log('redis connected');
 });
 client.on('error', function() {
-    console.log('redis NOT UP!');
+    iconsole.log('redis NOT UP!');
 });
 
 function handleRequest(request, response){
@@ -57,14 +58,14 @@ function handleResponse(response, proxyResponse){
 var server = http.createServer(handleRequest);
 
 server.listen(PORT, function() {
-    console.log("Server listening on: http://localhost:%s", PORT);
+    iconsole.log("Server listening on: http://localhost:%s", PORT);
 });
 
 function doProxyRequest(reply, wsUrls, sessionConfig, request, response, timer) {
-    console.log("Proxy to: " + reply);
+    iconsole.log("Proxy to: " + reply);
     var proxyURLConfig = fetchProxyConfig(sessionConfig, reply); // this is going to be fetch from db on request based on sessionId
     if(proxyURLConfig == null || wsUrls == null) {
-        console.log("404 due to missing configuration (no WS session open or proxy config)");
+        iconsole.log("404 due to missing configuration (no WS session open or proxy config)");
         response.writeHead(404);
         response.end("");
     } else {
