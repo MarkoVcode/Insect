@@ -48,6 +48,8 @@
                 {{#is_active}}
                     <button type="button" class="btn btn-lg btn-success" id="indicator-proxy">Proxy Active</button>
                 {{/is_active}}
+                 <!--   <button type="button" class="btn btn-lg btn-danger" id="indicator-proxy">Mock Inactive</button>
+                    <button type="button" class="btn btn-lg btn-danger" id="indicator-proxy">Mock-1 Active</button> -->
                 <button type="button" class="btn btn-lg btn-danger" id="session-timeout">00:00</button>
 {{/has_ownership}}
                 </li>
@@ -154,11 +156,261 @@
                           </tbody>
                       </table>
                   </div>
-                  <div role="tabpanel" class="tab-pane fade" id="mock1">mock1</div>
-                  <div role="tabpanel" class="tab-pane fade" id="mock2">mock2</div>
-                  <div role="tabpanel" class="tab-pane fade" id="mock3">mock3</div>
-                  <div role="tabpanel" class="tab-pane fade" id="mock4">mock4</div>
-                  <div role="tabpanel" class="tab-pane fade" id="mock5">mock5</div>
+                  <div role="tabpanel" class="tab-pane fade" id="mock1">
+                      <form id="mock-form-1" action="/">
+                      <table class="table table-bordered table-striped table-info">
+                          <tbody>
+                          <tr>
+                              <td>Resources:</td>
+                              <td></td>
+                              <td>
+                                  <button type="button" id="proxy-endpoint-testgetmock-1" class="btn btn-xs btn-purple">Add</button>
+                              </td>
+                          </tr>
+                          <tr>
+                              <td></td>
+                              <td>
+                              <table class="table table-bordered table-striped table-info">
+                                  <tbody>
+                                  <tr>
+                                      <td><strong id="resource-url-1">{{new_api_endpoint}}/</strong><input type="text" name="custom-path-1" id="custom-path-1" value="" size="50">&nbsp;&nbsp;<button type="button" id="proxy-endpoint-clipboard" class="btn btn-xs btn-purple" data-clipboard-action="copy" data-clipboard-target="#endpoint-url">Copy to clipboard</button></td>
+                                      <td>
+                                          <button type="button" id="proxy-endpoint-testgetmock-1" class="btn btn-xs btn-purple">Delete</button>
+                                      </td>
+                                  </tr>
+                                  <tr>
+                                      <td>
+
+                                  <table class="table table-bordered table-striped table-info">
+                                      <tbody>
+                                      <tr>
+                                          <td>Request Method:</td>
+                                          <td>
+                                              <select name="method-1" id="method-1">
+                                                  <option name="GET">GET</option>
+                                                  <option name="POST">POST</option>
+                                                  <option name="DELETE">DELETE</option>
+                                              </select>
+                                          </td>
+                                          <td>
+                                              <button type="button" id="proxy-endpoint-testgetmock-1" class="btn btn-xs btn-purple">Delete</button>
+                                          </td>
+                                      </tr>
+                                      <tr>
+                                          <td>Response Code:</td>
+                                          <td>
+                                              <select name="resp-code-1" id="resp-code-1">
+                                                  <option name="200">200</option>
+                                                  <option name="400">400</option>
+                                                  <option name="500">500</option>
+                                              </select>
+                                          </td>
+                                          <td></td>
+                                      </tr>
+                                      <tr>
+                                          <td>Response JSON Payload:</td>
+                                          <td>
+                                              <textarea name="payload-1"></textarea>
+                                          </td>
+                                          <td></td>
+                                      </tr>
+                                      </tbody>
+                                  </table>
+                                  <table class="table table-bordered table-striped table-info">
+                                      <tbody>
+                                      <tr>
+                                          <td>Request Method:</td>
+                                          <td>
+                                              <select name="method-1" id="method-1">
+                                                  <option name="GET">GET</option>
+                                                  <option name="POST">POST</option>
+                                                  <option name="DELETE">DELETE</option>
+                                              </select>
+                                          </td>
+                                          <td>
+                                              <button type="button" id="proxy-endpoint-testgetmock-1" class="btn btn-xs btn-purple">Delete</button>
+                                          </td>
+                                      </tr>
+                                      <tr>
+                                          <td>Response Code:</td>
+                                          <td>
+                                              <select name="resp-code-1" id="resp-code-1">
+                                                  <option name="200">200</option>
+                                                  <option name="400">400</option>
+                                                  <option name="500">500</option>
+                                              </select>
+                                          </td>
+                                          <td></td>
+                                      </tr>
+                                      <tr>
+                                          <td>Response JSON Payload:</td>
+                                          <td>
+                                              <textarea name="payload-1"></textarea>
+                                          </td>
+                                          <td></td>
+                                      </tr>
+                                      </tbody>
+                                  </table>
+
+                                      </td>
+                                      <td>
+                                          <button type="button" id="proxy-endpoint-testgetmock-1" class="btn btn-xs btn-purple">Add</button>
+                                      </td>
+                                  </tr>
+                                  </tbody>
+                              </table>
+
+                              </td>
+                              <td>
+
+                              </td>
+                          </tr>
+                          {{#has_ownership}}
+                              <tr>
+                                  <td></td>
+                                  <td>
+                                      <button type="button" id="mock-deploy-1" class="btn btn-lg btn-success"><i class="fa fa-caret-square-o-right"></i> Deploy</button>
+                                      &nbsp;<input type="checkbox" name="auto-deploy" checked> auto deploy
+                                  </td>
+                                  <td></td>
+                              </tr>
+                          {{/has_ownership}}
+                          </tbody>
+                      </table>
+                      </form>
+                  </div>
+                  <div role="tabpanel" class="tab-pane fade" id="mock2">
+                      <form id="mock-form-2" action="/">
+                          <table class="table table-bordered table-striped table-info">
+                              <tbody>
+                              <tr>
+                                  <td>Resources:</td>
+                                  <td></td>
+                                  <td>
+                                      <button type="button" id="mock-add-2" class="btn btn-xs btn-purple">Add</button>
+                                  </td>
+                              </tr>
+                              <tr>
+                                  <td></td>
+                                  <td >
+
+                                  </td>
+                                  <td>
+                                  </td>
+                              </tr>
+                              {{#has_ownership}}
+                                  <tr>
+                                      <td></td>
+                                      <td>
+                                          <button type="button" id="mock-deploy-2" class="btn btn-lg btn-success"><i class="fa fa-caret-square-o-right"></i> Deploy</button>
+                                          &nbsp;<input type="checkbox" name="auto-deploy" checked> auto deploy
+                                      </td>
+                                      <td></td>
+                                  </tr>
+                              {{/has_ownership}}
+                              </tbody>
+                          </table>
+                      </form>
+                  </div>
+                  <div role="tabpanel" class="tab-pane fade" id="mock3">
+                      <form id="mock-form-3" action="/">
+                          <table class="table table-bordered table-striped table-info">
+                              <tbody>
+                              <tr>
+                                  <td>Resources:</td>
+                                  <td></td>
+                                  <td>
+                                      <button type="button" id="mock-add-3" class="btn btn-xs btn-purple">Add</button>
+                                  </td>
+                              </tr>
+                              <tr>
+                                  <td></td>
+                                  <td>
+
+                                  </td>
+                                  <td>
+                                  </td>
+                              </tr>
+                              {{#has_ownership}}
+                                  <tr>
+                                      <td></td>
+                                      <td>
+                                          <button type="button" id="mock-deploy-3" class="btn btn-lg btn-success"><i class="fa fa-caret-square-o-right"></i> Deploy</button>
+                                          &nbsp;<input type="checkbox" name="auto-deploy" checked> auto deploy
+                                      </td>
+                                      <td></td>
+                                  </tr>
+                              {{/has_ownership}}
+                              </tbody>
+                          </table>
+                      </form>
+                  </div>
+                  <div role="tabpanel" class="tab-pane fade" id="mock4">
+                      <form id="mock-form-4" action="/">
+                          <table class="table table-bordered table-striped table-info">
+                              <tbody>
+                              <tr>
+                                  <td>Resources:</td>
+                                  <td></td>
+                                  <td>
+                                      <button type="button" id="mock-add-4" class="btn btn-xs btn-purple">Add</button>
+                                  </td>
+                              </tr>
+                              <tr>
+                                  <td></td>
+                                  <td>
+
+                                  </td>
+                                  <td>
+                                  </td>
+                              </tr>
+                              {{#has_ownership}}
+                                  <tr>
+                                      <td></td>
+                                      <td>
+                                          <button type="button" id="mock-deploy-4" class="btn btn-lg btn-success"><i class="fa fa-caret-square-o-right"></i> Deploy</button>
+                                          &nbsp;<input type="checkbox" name="auto-deploy" checked> auto deploy
+                                      </td>
+                                      <td></td>
+                                  </tr>
+                              {{/has_ownership}}
+                              </tbody>
+                          </table>
+                      </form>
+                  </div>
+                  <div role="tabpanel" class="tab-pane fade" id="mock5">
+                      <form id="mock-form-5" action="/">
+                          <table class="table table-bordered table-striped table-info">
+                              <tbody>
+                              <tr>
+                                  <td>Resources:</td>
+                                  <td></td>
+                                  <td>
+                                      <button type="button" id="mock-add-5" class="btn btn-xs btn-purple">Add</button>
+                                  </td>
+                              </tr>
+                              <tr>
+                                  <td></td>
+                                  <td>
+
+                                  </td>
+                                  <td>
+                                  </td>
+                              </tr>
+                              {{#has_ownership}}
+                                  <tr>
+                                      <td></td>
+                                      <td>
+                                          <button type="button" id="mock-deploy-5" class="btn btn-lg btn-success"><i class="fa fa-caret-square-o-right"></i> Deploy</button>
+                                          &nbsp;<input type="checkbox" name="auto-deploy" checked> auto deploy
+                                      </td>
+                                      <td></td>
+                                  </tr>
+                              {{/has_ownership}}
+                              </tbody>
+                          </table>
+                      </form>
+                  </div>
               </div>
 
           </div>
@@ -194,7 +446,7 @@
     </footer>
     <!-- END Footer -->
 
-    <!-- Scripts -->
+    <!-- Scripts text/x-handlebars-template -->
     <script>
     var configObj = {
         websocketsURL: '{{config_websockets_url}}',
@@ -203,10 +455,109 @@
         psid: '{{psid}}'
         };
     </script>
+    <script id="proxy-capture-template" type="text/x-handlebars-template">
+        <table id="<%augment.tid%>" class="table table-bordered table-striped table-info">
+            <tbody>
+            <tr>
+                <td></td>
+                <td>
+                    &nbsp;<span class="label label-primary">Dispatch Timestamp</span>&nbsp;<%proxy.general.dateDispatch}}&nbsp;<span class="label label-primary">Response Time [us]</span>&nbsp;<%proxy.general.responseTime}}
+                </td>
+                <td>
+                    <button type="button" class="btn btn-xs btn-outline btn-danger remove-line" data-section-id="<%augment.tid%>"><i class="fa fa-close"></i></button>
+                </td>
+            </tr>
+            <tr></tr>
+            <tr>
+                <td>Request:</td>
+                <td>
+                    <span class="label label-default">Header</span>&nbsp;<%augment.requestheader%><br>
+                    <span class="label label-<%augment.methodcolor%>">Method</span>&nbsp;<%proxy.request.method%><br>
+                    <span class="label label-primary">Host</span>&nbsp;<%proxy.request.host%><br>
+                    <span class="label label-primary">Path</span>&nbsp;<%proxy.request.path%><br>
+                    <span class="label label-<%augment.protocolor%>">Protocol</span>&nbsp;<%proxy.request.protocol%><br>
+                    <span class="label label-purple">Body</span><code class="language-json"><%augment.requestbody%></code>
+                </td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>Response:</td>
+                <td>
+                    <span class="label label-default">Header</span>&nbsp;<%augment.responseheader%><br>
+                    <span class="label label-<%augment.codecolor%>">Code</span>&nbsp;<%proxy.response.code%><br>
+                    <span class="label label-<%augment.codecolor%>">Message</span>&nbsp;<%proxy.response.message%><br>
+                    <span class="label label-purple">Body</span><code class="language-json"><%augment.responsebody%></code>
+                </td>
+                <td></td>
+            </tr>
+            </tbody>
+        </table>
+    </script>
+    <script id="mock-method-template" type="text/x-handlebars-template">
+        <table class="table table-bordered table-striped table-info">
+            <tbody>
+            <tr>
+                <td>Request Method:</td>
+                <td>
+                    <select name="method-1" id="method-1">
+                        <option name="GET">GET</option>
+                        <option name="POST">POST</option>
+                        <option name="DELETE">DELETE</option>
+                    </select>
+                </td>
+                <td>
+                    <button type="button" id="proxy-endpoint-testgetmock-1" class="btn btn-xs btn-purple">Delete</button>
+                </td>
+            </tr>
+            <tr>
+                <td>Response Code:</td>
+                <td>
+                    <select name="resp-code-1" id="resp-code-1">
+                        <option name="200">200</option>
+                        <option name="400">400</option>
+                        <option name="500">500</option>
+                    </select>
+                </td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>Response JSON Payload:</td>
+                <td>
+                    <textarea name="payload-1"></textarea>
+                </td>
+                <td></td>
+            </tr>
+            </tbody>
+        </table>
+    </script>
+    <script id="mock-resource-template" type="text/x-handlebars-template">
+        <table class="table table-bordered table-striped table-info">
+            <tbody>
+            <tr>
+                <td><strong id="resource-url-1">{{new_api_endpoint}}/</strong><input type="text" name="custom-path-1" id="custom-path-1" value="" size="50">&nbsp;&nbsp;<button type="button" id="proxy-endpoint-clipboard" class="btn btn-xs btn-purple" data-clipboard-action="copy" data-clipboard-target="#endpoint-url">Copy to clipboard</button></td>
+                <td>
+                    <button type="button" id="proxy-endpoint-testgetmock-1" class="btn btn-xs btn-purple">Delete</button>
+                </td>
+            </tr>
+            <tr>
+                <td>
+
+
+
+                </td>
+                <td>
+                    <button type="button" id="proxy-endpoint-testgetmock-1" class="btn btn-xs btn-purple">Add</button>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </script>
     <script src="/assets/js/theDocs.all.min.js"></script>
     <script src="/assets/js/custom.js"></script>
     <script src="/assets/insect/js/html2canvas.js"></script>
     <script src="/assets/insect/js/clipboard.min.js"></script>
+    <script src="/assets/insect/js/handlebars.js"></script>
     <script src="/assets/insect/js/peek.js"></script>
+    <script src="/assets/insect/js/mock.js"></script>
   </body>
 </html>

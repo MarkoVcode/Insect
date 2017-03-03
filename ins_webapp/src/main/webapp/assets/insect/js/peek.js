@@ -50,7 +50,7 @@ $(document).ready(function(){
     }
 
     function prependProxyResponse(data) {
-        $('#proxy-updates').prepend(contentProxyResponse(data));
+        $('#proxy-updates').prepend(augmentProxyResponse(data));
         $('.remove-line').click(function (e) {
             var tableId = $(this).data("section-id");
             $('#' + tableId).remove();
@@ -61,8 +61,7 @@ $(document).ready(function(){
         $('#result-buttons').show();
     }
 
-    function contentProxyResponse(data) {
-        var tid = Math.random().toString(36).substring(7);
+    function augmentProxyResponse(data) {
         var color1;
         if(data.proxy.request.method === 'GET') {
             color1 = "success";
@@ -77,6 +76,7 @@ $(document).ready(function(){
         } else {
             color1 = "purple";
         }
+
         var colorProto;
         if(data.proxy.request.protocol == 'http:') {
             colorProto = "danger";
@@ -85,17 +85,7 @@ $(document).ready(function(){
         } else {
             colorProto = "danger";
         }
-        var frameInfoDate = "&nbsp;<span class=\"label label-primary\">Dispatch Timestamp</span>&nbsp;" + data.proxy.general.dateDispatch;
-        var frameInfoResponseTime = "&nbsp;<span class=\"label label-primary\">Response Time [us]</span>&nbsp;" + data.proxy.general.responseTime;
-        var frameInfo = frameInfoDate + frameInfoResponseTime;
-        var reqHPart = "<span class=\"label label-default\">Header</span>&nbsp;" + atob(data.proxy.request.header);
-        var reqMPart = "<span class=\"label label-"+color1+"\">Method</span>&nbsp;" + data.proxy.request.method;
-        var reqHoPart = "<span class=\"label label-primary\">Host</span>&nbsp;" + data.proxy.request.host;
-        var reqPPart = "<span class=\"label label-primary\">Path</span>&nbsp;" + data.proxy.request.path;
-        var reqPrPart = "<span class=\"label label-"+colorProto+"\">Protocol</span>&nbsp;" + data.proxy.request.protocol;
-        var reqBPart = "<span class=\"label label-purple\">Body</span><code class=\"language-json\">" + atob(data.proxy.request.body) + "</code>";
-        var requestHeader = reqHPart +"<br>"+ reqMPart +"<br>"+ reqHoPart +"<br>"+ reqPPart +"<br>"+ reqPrPart +"<br>"+ reqBPart;
-        var resHPart = "<span class=\"label label-default\">Header</span>&nbsp;" + atob(data.proxy.response.header);
+
         var color;
         if(data.proxy.response.code >= 200 && data.proxy.response.code < 300) {
             color = "success";
@@ -106,12 +96,22 @@ $(document).ready(function(){
         } else {
             color = "danger";
         }
-        var resCPart = "<span class=\"label label-"+color+"\">Code</span>&nbsp;" + data.proxy.response.code;
-        var resMPart = "<span class=\"label label-"+color+"\">Message</span>&nbsp;" + data.proxy.response.message;
 
-        var resBPart = "<span class=\"label label-purple\">Body</span><code class=\"language-json\">" + atob(data.proxy.response.body) + "</code>";
-        var responseHeader = resHPart +"<br>"+ resCPart +"<br>"+ resMPart +"<br>"+ resBPart;
-        return "<table id=\""+tid+"\" class=\"table table-bordered table-striped table-info\"><tbody><tr><td></td><td>" + frameInfo + "</td><td><button type=\"button\" class=\"btn btn-xs btn-outline btn-danger remove-line\" data-section-id=\""+tid+"\"><i class=\"fa fa-close\"></i></button></td></tr><tr><tr><td>Request:</td><td>"+requestHeader+"</td><td></td></tr><tr><td>Response:</td><td>"+responseHeader+"</td><td></td></tr></tbody></table>";
+        data['augment'] = {codecolor: color,
+                           tid: Math.random().toString(36).substring(7),
+                           methodcolor: color1,
+                           protocolor: colorProto,
+                           requestheader: atob(data.proxy.request.header),
+                           requestbody: atob(data.proxy.request.body),
+                           responseheader: atob(data.proxy.response.header),
+                           responsebody: atob(data.proxy.response.body)
+                           };
+
+        var source   = $("#proxy-capture-template").html();
+        var sourcep = source.replace(new RegExp("<%", 'g'), "{{");
+        var sourcer = sourcep.replace(new RegExp("%>", 'g'), "}}");
+        var template = Handlebars.compile(sourcer);
+        return template(data);
     }
 
     function updateWSIndicator(state) {
