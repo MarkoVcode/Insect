@@ -281,7 +281,7 @@ $(document).ready(function(){
 
         if (minutes <= 0 && seconds <= 0) {
             window.open("/peek","_self");
-        } else if (minutes < 5) {
+        } else if (minutes < 1) {
             timerElement.removeClass("btn-warning");
             timerElement.removeClass("btn-success");
             timerElement.addClass("btn-danger");

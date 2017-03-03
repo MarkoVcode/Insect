@@ -61,71 +61,107 @@
 
     </header>
 
-
     <main class="container-fluid">
 
       <div class="row">
 
-        <article class="col-md-12 main-content" role="main">
-            <button type="button" id="proxy-reset" class="btn btn-xs btn-primary">{{^has_ownership}}Get yourself own session!{{/has_ownership}}
-                {{#has_ownership}}Get yourself a new session!{{/has_ownership}}</button>
-            <table class="table table-bordered table-striped table-info">
-                <tbody>
-                <tr>
-                    <td>Endpoint:</td>
-                    <td><strong id="endpoint-url">{{new_api_endpoint}}</strong>&nbsp;&nbsp;<button type="button" id="proxy-endpoint-clipboard" class="btn btn-xs btn-purple" data-clipboard-action="copy" data-clipboard-target="#endpoint-url">Copy to clipboard</button></td>
-                    <td>{{#has_ownership}}
-                        {{^is_active}}
-                            <button type="button" id="proxy-endpoint-testget" class="btn btn-xs btn-purple" disabled>Make test GET request</button>
-                        {{/is_active}}
-                        {{#is_active}}
-                            <button type="button" id="proxy-endpoint-testget" class="btn btn-xs btn-purple">Make test GET request</button>
-                        {{/is_active}}
-                    {{/has_ownership}}</td>
-                </tr>
-                <tr>
-                    <td>Upstream:</td>
-                    <td>
-                        {{^has_ownership}}
-                            <input type="text" id="api-endpoint" value="{{proxy_api_endpoint}}" size="70" disabled>
-                        {{/has_ownership}}
-                        {{#has_ownership}}
-                            {{^is_active}}
-                                <input type="text" id="api-endpoint" value="{{proxy_api_endpoint}}" size="80">
-                            {{/is_active}}
-                            {{#is_active}}
-                                <input type="text" id="api-endpoint" value="{{proxy_api_endpoint}}" size="80" disabled>
-                            {{/is_active}}
-                        {{/has_ownership}}
-                        <div id="api-endpoint-error"></div>
-                    </td>
-                    <td>{{#has_ownership}}
-    {{^is_active}}
-        <button type="button" id="proxy-upstream-selftest" class="btn btn-xs btn-purple">Use demo upstream</button>
-    {{/is_active}}
-    {{#is_active}}
-        <button type="button" id="proxy-upstream-selftest" class="btn btn-xs btn-purple" disabled>Use demo upstream</button>
-    {{/is_active}}
-    {{/has_ownership}}</td>
-                </tr>
-                {{#has_ownership}}
-                    <tr>
-                        <td></td>
-                        <td>
-                            {{^is_active}}
-                                <button type="button" id="proxy-start" class="btn btn-lg btn-success"><i class="fa fa-caret-square-o-right"></i> Start</button>
-                                <button type="button" id="proxy-stop" class="btn btn-lg btn-danger" disabled><i class="fa fa-square"></i> Stop</button>
-                            {{/is_active}}
-                            {{#is_active}}
-                                <button type="button" id="proxy-start" class="btn btn-lg btn-success" disabled><i class="fa fa-caret-square-o-right"></i> Start</button>
-                                <button type="button" id="proxy-stop" class="btn btn-lg btn-danger"><i class="fa fa-square"></i> Stop</button>
-                            {{/is_active}}
-                        </td>
-                        <td></td>
-                    </tr>
-                {{/has_ownership}}
-                </tbody>
-            </table>
+          <article class="col-md-12 main-content" role="main">
+              <button type="button" id="proxy-reset" class="btn btn-xs btn-primary">{{^has_ownership}}Get yourself own session!{{/has_ownership}}
+                  {{#has_ownership}}Get yourself a new session!{{/has_ownership}}</button>
+
+          <div class="tabs tabs-text">
+
+              <!-- Nav tabs -->
+              <ul class="nav nav-tabs" role="tablist">
+                  <li role="presentation" class="active">
+                      <a href="#proxy" aria-controls="home" role="tab" data-toggle="tab">Proxy</a>
+                  </li>
+                  <li role="presentation">
+                      <a href="#mock1" aria-controls="profile" role="tab" data-toggle="tab">Mock-1</a>
+                  </li>
+                  <li role="presentation">
+                      <a href="#mock2" aria-controls="messages" role="tab" data-toggle="tab">Mock-2</a>
+                  </li>
+                  <li role="presentation">
+                      <a href="#mock3" aria-controls="settings" role="tab" data-toggle="tab">Mock-3</a>
+                  </li>
+                  <li role="presentation">
+                      <a href="#mock4" aria-controls="settings" role="tab" data-toggle="tab">Mock-4</a>
+                  </li>
+                  <li role="presentation">
+                      <a href="#mock5" aria-controls="settings" role="tab" data-toggle="tab">Mock-5</a>
+                  </li>
+              </ul>
+
+              <!-- Tab panes -->
+              <div class="tab-content">
+                  <div role="tabpanel" class="tab-pane active fade in" id="proxy">
+                      <table class="table table-bordered table-striped table-info">
+                          <tbody>
+                          <tr>
+                              <td>Endpoint:</td>
+                              <td><strong id="endpoint-url">{{new_api_endpoint}}</strong>&nbsp;&nbsp;<button type="button" id="proxy-endpoint-clipboard" class="btn btn-xs btn-purple" data-clipboard-action="copy" data-clipboard-target="#endpoint-url">Copy to clipboard</button></td>
+                              <td>{{#has_ownership}}
+                                  {{^is_active}}
+                                      <button type="button" id="proxy-endpoint-testget" class="btn btn-xs btn-purple" disabled>Make test GET request</button>
+                                  {{/is_active}}
+                                  {{#is_active}}
+                                      <button type="button" id="proxy-endpoint-testget" class="btn btn-xs btn-purple">Make test GET request</button>
+                                  {{/is_active}}
+                              {{/has_ownership}}</td>
+                          </tr>
+                          <tr>
+                              <td>Upstream:</td>
+                              <td>
+                                  {{^has_ownership}}
+                                      <input type="text" id="api-endpoint" value="{{proxy_api_endpoint}}" size="70" disabled>
+                                  {{/has_ownership}}
+                                  {{#has_ownership}}
+                                      {{^is_active}}
+                                          <input type="text" id="api-endpoint" value="{{proxy_api_endpoint}}" size="80">
+                                      {{/is_active}}
+                                      {{#is_active}}
+                                          <input type="text" id="api-endpoint" value="{{proxy_api_endpoint}}" size="80" disabled>
+                                      {{/is_active}}
+                                  {{/has_ownership}}
+                                  <div id="api-endpoint-error"></div>
+                              </td>
+                              <td>{{#has_ownership}}
+                                  {{^is_active}}
+                                      <button type="button" id="proxy-upstream-selftest" class="btn btn-xs btn-purple">Use demo upstream</button>
+                                  {{/is_active}}
+                                  {{#is_active}}
+                                      <button type="button" id="proxy-upstream-selftest" class="btn btn-xs btn-purple" disabled>Use demo upstream</button>
+                                  {{/is_active}}
+                              {{/has_ownership}}</td>
+                          </tr>
+                          {{#has_ownership}}
+                              <tr>
+                                  <td></td>
+                                  <td>
+                                      {{^is_active}}
+                                          <button type="button" id="proxy-start" class="btn btn-lg btn-success"><i class="fa fa-caret-square-o-right"></i> Start</button>
+                                          <button type="button" id="proxy-stop" class="btn btn-lg btn-danger" disabled><i class="fa fa-square"></i> Stop</button>
+                                      {{/is_active}}
+                                      {{#is_active}}
+                                          <button type="button" id="proxy-start" class="btn btn-lg btn-success" disabled><i class="fa fa-caret-square-o-right"></i> Start</button>
+                                          <button type="button" id="proxy-stop" class="btn btn-lg btn-danger"><i class="fa fa-square"></i> Stop</button>
+                                      {{/is_active}}
+                                  </td>
+                                  <td></td>
+                              </tr>
+                          {{/has_ownership}}
+                          </tbody>
+                      </table>
+                  </div>
+                  <div role="tabpanel" class="tab-pane fade" id="mock1">mock1</div>
+                  <div role="tabpanel" class="tab-pane fade" id="mock2">mock2</div>
+                  <div role="tabpanel" class="tab-pane fade" id="mock3">mock3</div>
+                  <div role="tabpanel" class="tab-pane fade" id="mock4">mock4</div>
+                  <div role="tabpanel" class="tab-pane fade" id="mock5">mock5</div>
+              </div>
+
+          </div>
         </article>
 
           <article class="col-md-12 main-content">
