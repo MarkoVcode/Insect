@@ -161,104 +161,15 @@
                       <table class="table table-bordered table-striped table-info">
                           <tbody>
                           <tr>
-                              <td>Resources:</td>
+                              <td width="95">Resources:</td>
                               <td></td>
-                              <td>
-                                  <button type="button" id="proxy-endpoint-testgetmock-1" class="btn btn-xs btn-purple">Add</button>
+                              <td width="52">
+                                  <button type="button" data-mock-group="1" class="btn btn-xs btn-success mock-add-resource-button">Add</button>
                               </td>
                           </tr>
                           <tr>
                               <td></td>
-                              <td>
-                              <table class="table table-bordered table-striped table-info">
-                                  <tbody>
-                                  <tr>
-                                      <td><strong id="resource-url-1">{{new_api_endpoint}}/</strong><input type="text" name="custom-path-1" id="custom-path-1" value="" size="50">&nbsp;&nbsp;<button type="button" id="proxy-endpoint-clipboard" class="btn btn-xs btn-purple" data-clipboard-action="copy" data-clipboard-target="#endpoint-url">Copy to clipboard</button></td>
-                                      <td>
-                                          <button type="button" id="proxy-endpoint-testgetmock-1" class="btn btn-xs btn-purple">Delete</button>
-                                      </td>
-                                  </tr>
-                                  <tr>
-                                      <td>
-
-                                  <table class="table table-bordered table-striped table-info">
-                                      <tbody>
-                                      <tr>
-                                          <td>Request Method:</td>
-                                          <td>
-                                              <select name="method-1" id="method-1">
-                                                  <option name="GET">GET</option>
-                                                  <option name="POST">POST</option>
-                                                  <option name="DELETE">DELETE</option>
-                                              </select>
-                                          </td>
-                                          <td>
-                                              <button type="button" id="proxy-endpoint-testgetmock-1" class="btn btn-xs btn-purple">Delete</button>
-                                          </td>
-                                      </tr>
-                                      <tr>
-                                          <td>Response Code:</td>
-                                          <td>
-                                              <select name="resp-code-1" id="resp-code-1">
-                                                  <option name="200">200</option>
-                                                  <option name="400">400</option>
-                                                  <option name="500">500</option>
-                                              </select>
-                                          </td>
-                                          <td></td>
-                                      </tr>
-                                      <tr>
-                                          <td>Response JSON Payload:</td>
-                                          <td>
-                                              <textarea name="payload-1"></textarea>
-                                          </td>
-                                          <td></td>
-                                      </tr>
-                                      </tbody>
-                                  </table>
-                                  <table class="table table-bordered table-striped table-info">
-                                      <tbody>
-                                      <tr>
-                                          <td>Request Method:</td>
-                                          <td>
-                                              <select name="method-1" id="method-1">
-                                                  <option name="GET">GET</option>
-                                                  <option name="POST">POST</option>
-                                                  <option name="DELETE">DELETE</option>
-                                              </select>
-                                          </td>
-                                          <td>
-                                              <button type="button" id="proxy-endpoint-testgetmock-1" class="btn btn-xs btn-purple">Delete</button>
-                                          </td>
-                                      </tr>
-                                      <tr>
-                                          <td>Response Code:</td>
-                                          <td>
-                                              <select name="resp-code-1" id="resp-code-1">
-                                                  <option name="200">200</option>
-                                                  <option name="400">400</option>
-                                                  <option name="500">500</option>
-                                              </select>
-                                          </td>
-                                          <td></td>
-                                      </tr>
-                                      <tr>
-                                          <td>Response JSON Payload:</td>
-                                          <td>
-                                              <textarea name="payload-1"></textarea>
-                                          </td>
-                                          <td></td>
-                                      </tr>
-                                      </tbody>
-                                  </table>
-
-                                      </td>
-                                      <td>
-                                          <button type="button" id="proxy-endpoint-testgetmock-1" class="btn btn-xs btn-purple">Add</button>
-                                      </td>
-                                  </tr>
-                                  </tbody>
-                              </table>
+                              <td id="mock-methods-container-1">
 
                               </td>
                               <td>
@@ -284,15 +195,15 @@
                           <table class="table table-bordered table-striped table-info">
                               <tbody>
                               <tr>
-                                  <td>Resources:</td>
+                                  <td width="95">Resources:</td>
                                   <td></td>
-                                  <td>
-                                      <button type="button" id="mock-add-2" class="btn btn-xs btn-purple">Add</button>
+                                  <td width="52">
+                                      <button type="button" data-mock-group="2" class="btn btn-xs btn-success mock-add-resource-button">Add</button>
                                   </td>
                               </tr>
                               <tr>
                                   <td></td>
-                                  <td >
+                                  <td id="mock-methods-container-2">
 
                                   </td>
                                   <td>
@@ -317,15 +228,15 @@
                           <table class="table table-bordered table-striped table-info">
                               <tbody>
                               <tr>
-                                  <td>Resources:</td>
+                                  <td width="95">Resources:</td>
                                   <td></td>
-                                  <td>
-                                      <button type="button" id="mock-add-3" class="btn btn-xs btn-purple">Add</button>
+                                  <td width="52">
+                                      <button type="button" data-mock-group="3" class="btn btn-xs btn-success mock-add-resource-button">Add</button>
                                   </td>
                               </tr>
                               <tr>
                                   <td></td>
-                                  <td>
+                                  <td id="mock-methods-container-3">
 
                                   </td>
                                   <td>
@@ -350,15 +261,15 @@
                           <table class="table table-bordered table-striped table-info">
                               <tbody>
                               <tr>
-                                  <td>Resources:</td>
+                                  <td width="95">Resources:</td>
                                   <td></td>
-                                  <td>
-                                      <button type="button" id="mock-add-4" class="btn btn-xs btn-purple">Add</button>
+                                  <td width="52">
+                                      <button type="button" data-mock-group="4" class="btn btn-xs btn-success mock-add-resource-button">Add</button>
                                   </td>
                               </tr>
                               <tr>
                                   <td></td>
-                                  <td>
+                                  <td id="mock-methods-container-4">
 
                                   </td>
                                   <td>
@@ -383,15 +294,15 @@
                           <table class="table table-bordered table-striped table-info">
                               <tbody>
                               <tr>
-                                  <td>Resources:</td>
+                                  <td width="95">Resources:</td>
                                   <td></td>
-                                  <td>
-                                      <button type="button" id="mock-add-5" class="btn btn-xs btn-purple">Add</button>
+                                  <td width="52">
+                                      <button type="button" data-mock-group="5" class="btn btn-xs btn-success mock-add-resource-button">Add</button>
                                   </td>
                               </tr>
                               <tr>
                                   <td></td>
-                                  <td>
+                                  <td id="mock-methods-container-5">
 
                                   </td>
                                   <td>
@@ -494,10 +405,10 @@
         </table>
     </script>
     <script id="mock-method-template" type="text/x-handlebars-template">
-        <table class="table table-bordered table-striped table-info">
+        <table class="table table-bordered table-striped table-info" id="mock-method-container-<%group%>-<%tid%>">
             <tbody>
             <tr>
-                <td>Request Method:</td>
+                <td width="150">Request Method:</td>
                 <td>
                     <select name="method-1" id="method-1">
                         <option name="GET">GET</option>
@@ -505,8 +416,8 @@
                         <option name="DELETE">DELETE</option>
                     </select>
                 </td>
-                <td>
-                    <button type="button" id="proxy-endpoint-testgetmock-1" class="btn btn-xs btn-purple">Delete</button>
+                <td width="65">
+                    <button type="button" data-mock-group="<%group%>-<%tid%>" class="btn btn-xs btn-danger mock-delete-method-button">Delete</button>
                 </td>
             </tr>
             <tr>
@@ -531,22 +442,22 @@
         </table>
     </script>
     <script id="mock-resource-template" type="text/x-handlebars-template">
-        <table class="table table-bordered table-striped table-info">
+        <table class="table table-bordered table-striped table-info" id="mock-resource-container-<%group%>-<%tid%>">
             <tbody>
             <tr>
-                <td><strong id="resource-url-1">{{new_api_endpoint}}/</strong><input type="text" name="custom-path-1" id="custom-path-1" value="" size="50">&nbsp;&nbsp;<button type="button" id="proxy-endpoint-clipboard" class="btn btn-xs btn-purple" data-clipboard-action="copy" data-clipboard-target="#endpoint-url">Copy to clipboard</button></td>
+                <td><strong id="resource-url-1">{{new_api_endpoint}}/</strong><input type="text" name="custom-path-{{id}}" id="custom-path-{{id}}" value="" size="50">&nbsp;&nbsp;<button type="button" id="proxy-endpoint-clipboard" class="btn btn-xs btn-purple" data-clipboard-action="copy" data-clipboard-target="#endpoint-url">Copy to clipboard</button></td>
                 <td>
-                    <button type="button" id="proxy-endpoint-testgetmock-1" class="btn btn-xs btn-purple">Delete</button>
+                    <button type="button" data-mock-group="<%group%>-<%tid%>" class="btn btn-xs btn-danger mock-delete-resource-button">Delete</button>
                 </td>
             </tr>
             <tr>
-                <td>
+                <td id="mock-methods-<%group%>-<%tid%>">
 
 
 
                 </td>
                 <td>
-                    <button type="button" id="proxy-endpoint-testgetmock-1" class="btn btn-xs btn-purple">Add</button>
+                    <button type="button" data-mock-group="<%group%>-<%tid%>" class="btn btn-xs btn-success mock-add-method-button">Add Method</button>
                 </td>
             </tr>
             </tbody>
