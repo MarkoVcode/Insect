@@ -11,6 +11,8 @@
     <!-- Styles -->
     <link href="/assets/css/theDocs.all.min.css" rel="stylesheet">
     <link href="/assets/css/custom.css" rel="stylesheet">
+    <link href="/assets/insect/css/tooltipster.bundle.min.css" rel="stylesheet">
+    <link href="/assets/insect/css/tooltipster-sideTip-light.min.css" rel="stylesheet">
     <link href="/assets/insect/css/insect.css" rel="stylesheet">
     <!-- Fonts -->
     <link href='//fonts.googleapis.com/css?family=Raleway:100,300,400,500%7CLato:300,400' rel='stylesheet' type='text/css'>
@@ -115,17 +117,19 @@
                           <tr>
                               <td>Upstream:</td>
                               <td>
+                                  <div class="form-group">
                                   {{^has_ownership}}
-                                      <input type="text" id="api-endpoint" value="{{proxy_api_endpoint}}" size="70" disabled>
+                                      <input type="text" id="api-endpoint" class="form-control" value="{{proxy_api_endpoint}}" size="70" disabled>
                                   {{/has_ownership}}
                                   {{#has_ownership}}
                                       {{^is_active}}
-                                          <input type="text" id="api-endpoint" value="{{proxy_api_endpoint}}" size="80">
+                                          <input type="text" id="api-endpoint" class="form-control" value="{{proxy_api_endpoint}}" size="80">
                                       {{/is_active}}
                                       {{#is_active}}
-                                          <input type="text" id="api-endpoint" value="{{proxy_api_endpoint}}" size="80" disabled>
+                                          <input type="text" id="api-endpoint" class="form-control" value="{{proxy_api_endpoint}}" size="80" disabled>
                                       {{/is_active}}
                                   {{/has_ownership}}
+                                  </div>
                                   <div id="api-endpoint-error"></div>
                               </td>
                               <td>{{#has_ownership}}
@@ -180,8 +184,8 @@
                               <tr>
                                   <td></td>
                                   <td>
-                                      <button type="button" id="mock-deploy-1" class="btn btn-lg btn-success"><i class="fa fa-caret-square-o-right"></i> Deploy</button>
-                                      &nbsp;<input type="checkbox" name="auto-deploy" checked> auto deploy
+                                      <button type="button" id="mock-deploy-1" class="btn btn-lg btn-success mock-save"><i class="fa fa-caret-square-o-right"></i> Save</button>
+                                      <button type="button" id="proxy-stop" class="btn btn-lg btn-danger mock-deploy"><i class="fa fa-square"></i> Save & Deploy</button>
                                   </td>
                                   <td></td>
                               </tr>
@@ -213,8 +217,8 @@
                                   <tr>
                                       <td></td>
                                       <td>
-                                          <button type="button" id="mock-deploy-2" class="btn btn-lg btn-success"><i class="fa fa-caret-square-o-right"></i> Deploy</button>
-                                          &nbsp;<input type="checkbox" name="auto-deploy" checked> auto deploy
+                                          <button type="button" id="mock-deploy-2" class="btn btn-lg btn-success"><i class="fa fa-caret-square-o-right"></i> Save</button>
+                                          <button type="button" id="proxy-stop" class="btn btn-lg btn-danger"><i class="fa fa-square"></i> Save & Deploy</button>
                                       </td>
                                       <td></td>
                                   </tr>
@@ -367,7 +371,7 @@
         };
     </script>
     <script id="proxy-capture-template" type="text/x-handlebars-template">
-        <table id="<%augment.tid%>" class="table table-bordered table-striped table-info">
+        <table id="<%augment.tid%>" class="table table-bordered table-striped table-info" style="display: none;">
             <tbody>
             <tr>
                 <td></td>
@@ -382,27 +386,43 @@
             <tr>
                 <td>Request:</td>
                 <td>
-                    <span class="label label-default">Header</span>&nbsp;<%augment.requestheader%><br>
+                    <span class="label label-default">Header</span>&nbsp;<span class="tooltipx" data-tooltip-content="#tooltip_c_rqh_<%augment.tid%>"><%augment.requestheader%></span><br>
                     <span class="label label-<%augment.methodcolor%>">Method</span>&nbsp;<%proxy.request.method%><br>
                     <span class="label label-primary">Host</span>&nbsp;<%proxy.request.host%><br>
                     <span class="label label-primary">Path</span>&nbsp;<%proxy.request.path%><br>
                     <span class="label label-<%augment.protocolor%>">Protocol</span>&nbsp;<%proxy.request.protocol%><br>
-                    <span class="label label-purple">Body</span><code class="language-json"><%augment.requestbody%></code>
+                    <span class="label label-purple">Body</span><code class="language-json tooltipx" data-tooltip-content="#tooltip_c_rqb_<%augment.tid%>"><%augment.requestbody%></code>
                 </td>
                 <td></td>
             </tr>
             <tr>
                 <td>Response:</td>
                 <td>
-                    <span class="label label-default">Header</span>&nbsp;<%augment.responseheader%><br>
+                    <span class="label label-default">Header</span>&nbsp;<span class="tooltipx" data-tooltip-content="#tooltip_c_rsh_<%augment.tid%>"><%augment.responseheader%></span><br>
                     <span class="label label-<%augment.codecolor%>">Code</span>&nbsp;<%proxy.response.code%><br>
                     <span class="label label-<%augment.codecolor%>">Message</span>&nbsp;<%proxy.response.message%><br>
-                    <span class="label label-purple">Body</span><code class="language-json"><%augment.responsebody%></code>
+                    <span class="label label-purple">Body</span><code class="language-json tooltipx" data-tooltip-content="#tooltip_c_rsb_<%augment.tid%>"><%augment.responsebody%></code>
                 </td>
                 <td></td>
             </tr>
             </tbody>
         </table>
+        <div class="tooltip_templates" style="display: none">
+            <span id="tooltip_c_rqh_<%augment.tid%>">
+                <pre><%augment.requestheaderhtml%></pre>
+            </span>
+            <span id="tooltip_c_rqb_<%augment.tid%>">
+                <pre><%augment.requestbodyhtml%></pre>
+            </span>
+            <span id="tooltip_c_rsh_<%augment.tid%>">
+                <pre><%augment.responseheaderhtml%></pre>
+            </span>
+            <span id="tooltip_c_rsb_<%augment.tid%>">
+                <pre><%augment.responsebodyhtml%></pre>
+            </span>
+        </div>
+
+
     </script>
     <script id="mock-method-template" type="text/x-handlebars-template">
         <table class="table table-bordered table-striped table-info" id="mock-method-container-<%group%>-<%tid%>">
@@ -410,11 +430,13 @@
             <tr>
                 <td width="150">Request Method:</td>
                 <td>
-                    <select name="method-1" id="method-1">
-                        <option name="GET">GET</option>
-                        <option name="POST">POST</option>
-                        <option name="DELETE">DELETE</option>
-                    </select>
+                    <div class="form-group">
+                        <select class="form-control" name="method-<%group%>-<%tid%>">
+                            <option name="GET">GET</option>
+                            <option name="POST">POST</option>
+                            <option name="DELETE">DELETE</option>
+                        </select>
+                    </div>
                 </td>
                 <td width="65">
                     <button type="button" data-mock-group="<%group%>-<%tid%>" class="btn btn-xs btn-danger mock-delete-method-button">Delete</button>
@@ -423,18 +445,22 @@
             <tr>
                 <td>Response Code:</td>
                 <td>
-                    <select name="resp-code-1" id="resp-code-1">
-                        <option name="200">200</option>
-                        <option name="400">400</option>
-                        <option name="500">500</option>
-                    </select>
+                    <div class="form-group">
+                        <select class="form-control" name="respcode-<%group%>-<%tid%>">
+                            <option name="200">200</option>
+                            <option name="400">400</option>
+                            <option name="500">500</option>
+                        </select>
+                    </div>
                 </td>
                 <td></td>
             </tr>
             <tr>
                 <td>Response JSON Payload:</td>
                 <td>
-                    <textarea name="payload-1"></textarea>
+                    <div class="form-group">
+                        <textarea class="form-control" rows="5" name="payload-<%group%>-<%tid%>"></textarea>
+                    </div>
                 </td>
                 <td></td>
             </tr>
@@ -442,10 +468,11 @@
         </table>
     </script>
     <script id="mock-resource-template" type="text/x-handlebars-template">
+        <div id="resource-url-copy-<%group%>-<%tid%>" style="display: none"></div>
         <table class="table table-bordered table-striped table-info" id="mock-resource-container-<%group%>-<%tid%>">
             <tbody>
             <tr>
-                <td><strong id="resource-url-1">{{new_api_endpoint}}/</strong><input type="text" name="custom-path-{{id}}" id="custom-path-{{id}}" value="" size="50">&nbsp;&nbsp;<button type="button" id="proxy-endpoint-clipboard" class="btn btn-xs btn-purple" data-clipboard-action="copy" data-clipboard-target="#endpoint-url">Copy to clipboard</button></td>
+                <td><div class="form-group"><strong id="resource-url-<%group%>-<%tid%>">{{new_api_endpoint}}/</strong><input class="form-control" type="text" name="path-<%group%>-<%tid%>" id="resource-path-<%group%>-<%tid%>" value="">&nbsp;&nbsp;<button type="button" id="proxy-endpoint-clipboard" class="btn btn-xs btn-purple" data-clipboard-action="copy" data-clipboard-target="#resource-url-copy-<%group%>-<%tid%>">Copy to clipboard</button></div></td>
                 <td>
                     <button type="button" data-mock-group="<%group%>-<%tid%>" class="btn btn-xs btn-danger mock-delete-resource-button">Delete</button>
                 </td>
@@ -467,6 +494,7 @@
     <script src="/assets/js/custom.js"></script>
     <script src="/assets/insect/js/html2canvas.js"></script>
     <script src="/assets/insect/js/clipboard.min.js"></script>
+    <script src="/assets/insect/js/tooltipster.bundle.min.js"></script>
     <script src="/assets/insect/js/handlebars.js"></script>
     <script src="/assets/insect/js/peek.js"></script>
     <script src="/assets/insect/js/mock.js"></script>

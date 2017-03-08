@@ -2,3 +2,7 @@
     padding: 10px 50px 10px 0;
 }
 
+pre {
+    background-color: #ededed;
+    border-color: #ededed;
+}

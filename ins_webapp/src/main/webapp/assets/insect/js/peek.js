@@ -50,7 +50,9 @@ $(document).ready(function(){
     }
 
     function prependProxyResponse(data) {
-        $('#proxy-updates').prepend(augmentProxyResponse(data));
+        var inPage = augmentProxyResponse(data);
+        $('#proxy-updates').prepend(inPage.content);
+        $('#'+inPage.tid).fadeIn(100);
         $('.remove-line').click(function (e) {
             var tableId = $(this).data("section-id");
             $('#' + tableId).remove();
@@ -59,6 +61,9 @@ $(document).ready(function(){
             }
         });
         $('#result-buttons').show();
+        $('.tooltipx').tooltipster({
+            theme: 'tooltipster-light'
+        });
     }
 
     function augmentProxyResponse(data) {
@@ -96,22 +101,49 @@ $(document).ready(function(){
         } else {
             color = "danger";
         }
+        var tid = Math.random().toString(36).substring(12)
 
-        data['augment'] = {codecolor: color,
-                           tid: Math.random().toString(36).substring(7),
-                           methodcolor: color1,
-                           protocolor: colorProto,
-                           requestheader: atob(data.proxy.request.header),
-                           requestbody: atob(data.proxy.request.body),
-                           responseheader: atob(data.proxy.response.header),
-                           responsebody: atob(data.proxy.response.body)
+        var requestheaderpp = "";
+        if(data.proxy.request.header !== "") {
+            var requestheaderobj = JSON.parse(atob(data.proxy.request.header));
+            requestheaderpp = JSON.stringify(requestheaderobj, " ", 2);
+        }
+        var requestbodypp = "";
+        if(data.proxy.request.body !== "") {
+            var requestbodyobj = JSON.parse(atob(data.proxy.request.body));
+            requestbodypp = JSON.stringify(requestbodyobj, " ", 2);
+        }
+        var responseheaderpp = "";
+        if(data.proxy.response.header !== "") {
+            var responseheaderobj = JSON.parse(atob(data.proxy.response.header));
+            responseheaderpp = JSON.stringify(responseheaderobj, " ", 2);
+        }
+        var responsebodypp = "";
+        if(data.proxy.response.body !== "") {
+            var responsebodyobj = JSON.parse(atob(data.proxy.response.body));
+            responsebodypp = JSON.stringify(responsebodyobj, " ", 2);
+        }
+        data['augment'] = { codecolor: color,
+                            tid: tid,
+                            methodcolor: color1,
+                            protocolor: colorProto,
+                            requestheader: atob(data.proxy.request.header),
+                            requestbody: atob(data.proxy.request.body),
+                            responseheader: atob(data.proxy.response.header),
+                            responsebody: atob(data.proxy.response.body),
+                            requestheaderhtml: requestheaderpp,
+                            requestbodyhtml: requestbodypp,
+                            responseheaderhtml: responseheaderpp,
+                            responsebodyhtml: responsebodypp
                            };
 
         var source   = $("#proxy-capture-template").html();
         var sourcep = source.replace(new RegExp("<%", 'g'), "{{");
         var sourcer = sourcep.replace(new RegExp("%>", 'g'), "}}");
         var template = Handlebars.compile(sourcer);
-        return template(data);
+        var retObj = { content: template(data),
+                        tid: tid};
+        return retObj;
     }
 
     function updateWSIndicator(state) {
