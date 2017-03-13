@@ -1,8 +1,8 @@
 $(document).ready(function(){
 
-    $( document ).delegate( '#mock-deploy-1', 'click', function(e) {
-        //set listener on class and here fetch nearest form
-        var form = $('#mock-form-1');
+    $( document ).delegate( '.mock-save', 'click', function(e) {
+        var id = $(this).data("mock-group")
+        var form = $('#mock-form-'+id);
         var formser = form.serialize();
         var elems = formser.split("&");
         var arrayLength = elems.length;
@@ -15,9 +15,8 @@ $(document).ready(function(){
             }
         }
 
-        localStorage.setItem('mock1', JSON.stringify(convertToSettingsObject(oout)));
-        localStorage.setItem('mockt', JSON.stringify(oout));
-        console.log("  dd");
+        localStorage.setItem('mock'+id, JSON.stringify(convertToSettingsObject(oout)));
+        localStorage.setItem('mocko'+id, JSON.stringify(oout));
         $.ajax({
             url: form.attr('action'),
             method: 'POST',

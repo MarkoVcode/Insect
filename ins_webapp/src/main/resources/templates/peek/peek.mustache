@@ -161,7 +161,7 @@
                       </table>
                   </div>
                   <div role="tabpanel" class="tab-pane fade" id="mock1">
-                      <form id="mock-form-1" action="/">
+                      <form id="mock-form-1">
                       <table class="table table-bordered table-striped table-info">
                           <tbody>
                           <tr>
@@ -180,16 +180,14 @@
 
                               </td>
                           </tr>
-                          {{#has_ownership}}
                               <tr>
                                   <td></td>
                                   <td>
-                                      <button type="button" id="mock-deploy-1" class="btn btn-lg btn-success mock-save"><i class="fa fa-caret-square-o-right"></i> Save</button>
-                                      <button type="button" id="proxy-stop" class="btn btn-lg btn-danger mock-deploy"><i class="fa fa-square"></i> Save & Deploy</button>
+                                      <button type="button" data-mock-group="1" class="btn btn-lg btn-success mock-save"><i class="fa fa-caret-square-o-right"></i> Save</button>
+                                      <button type="button" data-mock-group="1" class="btn btn-lg btn-danger mock-deploy"><i class="fa fa-square"></i> Save & Deploy</button>
                                   </td>
                                   <td></td>
                               </tr>
-                          {{/has_ownership}}
                           </tbody>
                       </table>
                       </form>
@@ -213,16 +211,14 @@
                                   <td>
                                   </td>
                               </tr>
-                              {{#has_ownership}}
                                   <tr>
                                       <td></td>
                                       <td>
-                                          <button type="button" id="mock-deploy-2" class="btn btn-lg btn-success"><i class="fa fa-caret-square-o-right"></i> Save</button>
-                                          <button type="button" id="proxy-stop" class="btn btn-lg btn-danger"><i class="fa fa-square"></i> Save & Deploy</button>
+                                          <button type="button" data-mock-group="2" class="btn btn-lg btn-success mock-save"><i class="fa fa-caret-square-o-right"></i> Save</button>
+                                          <button type="button" data-mock-group="2" class="btn btn-lg btn-danger mock-deploy"><i class="fa fa-square"></i> Save & Deploy</button>
                                       </td>
                                       <td></td>
                                   </tr>
-                              {{/has_ownership}}
                               </tbody>
                           </table>
                       </form>
@@ -246,16 +242,14 @@
                                   <td>
                                   </td>
                               </tr>
-                              {{#has_ownership}}
                                   <tr>
                                       <td></td>
                                       <td>
-                                          <button type="button" id="mock-deploy-3" class="btn btn-lg btn-success"><i class="fa fa-caret-square-o-right"></i> Deploy</button>
-                                          &nbsp;<input type="checkbox" name="auto-deploy" checked> auto deploy
+                                          <button type="button" data-mock-group="3" class="btn btn-lg btn-success mock-save"><i class="fa fa-caret-square-o-right"></i> Save</button>
+                                          <button type="button" data-mock-group="3" class="btn btn-lg btn-danger mock-deploy"><i class="fa fa-square"></i> Save & Deploy</button>
                                       </td>
                                       <td></td>
                                   </tr>
-                              {{/has_ownership}}
                               </tbody>
                           </table>
                       </form>
@@ -279,16 +273,14 @@
                                   <td>
                                   </td>
                               </tr>
-                              {{#has_ownership}}
                                   <tr>
                                       <td></td>
                                       <td>
-                                          <button type="button" id="mock-deploy-4" class="btn btn-lg btn-success"><i class="fa fa-caret-square-o-right"></i> Deploy</button>
-                                          &nbsp;<input type="checkbox" name="auto-deploy" checked> auto deploy
+                                          <button type="button" data-mock-group="4" class="btn btn-lg btn-success mock-save"><i class="fa fa-caret-square-o-right"></i> Save</button>
+                                          <button type="button" data-mock-group="4" class="btn btn-lg btn-danger mock-deploy"><i class="fa fa-square"></i> Save & Deploy</button>
                                       </td>
                                       <td></td>
                                   </tr>
-                              {{/has_ownership}}
                               </tbody>
                           </table>
                       </form>
@@ -312,16 +304,14 @@
                                   <td>
                                   </td>
                               </tr>
-                              {{#has_ownership}}
                                   <tr>
                                       <td></td>
                                       <td>
-                                          <button type="button" id="mock-deploy-5" class="btn btn-lg btn-success"><i class="fa fa-caret-square-o-right"></i> Deploy</button>
-                                          &nbsp;<input type="checkbox" name="auto-deploy" checked> auto deploy
+                                          <button type="button" data-mock-group="5" class="btn btn-lg btn-success mock-save"><i class="fa fa-caret-square-o-right"></i> Save</button>
+                                          <button type="button" data-mock-group="5" class="btn btn-lg btn-danger mock-deploy"><i class="fa fa-square"></i> Save & Deploy</button>
                                       </td>
                                       <td></td>
                                   </tr>
-                              {{/has_ownership}}
                               </tbody>
                           </table>
                       </form>

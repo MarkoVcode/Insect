@@ -33,6 +33,7 @@ $(document).ready(function(){
         websocket.onmessage = function (event) {
             var resp = JSON.parse(event.data);
             if(resp.proxy) {
+                wsActivitOn();
                 console.log("proxy message");
                 prependProxyResponse(resp);
             } else {
@@ -47,6 +48,17 @@ $(document).ready(function(){
             console.log("Reconnecting to WS");
             establishWSConnection();
         }
+    }
+
+    function wsActivitOn() {
+        $('#indicator-ws').removeClass("btn-success");
+        $('#indicator-ws').addClass("btn-teal");
+        setTimeout(wsActivitOff, 150);
+    }
+
+    function wsActivitOff() {
+        $('#indicator-ws').removeClass("btn-teal");
+        $('#indicator-ws').addClass("btn-success");
     }
 
     function prependProxyResponse(data) {
