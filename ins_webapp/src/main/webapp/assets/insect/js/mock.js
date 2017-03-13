@@ -92,14 +92,20 @@ $(document).ready(function(){
         for(var key in fromFormObject) {
             if(fromFormObject.hasOwnProperty(key)) {
                 mock = key;
+                obj[mock] = [];
                 for(var resource in fromFormObject[key]) {
                     if(fromFormObject[key].hasOwnProperty(resource)) {
-                        obj[mock] = {path: fromFormObject[key][resource]['path'], methods: {}};
+                        var resourcePath = {path: fromFormObject[key][resource]['path'], methods: {}};
                         for(var method in fromFormObject[key][resource]) {
-                            if(fromFormObject[key][resource].hasOwnProperty(method)) {
-                                obj[mock]['methods'] = {}
+                            if (method !== 'path') {
+                                if(fromFormObject[key][resource].hasOwnProperty(method)) {
+                                    resourcePath['methods'][fromFormObject[key][resource][method]['method']] = {
+                                        code: fromFormObject[key][resource][method]['respcode'],
+                                        payload: fromFormObject[key][resource][method]['payload']};
+                                }
                             }
                         }
+                        obj[mock].push(resourcePath);
                     }
                 }
             }
