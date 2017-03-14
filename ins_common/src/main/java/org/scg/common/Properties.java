@@ -70,17 +70,20 @@ public class Properties {
     private static String WEBSOCKETS_WEB_HOST = HOST_IP;
     private static final Integer WEBAPP_PUBLIC_PORT = 9080;
     private static String WEBAPP_STATIC_DIR = "/ins_webapp/src/main/webapp";
-    private static String  WEBAPP_TEMPLATES_DIR = "ins_webapp/src/main/resources/templates/";
+    private static String WEBAPP_TEMPLATES_DIR = "ins_webapp/src/main/resources/templates/";
     private static String PROXY_API_ENDPOINT = "http://"+HOST_IP+":9180/service/proxy/";
+    private static String SELFTEST_WEB_PROXY = "http://"+HOST_IP+":9080/selftest/";
     private static String SELFTEST_API = "http://"+HOST_IP+":9180/service/selftest";
-
+    private static String MOCKDEPLOY_API = "http://"+HOST_IP+":9080/service/mock/";
     //PRODUCTION SETTINGS
     static {
         if(!isDevEnvironment()) {
             REDIS_HOST= "redis";
             REDIS_DEFAULT_SESSION_EXPIRATION = 60*60; //1 hour from start
             PROXY_API_ENDPOINT = "https://api.insectin.space/service/proxy/";
+            SELFTEST_WEB_PROXY = "https://www.insectin.space/selftest/";
             SELFTEST_API = "https://api.insectin.space/service/selftest";
+            MOCKDEPLOY_API = "https://www.insectin.space/service/mock";
             WEBSOCKETS_WEB_PROTO = "wss";
             WEBSOCKETS_WEB_HOST = "ws.insectin.space";
             WEBSOCKETS_WEB_PORT = 443;
@@ -264,5 +267,13 @@ public class Properties {
 
     public String getSelfTestUrl() {
         return SELFTEST_API;
+    }
+
+    public String getSelfTestWebProxyUrl() {
+        return SELFTEST_WEB_PROXY;
+    }
+
+    public String getMockDeployUrl() {
+        return MOCKDEPLOY_API;
     }
 }

@@ -225,7 +225,9 @@ $(document).ready(function(){
     });
 
     $('#proxy-endpoint-testget').click(function(){
-        $.get( $('#endpoint-url').html(), function( data ) {});
+        $.post( configObj.selftestWebProxy, function( data ) {
+            console.log(data);
+        });
     });
 
     $('#proxy-upstream-selftest').click(function(){

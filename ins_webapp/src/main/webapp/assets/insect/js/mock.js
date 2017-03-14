@@ -2,30 +2,17 @@ $(document).ready(function(){
 
     $( document ).delegate( '.mock-save', 'click', function(e) {
         var id = $(this).data("mock-group")
-        var form = $('#mock-form-'+id);
-        var formser = form.serialize();
-        var elems = formser.split("&");
-        var arrayLength = elems.length;
-        var oout = {};
-        for (var i = 0; i < arrayLength; i++) {
-            if(elems[i].startsWith("path")) {
-                getPathParams(elems[i], oout);
-            } else {
-                getConfigParams(elems[i], oout);
-            }
+        if(isMockValid(id)) {
+            saveMock(id);
         }
+    });
 
-        localStorage.setItem('mock'+id, JSON.stringify(convertToSettingsObject(oout)));
-        localStorage.setItem('mocko'+id, JSON.stringify(oout));
-        $.ajax({
-            url: form.attr('action'),
-            method: 'POST',
-            data: form.serialize(),
-            success: function (response) {
-                var pContent = $(response).find("#ajax-form-container");
-                $("#ajax-form-container").html(pContent);
-            }
-        });
+    $( document ).delegate( '.mock-deploy', 'click', function(e) {
+        var id = $(this).data("mock-group")
+        if(isMockValid(id)) {
+            saveMock(id);
+            deployMock(id);
+        }
     });
 
     $('.mock-add-resource-button').click(function(e){
@@ -50,6 +37,43 @@ $(document).ready(function(){
             $("#mock-resource-container-"+group).remove();
         });
     });
+
+    function deployMock(id) {
+        if(localStorage.getItem('mock'+id) !== null) {
+            var mockConfig = localStorage.getItem('mock'+id);
+            $.ajax({
+                url: configObj.mockDeployURL,
+                method: 'POST',
+                data: form.serialize(),
+                success: function (response) {
+                    var pContent = $(response).find("#ajax-form-container");
+                    $("#ajax-form-container").html(pContent);
+                }
+            });
+        }
+    }
+
+    function isMockValid(id) {
+        return true;
+    }
+
+    function saveMock(id) {
+        var form = $('#mock-form-'+id);
+        var formser = form.serialize();
+        var elems = formser.split("&");
+        var arrayLength = elems.length;
+        var oout = {};
+        for (var i = 0; i < arrayLength; i++) {
+            if(elems[i].startsWith("path")) {
+                getPathParams(elems[i], oout);
+            } else {
+                getConfigParams(elems[i], oout);
+            }
+        }
+
+        localStorage.setItem('mock'+id, JSON.stringify(convertToSettingsObject(oout)));
+        localStorage.setItem('mocko'+id, JSON.stringify(oout));
+    }
 
     function getTemplate(template) {
         var source  = $(template).html();

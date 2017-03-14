@@ -29,6 +29,7 @@ import org.scg.webapp.dto.ajax.AjaxResponse;
 import org.scg.webapp.model.ChangelogModel;
 import org.scg.webapp.model.DocModel;
 import org.scg.webapp.model.PeekModel;
+import org.scg.webapp.model.SelftestModel;
 import spark.ModelAndView;
 import spark.Request;
 import spark.template.mustache.MustacheTemplateEngine;
@@ -53,7 +54,7 @@ public class HomePage {
     private void setupRoutes() {
         get("/", (rq, rs) -> new ModelAndView(null, PROP.getWebappTemplatesDir()+"home/home.mustache"), new MustacheTemplateEngine());
         get("/changelog", (rq, rs) -> new ModelAndView((new ChangelogModel()).getModel(), PROP.getWebappTemplatesDir()+"changelog/changelog.mustache"), new MustacheTemplateEngine());
-        get("/doc", (rq, rs) -> new ModelAndView((new DocModel()).getModel(), PROP.getWebappTemplatesDir()+"doc/doc.mustache"), new MustacheTemplateEngine());
+        get("/doc", (rq, rs) -> new ModelAndView((new DocModel()).getModel(), PROP.getWebappTemplatesDir()+"doce/doc.mustache"), new MustacheTemplateEngine());
 
         before("/peek/:psid", (rq, rs) -> {
             if(!db.isValidProxySession(rq.params(":psid"))) {
@@ -88,6 +89,24 @@ public class HomePage {
             String key = generateActiveKey(rq);
             rs.redirect("/peek/"+key);
             halt();
+        });
+
+        //Proxy self test GET request
+        post("/selftest/:psid", (rq, rs) -> {
+            rs.type("application/json");
+            SelftestModel pm = new SelftestModel(rq);
+            AjaxResponse response = pm.processAjaxRequest();
+            rs.status(response.getCode());
+            return response.getBody();
+        });
+
+        //Deploy mock
+        post("/service/mock", (rq, rs) -> {
+            rs.type("application/json");
+            SelftestModel pm = new SelftestModel(rq);
+            AjaxResponse response = pm.processAjaxRequest();
+            rs.status(response.getCode());
+            return response.getBody();
         });
     }
 

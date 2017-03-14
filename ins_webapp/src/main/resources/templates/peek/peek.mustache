@@ -356,7 +356,9 @@
     var configObj = {
         websocketsURL: '{{config_websockets_url}}',
         selftestURL: '{{selftest_url}}',
+        selftestWebProxy: '{{selftest_web_proxy_url}}',
         sessionTimeout: {{config_session_timeout}},
+        mockDeployURL: '{{mock_deploy_url}}',
         psid: '{{psid}}'
         };
     </script>
@@ -366,7 +368,7 @@
             <tr>
                 <td></td>
                 <td>
-                    &nbsp;<span class="label label-primary">Dispatch Timestamp</span>&nbsp;<%proxy.general.dateDispatch}}&nbsp;<span class="label label-primary">Response Time [us]</span>&nbsp;<%proxy.general.responseTime}}
+                    &nbsp;<span class="label label-primary">Dispatch Timestamp</span>&nbsp;<%proxy.general.dateDispatch%>&nbsp;<span class="label label-primary">Response Time [us]</span>&nbsp;<%proxy.general.responseTime%>
                 </td>
                 <td>
                     <button type="button" class="btn btn-xs btn-outline btn-danger remove-line" data-section-id="<%augment.tid%>"><i class="fa fa-close"></i></button>
