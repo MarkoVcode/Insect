@@ -13,7 +13,9 @@
     <link href="/assets/css/custom.css" rel="stylesheet">
     <link href="/assets/insect/css/tooltipster.bundle.min.css" rel="stylesheet">
     <link href="/assets/insect/css/tooltipster-sideTip-light.min.css" rel="stylesheet">
+    <link href="/assets/insect/css/jsoneditor.css" rel="stylesheet" type="text/css">
     <link href="/assets/insect/css/insect.css" rel="stylesheet">
+
     <!-- Fonts -->
     <link href='//fonts.googleapis.com/css?family=Raleway:100,300,400,500%7CLato:300,400' rel='stylesheet' type='text/css'>
 
@@ -426,6 +428,8 @@
                         <select class="form-control" name="method-<%group%>-<%tid%>">
                             <option name="GET">GET</option>
                             <option name="POST">POST</option>
+                            <option name="POST">PUT</option>
+                            <option name="POST">PATCH</option>
                             <option name="DELETE">DELETE</option>
                         </select>
                     </div>
@@ -440,18 +444,22 @@
                     <div class="form-group">
                         <select class="form-control" name="respcode-<%group%>-<%tid%>">
                             <option name="200">200</option>
+                            <option name="200">204</option>
                             <option name="400">400</option>
+                            <option name="400">401</option>
+                            <option name="400">404</option>
                             <option name="500">500</option>
                         </select>
                     </div>
                 </td>
                 <td></td>
             </tr>
-            <tr>
+            <tr id="json-payload-<%group%>-<%tid%>">
                 <td>Response JSON Payload:</td>
                 <td>
                     <div class="form-group">
-                        <textarea class="form-control" rows="5" name="payload-<%group%>-<%tid%>"></textarea>
+                        <div id="jsoneditor-<%group%>-<%tid%>"></div>
+                        <!-- <textarea class="form-control json-payload" rows="5" name="payload-<%group%>-<%tid%>"></textarea> -->
                     </div>
                 </td>
                 <td></td>
@@ -488,6 +496,8 @@
     <script src="/assets/insect/js/clipboard.min.js"></script>
     <script src="/assets/insect/js/tooltipster.bundle.min.js"></script>
     <script src="/assets/insect/js/handlebars.js"></script>
+    <script src="/assets/insect/js/ace.js"></script>
+    <script src="/assets/insect/js/jsoneditor-minimalist.js"></script>
     <script src="/assets/insect/js/peek.js"></script>
     <script src="/assets/insect/js/mock.js"></script>
   </body>

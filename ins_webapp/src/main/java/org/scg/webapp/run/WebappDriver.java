@@ -26,6 +26,7 @@ package org.scg.webapp.run;
 import org.scg.common.Properties;
 import org.scg.webapp.controller.HomePage;
 import org.scg.webapp.controller.Page404;
+import org.scg.webapp.controller.PeekPage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import spark.ModelAndView;
@@ -62,6 +63,7 @@ public class WebappDriver implements SparkApplication {
         LOG.error("ERROR");
 
         new HomePage();
+        new PeekPage();
         new Page404();
 
         exception(Exception.class, (e, request, response) -> {
