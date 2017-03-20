@@ -60,7 +60,7 @@ public class Properties {
     private static final String VERSION = "0.1.2";
     private static final Integer REDIS_PORT= 6379;
     private static String REDIS_HOST= "127.0.0.1";
-    private static Integer REDIS_DEFAULT_SESSION_EXPIRATION = 60*60; //24 hours from start
+    private static Integer REDIS_DEFAULT_SESSION_EXPIRATION = 60*60; //1 hour from start
     private static Integer WEBSOCKETS_WEB_PORT = 9280;
     private static final Integer WEBSOCKETS_INTERNAL_PORT = 4480;
     private static final String  WEBSOCKETS_ROOT = "";

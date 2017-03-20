@@ -41,9 +41,19 @@ public class SIDTool {
     private static String CHARS_KEYS = "qazwsxedcrfvtgbyhnujmikolp1234567890QAZWSXEDCRFVTGBYHNUJMIKOLP";
 
     public static String WS_KEY_SUFFIX = "_WS";
+    public static String MOCK_KEY_SUFFIX = "_MOCK";
+    public static String EXPIRE_KEY_SUFFIX = "_EXPIRE";
 
     public static String buildWSSessionsKey(String psid) {
         return psid + WS_KEY_SUFFIX;
+    }
+
+    public static String buildMockSessionsKey(String psid) {
+        return psid + MOCK_KEY_SUFFIX;
+    }
+
+    public static String buildExpireSessionsKey(String psid) {
+        return psid + EXPIRE_KEY_SUFFIX;
     }
 
     public static String buildWSSessionKey(String psid, String wsSssionId) {

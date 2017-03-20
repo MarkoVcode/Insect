@@ -27,6 +27,8 @@ import org.scg.common.Properties;
 import org.scg.common.tool.SIDTool;
 import redis.clients.jedis.Jedis;
 
+import java.util.Date;
+
 /**
  * Created by developer on 1/22/17.
  */
@@ -65,23 +67,16 @@ public class DB {
         return false;
     }
 
-    public String createProxySession() {
-        String key = SIDTool.generateProxySessionId();
-        JEDIS.set(key, "");
-        JEDIS.expire(key, PROP.getRedisDefaultSessionExpiration());
-        return key;
-    }
-
-    public void setProxyApiEndpoint(String psid, String endpointURL) {
-        JEDIS.set(psid, endpointURL);
-    }
-
     public String getProxyApiEndpoint(String psid) {
         return JEDIS.get(psid);
     }
+    public String getMockConfig(String psid) {
+        String key = SIDTool.buildMockSessionsKey(psid);
+        return JEDIS.get(key);
+    }
 
     public boolean isSessionOwner(String session, String pSessionId) {
-        String skey = SIDTool.buildWSSessionKey(session,pSessionId);
+        String skey = SIDTool.buildWSSessionKey(pSessionId, session);
         if(JEDIS.exists(skey)) {
             String psid = JEDIS.get(skey);
             if(pSessionId.equals(psid)) {
@@ -91,8 +86,8 @@ public class DB {
         return false;
     }
 
-    public void setSessionOwnership(String session, String pSessionId) {
-        String skey = SIDTool.buildWSSessionKey(session,pSessionId);
+    private void setSessionOwnership(String session, String pSessionId) {
+        String skey = SIDTool.buildWSSessionKey(pSessionId,session);
         JEDIS.set(skey, pSessionId);
         JEDIS.expire(skey, PROP.getRedisDefaultSessionExpiration());
     }
@@ -119,6 +114,57 @@ public class DB {
                 JEDIS.hdel(SIDTool.buildWSSessionsKey(psid), SIDTool.buildWSSessionKey(psid, wsSssionId));
             }
         }
+    }
+
+    public void updateProxyApiEndpoint(String psid, String endpointURL) {
+        JEDIS.set(psid, endpointURL);
+        JEDIS.expire(psid, getRealExpirationTime(psid));
+    }
+
+    public void updateMockConfig(String psid, String mockConfigJson) {
+        String key = SIDTool.buildMockSessionsKey(psid);
+        JEDIS.set(key, mockConfigJson);
+        JEDIS.expire(key, getRealExpirationTime(psid));
+    }
+
+    private Integer getRealExpirationTime(String psid) {
+        String key = SIDTool.buildExpireSessionsKey(psid);
+        Long futureTime = Long.parseLong(JEDIS.get(key));
+        Long timeNow = (new Date()).getTime()/1000;
+        if(futureTime > timeNow) {
+            return futureTime.intValue() - timeNow.intValue();
+        }
+        return 1;
+    }
+
+    private void createProxySession(String psid) {
+        JEDIS.set(psid, "");
+        JEDIS.expire(psid, PROP.getRedisDefaultSessionExpiration());
+    }
+
+    private void createProxySessionTimer(String psid) {
+        String key = SIDTool.buildExpireSessionsKey(psid);
+        Long timeToExpire = (new Date()).getTime()/1000 + PROP.getRedisDefaultSessionExpiration();
+        JEDIS.set(key, ""+timeToExpire);
+        JEDIS.expire(key, PROP.getRedisDefaultSessionExpiration());
+    }
+
+    private void createMockSession(String psid) {
+        String key = SIDTool.buildMockSessionsKey(psid);
+        JEDIS.set(key, "");
+        JEDIS.expire(key, PROP.getRedisDefaultSessionExpiration());
+    }
+
+    /**
+     * This method is called only once when the session starts
+     */
+    public String createInsectSession(String webSessionId) {
+        String psid = SIDTool.generateProxySessionId();
+        createProxySession(psid);
+        setSessionOwnership(webSessionId, psid);
+        createProxySessionTimer(psid);
+        createMockSession(psid);
+        return psid;
     }
 
 }
