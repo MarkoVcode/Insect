@@ -1,6 +1,11 @@
 $(document).ready(function(){
 
     var editors = {};
+    var editorOptions = {
+        modes: ['text', 'code', 'tree', 'form', 'view'],
+        mode: 'code',
+        ace: ace
+    };
 
     $( document ).delegate( '.mock-save', 'click', function(e) {
         var id = $(this).data("mock-group")
@@ -37,11 +42,6 @@ $(document).ready(function(){
                     tid: Math.random().toString(36).substring(18)};
         $("#mock-methods-"+group).append(template(data));
         var editorId = "jsoneditor-" + data.group + "-" + data.tid;
-        var options = {
-            modes: ['text', 'code', 'tree', 'form', 'view'],
-            mode: 'code',
-            ace: ace
-        };
         var json = {
             'array': [1, 2, 3],
             'boolean': true,
@@ -52,7 +52,7 @@ $(document).ready(function(){
         };
         var container = document.getElementById(editorId);
 
-        editors[editorId] = new JSONEditor(container, options, json);
+        editors[editorId] = new JSONEditor(container, editorOptions, json);
 
     });
 
