@@ -476,6 +476,30 @@
                 </td>
                 <td></td>
             </tr>
+            <tr>
+                <td>Headers:</td>
+                <td>
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-striped">
+                            <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Value</th>
+                                <th>#<button type="button" data-mock-group="<%group%>-<%tid%>" class="btn btn-xs btn-danger mock-delete-method-button">+</button></th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td><input class="form-control" type="text" name="header-name-<%group%>-<%tid%>" value=""></td>
+                                <td><input class="form-control" type="text" name="header-value-<%group%>-<%tid%>" value=""></td>
+                                <td><button type="button" data-mock-group="<%group%>-<%tid%>" class="btn btn-xs btn-danger mock-delete-method-button">-</button></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </td>
+                <td></td>
+            </tr>
             <tr id="json-payload-<%group%>-<%tid%>">
                 <td>Response JSON Payload:</td>
                 <td>
