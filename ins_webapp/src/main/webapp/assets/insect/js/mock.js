@@ -92,6 +92,7 @@ $(document).ready(function(){
 
     function saveMock(id) {
         var form = $('#mock-form-'+id);
+        //move json from editor to hidden field
         var formser = form.serialize();
         var elems = formser.split("&");
         var arrayLength = elems.length;
@@ -157,8 +158,9 @@ $(document).ready(function(){
                                 if(fromFormObject[key][resource].hasOwnProperty(method)) {
                                     resourcePath['methods'][fromFormObject[key][resource][method]['method']] = {
                                         code: fromFormObject[key][resource][method]['respcode'],
-                                        payload: fromFormObject[key][resource][method]['payload']};
-                                        //here payload base64
+                                        payload: btoa(fromFormObject[key][resource][method]['payload'])};
+                   // btoa atob
+                   //here payload base64
                                 }
                             }
                         }
