@@ -65,13 +65,7 @@ $(document).ready(function(){
         var inPage = augmentProxyResponse(data);
         $('#proxy-updates').prepend(inPage.content);
         $('#'+inPage.tid).fadeIn(100);
-        $('.remove-line').click(function (e) {
-            var tableId = $(this).data("section-id");
-            $('#' + tableId).remove();
-            if($('#proxy-updates').children().length == 0) {
-                $('#result-buttons').hide();
-            }
-        });
+
         $('#result-buttons').show();
         $('.tooltipx').tooltipster({
             theme: 'tooltipster-light'
@@ -185,6 +179,15 @@ $(document).ready(function(){
             $('#proxy-upstream-selftest').prop('disabled', false);
         }
     }
+
+    $(document).delegate('.remove-line', 'click', function(e) {
+        var tableId = $(this).data("section-id");
+        $('#' + tableId).remove();
+        $('#' + tableId + '-tooltip').remove();
+        if($('#proxy-updates').children('table').length == 0) {
+            $('#result-buttons').hide();
+        }
+    });
 
     if($('#api-endpoint').val().length == 0) {
         if(localStorage.getItem('endpoint-'+configObj.psid) != null) {
