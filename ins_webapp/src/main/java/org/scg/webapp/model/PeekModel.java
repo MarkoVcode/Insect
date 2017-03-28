@@ -56,6 +56,7 @@ public class PeekModel extends AbstractModel {
     public void generateModel() {
         model.put("psid", psid);
         model.put("new_api_endpoint", PROP.getProxyAPIEndpoint() + psid);
+        model.put("new_mock_endpoint", PROP.getProxyAPIEndpoint() + psid); //generate mock url
         model.put("proxy_api_endpoint", getProxyApiEndpoint());
         model.put("is_active", db.isProxyActive(psid));
         model.put("config_websockets_url", PROP.getWebWebsocketsUrl());

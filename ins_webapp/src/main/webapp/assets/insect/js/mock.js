@@ -1,6 +1,7 @@
 $(document).ready(function(){
 
     var editors = {};
+    var httpMethods = ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'];
     var editorOptions = {
         modes: ['text', 'code', 'tree', 'form', 'view'],
         mode: 'code',
@@ -35,10 +36,47 @@ $(document).ready(function(){
         $("#mock-resource-container-"+group).remove();
     });
 
+    $(document).delegate('.mock-add-header-button', 'click', function(e) {
+        var group = $( this ).data("mock-group");
+        var template = Handlebars.compile(getTemplate("#mock-headers-template"));
+        var data = {group: group,
+                    tid: Math.random().toString(36).substring(18)};
+        $("#mock-headers-container-"+group).append(template(data));
+    });
+
+    $(document).delegate('.mock-method-select', 'change', function(e) {
+        var dropdownGroup = $(this).data("mock-method-group");
+        var payload = $(this).data("mock-payload");
+        var item=$(this);
+        if(item.val() === 'DELETE') {
+            $("#"+payload).hide();
+        } else {
+            $("#"+payload).show();
+        }
+        $('.'+dropdownGroup).each(function(i, obj) {
+            for (var i=0; i<obj.length; i++){
+                if (obj.options[i].value == item.val())
+                    obj.remove(i);
+            }
+        });
+    });
+
+
+//$("option[value='foo']").remove();
+//or better (if you have few selects in the page):
+//$("#select_id option[value='foo']").remove();
+
+
+    $(document).delegate('.mock-delete-header-button', 'click', function(e) {
+        var group = $( this ).data("mock-group");
+        $("#mock-header-"+group).remove();
+    });
+
     $(document).delegate('.mock-add-method-button', 'click', function(e) {
         var group = $( this ).data("mock-group");
         var template = Handlebars.compile(getTemplate("#mock-method-template"));
         var data = {group: group,
+                    methods_options: generateMethodDropdownList(),
                     tid: Math.random().toString(36).substring(18)};
         $("#mock-methods-"+group).append(template(data));
         var editorId = "jsoneditor-" + data.group + "-" + data.tid;
@@ -70,6 +108,14 @@ $(document).ready(function(){
         // if err mark this red
         //console.log("change json");
     //});
+
+    function generateMethodDropdownList() {
+        var output = "";
+        for(var i=0; i<httpMethods.length; i++) {
+            output = output + "<option name=\"" + httpMethods[i] + "\">" + httpMethods[i] + "</option>";
+        }
+        return output;
+    }
 
     function deployMock(id) {
         if(localStorage.getItem('mock'+id) !== null) {
@@ -111,8 +157,11 @@ $(document).ready(function(){
 
     function getTemplate(template) {
         var source  = $(template).html();
-        var sourcep = source.replace(new RegExp("<%", 'g'), "{{");
-        return sourcep.replace(new RegExp("%>", 'g'), "}}");
+        var sourcep = source.replace(new RegExp("<%", 'g'), "{{")
+                            .replace(new RegExp("%>", 'g'), "}}")
+                            .replace(new RegExp("<&", 'g'), "{{{")
+                            .replace(new RegExp("&>", 'g'), "}}}");
+        return sourcep;
     }
 
     function getMockBankName(no) {

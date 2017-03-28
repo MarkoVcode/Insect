@@ -82,9 +82,11 @@
                   <li role="presentation" class="active">
                       <a href="#proxy" aria-controls="home" role="tab" data-toggle="tab">Proxy</a>
                   </li>
+{{#has_ownership}}
                   <li role="presentation">
                       <a href="#mock" aria-controls="profile" role="tab" data-toggle="tab">Mock</a>
                   </li>
+{{/has_ownership}}
               </ul>
 
               <!-- Tab panes -->
@@ -150,6 +152,7 @@
                           </tbody>
                       </table>
                   </div>
+{{#has_ownership}}
                   <div role="tabpanel" class="tab-pane fade" id="mock">
 
 
@@ -189,8 +192,8 @@
                                           <tr>
                                               <td width="95">Resources:</td>
                                               <td></td>
-                                              <td width="52">
-                                                  <button type="button" data-mock-group="1" class="btn btn-xs btn-success mock-add-resource-button">Add</button>
+                                              <td width="40">
+                                                  <button type="button" data-mock-group="1" class="btn btn-xs btn-success mock-add-resource-button"><i class="fa fa-plus"></i></button>
                                               </td>
                                           </tr>
                                           <tr>
@@ -221,8 +224,8 @@
                                           <tr>
                                               <td width="95">Resources:</td>
                                               <td></td>
-                                              <td width="52">
-                                                  <button type="button" data-mock-group="2" class="btn btn-xs btn-success mock-add-resource-button">Add</button>
+                                              <td width="40">
+                                                  <button type="button" data-mock-group="2" class="btn btn-xs btn-success mock-add-resource-button"><i class="fa fa-plus"></i></button>
                                               </td>
                                           </tr>
                                           <tr>
@@ -252,8 +255,8 @@
                                           <tr>
                                               <td width="95">Resources:</td>
                                               <td></td>
-                                              <td width="52">
-                                                  <button type="button" data-mock-group="3" class="btn btn-xs btn-success mock-add-resource-button">Add</button>
+                                              <td width="40">
+                                                  <button type="button" data-mock-group="3" class="btn btn-xs btn-success mock-add-resource-button"><i class="fa fa-plus"></i></button>
                                               </td>
                                           </tr>
                                           <tr>
@@ -283,8 +286,8 @@
                                           <tr>
                                               <td width="95">Resources:</td>
                                               <td></td>
-                                              <td width="52">
-                                                  <button type="button" data-mock-group="4" class="btn btn-xs btn-success mock-add-resource-button">Add</button>
+                                              <td width="40">
+                                                  <button type="button" data-mock-group="4" class="btn btn-xs btn-success mock-add-resource-button"><i class="fa fa-plus"></i></button>
                                               </td>
                                           </tr>
                                           <tr>
@@ -314,8 +317,8 @@
                                           <tr>
                                               <td width="95">Resources:</td>
                                               <td></td>
-                                              <td width="52">
-                                                  <button type="button" data-mock-group="5" class="btn btn-xs btn-success mock-add-resource-button">Add</button>
+                                              <td width="40">
+                                                  <button type="button" data-mock-group="5" class="btn btn-xs btn-success mock-add-resource-button"><i class="fa fa-plus"></i></button>
                                               </td>
                                           </tr>
                                           <tr>
@@ -353,6 +356,7 @@
           </article>
         <!-- END Main content  -->
       </div>
+{{/has_ownership}}
     </main>
 
 
@@ -444,17 +448,13 @@
                 <td width="150">Request Method:</td>
                 <td>
                     <div class="form-group">
-                        <select class="form-control" name="method-<%group%>-<%tid%>">
-                            <option name="GET">GET</option>
-                            <option name="POST">POST</option>
-                            <option name="POST">PUT</option>
-                            <option name="POST">PATCH</option>
-                            <option name="DELETE">DELETE</option>
+                        <select class="form-control mock-method-select dropdown-grp-<%group%>" data-mock-method-group="dropdown-grp-<%group%>" data-mock-payload="json-payload-<%group%>-<%tid%>" name="method-<%group%>-<%tid%>">
+                            <&methods_options&>
                         </select>
                     </div>
                 </td>
-                <td width="65">
-                    <button type="button" data-mock-group="<%group%>-<%tid%>" class="btn btn-xs btn-danger mock-delete-method-button">Delete</button>
+                <td width="40">
+                    <button type="button" data-mock-group="<%group%>-<%tid%>" class="btn btn-xs btn-danger mock-delete-method-button"><i class="fa fa-remove"></i></button>
                 </td>
             </tr>
             <tr>
@@ -482,15 +482,11 @@
                             <tr>
                                 <th>Name</th>
                                 <th>Value</th>
-                                <th>#<button type="button" data-mock-group="<%group%>-<%tid%>" class="btn btn-xs btn-danger mock-delete-method-button">+</button></th>
+                                <th width="40"><button type="button" data-mock-group="<%group%>-<%tid%>" class="btn btn-xs btn-success mock-add-header-button"><i class="fa fa-plus"></i></button></th>
                             </tr>
                             </thead>
-                            <tbody>
-                            <tr>
-                                <td><input class="form-control" type="text" name="header-name-<%group%>-<%tid%>" value=""></td>
-                                <td><input class="form-control" type="text" name="header-value-<%group%>-<%tid%>" value=""></td>
-                                <td><button type="button" data-mock-group="<%group%>-<%tid%>" class="btn btn-xs btn-danger mock-delete-method-button">-</button></td>
-                            </tr>
+                            <tbody id="mock-headers-container-<%group%>-<%tid%>">
+
                             </tbody>
                         </table>
                     </div>
@@ -511,14 +507,21 @@
             </tbody>
         </table>
     </script>
+    <script id="mock-headers-template" type="text/x-handlebars-template">
+        <tr id="mock-header-<%group%>-<%tid%>">
+            <td><input class="form-control" type="text" name="header-name-<%group%>-<%tid%>" value=""></td>
+            <td><input class="form-control" type="text" name="header-value-<%group%>-<%tid%>" value=""></td>
+            <td><button type="button" data-mock-group="<%group%>-<%tid%>" class="btn btn-xs btn-danger mock-delete-header-button"><i class="fa fa-remove"></i></button></td>
+        </tr>
+    </script>
     <script id="mock-resource-template" type="text/x-handlebars-template">
         <div id="resource-url-copy-<%group%>-<%tid%>" style="display: none"></div>
         <table class="table table-bordered table-striped table-info" id="mock-resource-container-<%group%>-<%tid%>">
             <tbody>
             <tr>
-                <td><div class="form-group"><strong id="resource-url-<%group%>-<%tid%>">{{new_api_endpoint}}/</strong><input class="form-control" type="text" name="path-<%group%>-<%tid%>" id="resource-path-<%group%>-<%tid%>" value="">&nbsp;&nbsp;<button type="button" id="proxy-endpoint-clipboard" class="btn btn-xs btn-purple" data-clipboard-action="copy" data-clipboard-target="#resource-url-copy-<%group%>-<%tid%>">Copy to clipboard</button></div></td>
-                <td>
-                    <button type="button" data-mock-group="<%group%>-<%tid%>" class="btn btn-xs btn-danger mock-delete-resource-button">Delete</button>
+                <td><div class="form-group"><strong id="resource-url-<%group%>-<%tid%>">{{new_mock_endpoint}}/</strong><input class="form-control" type="text" name="path-<%group%>-<%tid%>" id="resource-path-<%group%>-<%tid%>" value="">&nbsp;&nbsp;<button type="button" id="proxy-endpoint-clipboard" class="btn btn-xs btn-purple" data-clipboard-action="copy" data-clipboard-target="#resource-url-copy-<%group%>-<%tid%>"><i class="fa fa-copy"></i> Copy</button></div></td>
+                <td width="40">
+                    <button type="button" data-mock-group="<%group%>-<%tid%>" class="btn btn-xs btn-danger mock-delete-resource-button"><i class="fa fa-remove"></i></button>
                 </td>
             </tr>
             <tr>
@@ -528,7 +531,7 @@
 
                 </td>
                 <td>
-                    <button type="button" data-mock-group="<%group%>-<%tid%>" class="btn btn-xs btn-success mock-add-method-button">Add Method</button>
+                    <button type="button" data-mock-group="<%group%>-<%tid%>" class="btn btn-xs btn-success mock-add-method-button"><i class="fa fa-plus"></i></button>
                 </td>
             </tr>
             </tbody>
