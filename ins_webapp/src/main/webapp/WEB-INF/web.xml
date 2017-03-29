@@ -15,15 +15,6 @@
         <url-pattern>/assets/*</url-pattern>
         <url-pattern>/robots.txt</url-pattern>
         <url-pattern>/.well-known/pki-validation/gsdv.txt</url-pattern>
-        <url-pattern>/favicon.ico</url-pattern>
-        <url-pattern>/android-chrome-72x72.png</url-pattern>
-        <url-pattern>/apple-touch-icon.png</url-pattern>
-        <url-pattern>/browserconfig.xml</url-pattern>
-        <url-pattern>/favicon-16x16.png</url-pattern>
-        <url-pattern>/favicon-32x32.png</url-pattern>
-        <url-pattern>/manifest.json</url-pattern>
-        <url-pattern>/mstile-150x150.png</url-pattern>
-        <url-pattern>/safari-pinned-tab.svg</url-pattern>
     </filter-mapping>
     <filter>
         <filter-name>InsectWeb</filter-name>

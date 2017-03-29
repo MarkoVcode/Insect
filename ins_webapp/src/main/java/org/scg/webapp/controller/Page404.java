@@ -46,7 +46,7 @@ public class Page404 {
 
     protected void setupRoutes() {
         get("*", (rq, rs) -> {
-            if(rq.pathInfo().matches("../../assets.*|/assets.*|/android-chrome-72x72.png|/apple-touch-icon.png|/browserconfig.xml|/favicon-16x16.png|/favicon-32x32.png|/manifest.json|/safari-pinned-tab.svg|/android-chrome-72x72.png|/android-chrome-72x72.png|/robots.txt|/.well-known/pki-validation/gsdv.txt|/favicon.ico")) {
+            if(rq.pathInfo().matches("../../assets.*|/assets.*|/robots.txt|/.well-known/pki-validation/gsdv.txt|/favicon.ico")) {
                 return null;
             }
             rs.status(404);
