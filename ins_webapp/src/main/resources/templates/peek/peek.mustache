@@ -82,11 +82,7 @@
                   <li role="presentation" class="active">
                       <a href="#proxy" aria-controls="home" role="tab" data-toggle="tab">Proxy</a>
                   </li>
-{{#has_ownership}}
-                  <li role="presentation">
-                      <a href="#mock" aria-controls="profile" role="tab" data-toggle="tab">Mock</a>
-                  </li>
-{{/has_ownership}}
+
               </ul>
 
               <!-- Tab panes -->
@@ -152,211 +148,18 @@
                           </tbody>
                       </table>
                   </div>
-{{#has_ownership}}
-                  <div role="tabpanel" class="tab-pane fade" id="mock">
-
-
-
-
-
-
-
-
-                      <div class="tabs tabs-text">
-
-                          <!-- Nav tabs -->
-                          <ul class="nav nav-tabs" role="tablist">
-                              <li role="presentation" class="active">
-                                  <a href="#mock1" aria-controls="profile" role="tab" data-toggle="tab">Mock-1</a>
-                              </li>
-                              <li role="presentation">
-                                  <a href="#mock2" aria-controls="messages" role="tab" data-toggle="tab">Mock-2</a>
-                              </li>
-                              <li role="presentation">
-                                  <a href="#mock3" aria-controls="settings" role="tab" data-toggle="tab">Mock-3</a>
-                              </li>
-                              <li role="presentation">
-                                  <a href="#mock4" aria-controls="settings" role="tab" data-toggle="tab">Mock-4</a>
-                              </li>
-                              <li role="presentation">
-                                  <a href="#mock5" aria-controls="settings" role="tab" data-toggle="tab">Mock-5</a>
-                              </li>
-                          </ul>
-
-                          <!-- Tab panes -->
-                          <div class="tab-content">
-                              <div role="tabpanel" class="tab-pane  active" id="mock1">
-                                  <form id="mock-form-1">
-                                      <table class="table table-bordered table-striped table-info">
-                                          <tbody>
-                                          <tr>
-                                              <td width="95">Resources:</td>
-                                              <td></td>
-                                              <td width="40">
-                                                  <button type="button" data-mock-group="1" class="btn btn-xs btn-success mock-add-resource-button"><i class="fa fa-plus"></i></button>
-                                              </td>
-                                          </tr>
-                                          <tr>
-                                              <td></td>
-                                              <td id="mock-methods-container-1">
-
-                                              </td>
-                                              <td>
-
-                                              </td>
-                                          </tr>
-                                          <tr>
-                                              <td></td>
-                                              <td>
-                                                  <button type="button" data-mock-group="1" class="btn btn-lg btn-success mock-save"><i class="fa fa-caret-square-o-right"></i> Save</button>
-                                                  <button type="button" data-mock-group="1" class="btn btn-lg btn-danger mock-deploy"><i class="fa fa-square"></i> Save & Deploy</button>
-                                              </td>
-                                              <td></td>
-                                          </tr>
-                                          </tbody>
-                                      </table>
-                                  </form>
-                              </div>
-                              <div role="tabpanel" class="tab-pane fade" id="mock2">
-                                  <form id="mock-form-2" action="/">
-                                      <table class="table table-bordered table-striped table-info">
-                                          <tbody>
-                                          <tr>
-                                              <td width="95">Resources:</td>
-                                              <td></td>
-                                              <td width="40">
-                                                  <button type="button" data-mock-group="2" class="btn btn-xs btn-success mock-add-resource-button"><i class="fa fa-plus"></i></button>
-                                              </td>
-                                          </tr>
-                                          <tr>
-                                              <td></td>
-                                              <td id="mock-methods-container-2">
-
-                                              </td>
-                                              <td>
-                                              </td>
-                                          </tr>
-                                          <tr>
-                                              <td></td>
-                                              <td>
-                                                  <button type="button" data-mock-group="2" class="btn btn-lg btn-success mock-save"><i class="fa fa-caret-square-o-right"></i> Save</button>
-                                                  <button type="button" data-mock-group="2" class="btn btn-lg btn-danger mock-deploy"><i class="fa fa-square"></i> Save & Deploy</button>
-                                              </td>
-                                              <td></td>
-                                          </tr>
-                                          </tbody>
-                                      </table>
-                                  </form>
-                              </div>
-                              <div role="tabpanel" class="tab-pane fade" id="mock3">
-                                  <form id="mock-form-3" action="/">
-                                      <table class="table table-bordered table-striped table-info">
-                                          <tbody>
-                                          <tr>
-                                              <td width="95">Resources:</td>
-                                              <td></td>
-                                              <td width="40">
-                                                  <button type="button" data-mock-group="3" class="btn btn-xs btn-success mock-add-resource-button"><i class="fa fa-plus"></i></button>
-                                              </td>
-                                          </tr>
-                                          <tr>
-                                              <td></td>
-                                              <td id="mock-methods-container-3">
-
-                                              </td>
-                                              <td>
-                                              </td>
-                                          </tr>
-                                          <tr>
-                                              <td></td>
-                                              <td>
-                                                  <button type="button" data-mock-group="3" class="btn btn-lg btn-success mock-save"><i class="fa fa-caret-square-o-right"></i> Save</button>
-                                                  <button type="button" data-mock-group="3" class="btn btn-lg btn-danger mock-deploy"><i class="fa fa-square"></i> Save & Deploy</button>
-                                              </td>
-                                              <td></td>
-                                          </tr>
-                                          </tbody>
-                                      </table>
-                                  </form>
-                              </div>
-                              <div role="tabpanel" class="tab-pane fade" id="mock4">
-                                  <form id="mock-form-4" action="/">
-                                      <table class="table table-bordered table-striped table-info">
-                                          <tbody>
-                                          <tr>
-                                              <td width="95">Resources:</td>
-                                              <td></td>
-                                              <td width="40">
-                                                  <button type="button" data-mock-group="4" class="btn btn-xs btn-success mock-add-resource-button"><i class="fa fa-plus"></i></button>
-                                              </td>
-                                          </tr>
-                                          <tr>
-                                              <td></td>
-                                              <td id="mock-methods-container-4">
-
-                                              </td>
-                                              <td>
-                                              </td>
-                                          </tr>
-                                          <tr>
-                                              <td></td>
-                                              <td>
-                                                  <button type="button" data-mock-group="4" class="btn btn-lg btn-success mock-save"><i class="fa fa-caret-square-o-right"></i> Save</button>
-                                                  <button type="button" data-mock-group="4" class="btn btn-lg btn-danger mock-deploy"><i class="fa fa-square"></i> Save & Deploy</button>
-                                              </td>
-                                              <td></td>
-                                          </tr>
-                                          </tbody>
-                                      </table>
-                                  </form>
-                              </div>
-                              <div role="tabpanel" class="tab-pane fade" id="mock5">
-                                  <form id="mock-form-5" action="/">
-                                      <table class="table table-bordered table-striped table-info">
-                                          <tbody>
-                                          <tr>
-                                              <td width="95">Resources:</td>
-                                              <td></td>
-                                              <td width="40">
-                                                  <button type="button" data-mock-group="5" class="btn btn-xs btn-success mock-add-resource-button"><i class="fa fa-plus"></i></button>
-                                              </td>
-                                          </tr>
-                                          <tr>
-                                              <td></td>
-                                              <td id="mock-methods-container-5">
-
-                                              </td>
-                                              <td>
-                                              </td>
-                                          </tr>
-                                          <tr>
-                                              <td></td>
-                                              <td>
-                                                  <button type="button" data-mock-group="5" class="btn btn-lg btn-success mock-save"><i class="fa fa-caret-square-o-right"></i> Save</button>
-                                                  <button type="button" data-mock-group="5" class="btn btn-lg btn-danger mock-deploy"><i class="fa fa-square"></i> Save & Deploy</button>
-                                              </td>
-                                              <td></td>
-                                          </tr>
-                                          </tbody>
-                                      </table>
-                                  </form>
-                              </div>
-                          </div>
-                      </div>
-                  </div>
               </div>
           </div>
         </article>
 
           <article class="col-md-12 main-content">
               <div id="result-buttons" style="display: none;">
-                  <button type="button" id="proxy-savefile-result" class="btn btn-xs btn-purple"><i class="fa fa-download"></i> Save to file</button>&nbsp;<button type="button" id="proxy-print-result" class="btn btn-xs btn-purple"><i class="fa fa-camera"></i> Capture output</button>&nbsp;<button type="button" id="proxy-result-clearall" class="btn btn-xs btn-danger"><i class="fa fa-remove"></i> Clear all</button>
+                  <button type="button" id="proxy-print-result" class="btn btn-xs btn-purple"><i class="fa fa-camera"></i> Capture output</button>&nbsp;<button type="button" id="proxy-result-clearall" class="btn btn-xs btn-danger"><i class="fa fa-remove"></i> Clear all</button>
               </div>
               <div id="proxy-updates"></div>
           </article>
         <!-- END Main content  -->
       </div>
-{{/has_ownership}}
     </main>
 
 
@@ -462,12 +265,7 @@
                 <td>
                     <div class="form-group">
                         <select class="form-control" name="respcode-<%group%>-<%tid%>">
-                            <option name="200">200</option>
-                            <option name="200">204</option>
-                            <option name="400">400</option>
-                            <option name="400">401</option>
-                            <option name="400">404</option>
-                            <option name="500">500</option>
+                            <&codes_options&>
                         </select>
                     </div>
                 </td>

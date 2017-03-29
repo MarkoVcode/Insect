@@ -72,6 +72,7 @@ public class Properties {
     private static String WEBAPP_STATIC_DIR = "/ins_webapp/src/main/webapp";
     private static String WEBAPP_TEMPLATES_DIR = "ins_webapp/src/main/resources/templates/";
     private static String PROXY_API_ENDPOINT = "http://"+HOST_IP+":9180/service/proxy/";
+    private static String MOCK_API_ENDPOINT = "http://"+HOST_IP+":9180/service/mock/";
     private static String SELFTEST_WEB_PROXY = "http://"+HOST_IP+":9080/selftest/";
     private static String SELFTEST_API = "http://"+HOST_IP+":9180/service/selftest";
     private static String MOCKDEPLOY_API = "http://"+HOST_IP+":9080/service/mock/";
@@ -81,6 +82,7 @@ public class Properties {
             REDIS_HOST= "redis";
             REDIS_DEFAULT_SESSION_EXPIRATION = 60*60; //1 hour from start
             PROXY_API_ENDPOINT = "https://api.insectin.space/service/proxy/";
+            MOCK_API_ENDPOINT = "https://api.insectin.space/service/mock/";
             SELFTEST_WEB_PROXY = "https://www.insectin.space/selftest/";
             SELFTEST_API = "https://api.insectin.space/service/selftest";
             MOCKDEPLOY_API = "https://www.insectin.space/service/mock";
@@ -214,7 +216,10 @@ public class Properties {
     {
         return PROXY_API_ENDPOINT;
     }
-
+    public String getMockAPIEndpoint()
+    {
+        return MOCK_API_ENDPOINT;
+    }
     public int getWebsocketInstanceInternalPort() { return WEBSOCKETS_INTERNAL_PORT; }
 
     public String getVersionForWeb() {

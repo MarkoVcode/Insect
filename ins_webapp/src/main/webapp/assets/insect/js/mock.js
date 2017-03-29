@@ -1,7 +1,12 @@
 $(document).ready(function(){
 
     var editors = {};
+
     var httpMethods = ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'];
+    var httpMethodsNoBody = ['DELETE'];
+    var httpCodes = ['200', '204', '400', '401', '404', '500'];
+    var httpCodesNoBody = ['204'];
+
     var editorOptions = {
         modes: ['text', 'code', 'tree', 'form', 'view'],
         mode: 'code',
@@ -54,9 +59,11 @@ $(document).ready(function(){
             $("#"+payload).show();
         }
         $('.'+dropdownGroup).each(function(i, obj) {
-            for (var i=0; i<obj.length; i++){
-                if (obj.options[i].value == item.val())
-                    obj.remove(i);
+            if(item[0].name !== obj.name) {
+                for (var i=0; i<obj.length; i++){
+                    if (obj.options[i].value == item.val())
+                        obj.remove(i);
+                }
             }
         });
     });
@@ -76,7 +83,8 @@ $(document).ready(function(){
         var group = $( this ).data("mock-group");
         var template = Handlebars.compile(getTemplate("#mock-method-template"));
         var data = {group: group,
-                    methods_options: generateMethodDropdownList(),
+                    methods_options: generateDropdownList(httpMethods),
+                    codes_options: generateDropdownList(httpCodes),
                     tid: Math.random().toString(36).substring(18)};
         $("#mock-methods-"+group).append(template(data));
         var editorId = "jsoneditor-" + data.group + "-" + data.tid;
@@ -109,10 +117,10 @@ $(document).ready(function(){
         //console.log("change json");
     //});
 
-    function generateMethodDropdownList() {
+    function generateDropdownList(inputList) {
         var output = "";
-        for(var i=0; i<httpMethods.length; i++) {
-            output = output + "<option name=\"" + httpMethods[i] + "\">" + httpMethods[i] + "</option>";
+        for(var i=0; i<inputList.length; i++) {
+            output = output + "<option name=\"" + inputList[i] + "\">" + inputList[i] + "</option>";
         }
         return output;
     }
