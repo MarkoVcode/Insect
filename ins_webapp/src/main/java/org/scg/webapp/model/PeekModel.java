@@ -57,6 +57,8 @@ public class PeekModel extends AbstractModel {
         model.put("psid", psid);
         model.put("new_api_endpoint", PROP.getProxyAPIEndpoint() + psid);
         model.put("new_mock_endpoint", PROP.getMockAPIEndpoint() + psid);
+        model.put("mock_no", PROP.getNumberOfMockSlots()); //here list with integers so we could iterate and create slots zero - no mock
+        model.put("has_mock", PROP.hasMocks());
         model.put("proxy_api_endpoint", getProxyApiEndpoint());
         model.put("is_active", db.isProxyActive(psid));
         model.put("config_websockets_url", PROP.getWebWebsocketsUrl());

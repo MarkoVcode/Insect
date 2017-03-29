@@ -91,10 +91,16 @@
 
               <!-- Nav tabs -->
               <ul class="nav nav-tabs" role="tablist">
-                  <li role="presentation" class="active">
-                      <a href="#proxy" aria-controls="home" role="tab" data-toggle="tab">Proxy</a>
-                  </li>
-
+                <li role="presentation" class="active">
+                    <a href="#proxy" aria-controls="home" role="tab" data-toggle="tab">Proxy</a>
+                </li>
+{{#has_ownership}}
+    {{#has_mock}}
+                <li role="presentation">
+                    <a href="#mock" aria-controls="profile" role="tab" data-toggle="tab">API Mock</a>
+                </li>
+    {{/has_mock}}
+{{/has_ownership}}
               </ul>
 
               <!-- Tab panes -->
@@ -160,6 +166,70 @@
                           </tbody>
                       </table>
                   </div>
+
+{{#has_ownership}}
+        <div role="tabpanel" class="tab-pane fade" id="mock">
+
+
+
+
+
+
+
+
+            <div class="tabs tabs-text">
+
+                <!-- Nav tabs -->
+                <ul class="nav nav-tabs" role="tablist">
+                    {{#mock_no}}
+                        <li role="presentation" class="{{#value}}active{{/value}}">
+                            <a href="#mock{{key}}" aria-controls="messages" role="tab" data-toggle="tab">Mock-{{key}}</a>
+                        </li>
+                    {{/mock_no}}
+                </ul>
+
+                <!-- Tab panes -->
+                <div class="tab-content">
+        {{#mock_no}}
+                    <div role="tabpanel" class="tab-pane {{#value}}active{{/value}}{{^value}}fade{{/value}}" id="mock{{key}}">
+                        <form id="mock-form-{{key}}">
+                            <table class="table table-bordered table-striped table-info">
+                                <tbody>
+                                <tr>
+                                    <td width="95">Resources:</td>
+                                    <td></td>
+                                    <td width="40">
+                                        <button type="button" data-mock-group="{{key}}" class="btn btn-xs btn-success mock-add-resource-button"><i class="fa fa-plus"></i></button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td id="mock-methods-container-{{key}}">
+
+                                    </td>
+                                    <td>
+
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td>
+                                        <button type="button" data-mock-group="{{key}}" class="btn btn-lg btn-success mock-save"><i class="fa fa-caret-square-o-right"></i> Save</button>
+                                        <button type="button" data-mock-group="{{key}}" class="btn btn-lg btn-danger mock-deploy"><i class="fa fa-square"></i> Save & Deploy</button>
+                                    </td>
+                                    <td></td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </form>
+                    </div>
+            {{/mock_no}}
+                </div>
+            </div>
+        </div>
+
+{{/has_ownership}}
+
               </div>
           </div>
         </article>
