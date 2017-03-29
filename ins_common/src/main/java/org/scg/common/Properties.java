@@ -44,6 +44,7 @@ public class Properties {
     public static final String BUILDTAG = "<BUILDTAG>";
     public static final String BUILDDATE = "<BUILDDATE>";
     public static final String RELEASEVERSION = "<RELEASEVERSION>";
+    public static final String RELEASEKEY = "<RELEASEKEY>";
 
     private static Properties INSTANCE;
     private static final String DEV_ENVIRONMENT = "DEVELOPMENT";
