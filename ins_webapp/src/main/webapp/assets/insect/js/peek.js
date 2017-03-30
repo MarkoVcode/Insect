@@ -1,9 +1,39 @@
 $(document).ready(function(){
 
     var websocket;
+    var versionChangeAlertShown = false;
     setSessionTimer();
     establishWSConnection();
     new Clipboard('#proxy-endpoint-clipboard');
+
+    var entityMap = {
+        '&': '&amp;',
+        '<': '&lt;',
+        '>': '&gt;',
+        '"': '&quot;',
+        "'": '&#39;',
+        '/': '&#x2F;',
+        '`': '&#x60;',
+        '=': '&#x3D;'
+    };
+
+    toastr.options = {
+      "closeButton": true,
+      "debug": false,
+      "newestOnTop": true,
+      "progressBar": true,
+      "positionClass": "toast-top-center",
+      "preventDuplicates": false,
+      "onclick": null,
+      "showDuration": "300",
+      "hideDuration": "1000",
+      "timeOut": "5000",
+      "extendedTimeOut": "1000",
+      "showEasing": "swing",
+      "hideEasing": "linear",
+      "showMethod": "fadeIn",
+      "hideMethod": "fadeOut"
+    }
 
     function setSessionTimer() {
         var currentTimestamp = (((new Date().getTime()) / 1000) | 0);
@@ -21,6 +51,12 @@ $(document).ready(function(){
         }
     }
 
+    function escapeHtml (string) {
+        return String(string).replace(/[&<>"'`=\/]/g, function (s) {
+            return entityMap[s];
+        });
+    }
+
     function establishWSConnection() {
         websocket = new WebSocket(configObj.websocketsURL);
 
@@ -35,8 +71,10 @@ $(document).ready(function(){
             if(resp.proxy) {
                 wsActivitOn();
                 console.log("proxy message");
+                preprocessProxyMessage(resp);
                 prependProxyResponse(resp);
             } else {
+                preprocessSubMessage(resp);
                 if(resp.subscribed) {
                     updateWSIndicator(true);
                 }
@@ -59,6 +97,24 @@ $(document).ready(function(){
     function wsActivitOff() {
         $('#indicator-ws').removeClass("btn-teal");
         $('#indicator-ws').addClass("btn-success");
+    }
+
+    function preprocessSubMessage(data) {
+        checkForVersionChange(data.releaseKey);
+    }
+
+    function preprocessProxyMessage(data) {
+        checkForVersionChange(data.proxy.general.releaseKey);
+    }
+
+    function checkForVersionChange(releaseKey) {
+        if(releaseKey !== configObj.releaseKey) {
+            if(!versionChangeAlertShown) {
+                toastr["warning"]("New version of the application had just been deployed.<br/>Please reload the page to use it.<br/>&nbsp;&nbsp;(#" + escapeHtml(releaseKey) + ")", "New Version Deployed!")
+                //invalidate cache??
+                versionChangeAlertShown = true;
+            }
+        }
     }
 
     function prependProxyResponse(data) {

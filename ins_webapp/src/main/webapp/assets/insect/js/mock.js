@@ -50,12 +50,15 @@ $(document).ready(function(){
     });
 
     $(document).delegate('.mock-method-select', 'change', function(e) {
+        var linkedElement = $(this).data("mock-linked");
         var dropdownGroup = $(this).data("mock-method-group");
         var payload = $(this).data("mock-payload");
         var item=$(this);
-        if(item.val() === 'DELETE') {
+        if(item.val() === 'DELETE') { //change to in array httpMethodsNoBody
+            changeJsonPayloadView(item, false);
             $("#"+payload).hide();
         } else {
+            changeJsonPayloadView(item, true);
             $("#"+payload).show();
         }
         $('.'+dropdownGroup).each(function(i, obj) {
@@ -68,7 +71,21 @@ $(document).ready(function(){
         });
     });
 
+    $(document).delegate('.mock-respcode-select', 'change', function(e) {
+        var payload = $(this).data("mock-payload");
+        var item=$(this);
+        if(item.val() === '204') { //change to in array httpCodesNoBody
+            changeJsonPayloadView(item, false);
+            $("#"+payload).hide();
+        } else {
+            changeJsonPayloadView(item, true);
+            $("#"+payload).show();
+        }
+    });
 
+    function changeJsonPayloadView(item, state) {
+        var linkedElement = $(this).data("mock-linked");
+    }
 //$("option[value='foo']").remove();
 //or better (if you have few selects in the page):
 //$("#select_id option[value='foo']").remove();

@@ -3,7 +3,8 @@
     "BUILD": {
         "TAG": "<BUILDTAG>",
         "DATE": "<BUILDDATE>",
-        "VERSION": "<RELEASEVERSION>"
+        "VERSION": "<RELEASEVERSION>",
+        "RELEASEKEY": "<RELEASEKEY>"
     },
     "TOKEN_LENGTH": 11,
     "SERVICE_PATH": "/service/proxy/",

@@ -2,6 +2,7 @@ var http = require('http');
 var urlObj = require('url');
 var zlib = require("zlib");
 var iconsole = require('./iconsole.js');
+var config = require('./config.js');
 var requestOptions;
 var requestBody;
 var urls;
@@ -112,6 +113,7 @@ var assemblyWSPayload = function(responseObj, body) {
             general: {
                 clientIP: responseObj.request.headers['x-forwarded-for'],
                 dateDispatch: new Date().getTime(),
+                releaseKey: config.getReleaseKey(),
                 responseTime: responseObj.responseTime
             },
             request: {

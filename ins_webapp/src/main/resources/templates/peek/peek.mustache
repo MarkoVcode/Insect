@@ -26,6 +26,7 @@
     <link href="/assets/insect/css/tooltipster.bundle.min.css" rel="stylesheet">
     <link href="/assets/insect/css/tooltipster-sideTip-light.min.css" rel="stylesheet">
     <link href="/assets/insect/css/jsoneditor.css" rel="stylesheet" type="text/css">
+    <link href="/assets/insect/css/toastr.min.css" rel="stylesheet" type="text/css">
     <link href="/assets/insect/css/insect.css" rel="stylesheet">
 
     <!-- Fonts -->
@@ -272,6 +273,7 @@
         selftestWebProxy: '{{selftest_web_proxy_url}}',
         sessionTimeout: {{config_session_timeout}},
         mockDeployURL: '{{mock_deploy_url}}',
+        releaseKey: '{{{release_key}}}',
         psid: '{{psid}}'
         };
     </script>
@@ -333,7 +335,7 @@
                 <td width="150">Request Method:</td>
                 <td>
                     <div class="form-group">
-                        <select class="form-control mock-method-select dropdown-grp-<%group%>" data-mock-method-group="dropdown-grp-<%group%>" data-mock-payload="json-payload-<%group%>-<%tid%>" name="method-<%group%>-<%tid%>">
+                        <select class="form-control mock-method-select dropdown-grp-<%group%>" data-mock-method-group="dropdown-grp-<%group%>" data-mock-payload="json-payload-<%group%>-<%tid%>" data-mock-linked="code-dropdown-<%group%>-<%tid%>" id="method-dropdown-<%group%>-<%tid%>" name="method-<%group%>-<%tid%>">
                             <&methods_options&>
                         </select>
                     </div>
@@ -346,7 +348,7 @@
                 <td>Response Code:</td>
                 <td>
                     <div class="form-group">
-                        <select class="form-control" name="respcode-<%group%>-<%tid%>">
+                        <select class="form-control mock-respcode-select" data-mock-payload="json-payload-<%group%>-<%tid%>" data-mock-linked="method-dropdown-<%group%>-<%tid%>" id="code-dropdown-<%group%>-<%tid%>" name="respcode-<%group%>-<%tid%>">
                             <&codes_options&>
                         </select>
                     </div>
@@ -425,6 +427,7 @@
     <script src="/assets/insect/js/handlebars.js"></script>
     <script src="/assets/insect/js/ace.js"></script>
     <script src="/assets/insect/js/jsoneditor-minimalist.js"></script>
+    <script src="/assets/insect/js/toastr.min.js"></script>
     <script src="/assets/insect/js/peek.js"></script>
     <script src="/assets/insect/js/mock.js"></script>
   </body>

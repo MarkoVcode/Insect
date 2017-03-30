@@ -27,16 +27,27 @@ package org.scg.websockets.message;
  * Created by developer on 1/24/17.
  */
 
+import org.scg.common.Properties;
+
 /**
  * RESPONSIBILITY DTO for subscribe request response
  */
 public class SubOutboundMessage extends SubInboundMessage {
 
     private boolean subscribed;
+    private String releaseKey = Properties.RELEASEKEY;
     private String submessage;
     private String build;
     private String builddate;
     private String version;
+
+    public String getReleaseKey() {
+        return releaseKey;
+    }
+
+    public void setReleaseKey(String releaseKey) {
+        this.releaseKey = releaseKey;
+    }
 
     public boolean isSubscribed() {
         return subscribed;

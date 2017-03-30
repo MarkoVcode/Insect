@@ -35,6 +35,10 @@ Config.prototype.getServicePath = function () {
     return config.SERVICE_PATH;
 }
 
+Config.prototype.getReleaseKey = function () {
+    return config.BUILD.RELEASEKEY;
+}
+
 Config.prototype.getServiceTestPath = function () {
     return config.SERVICE_TEST_PATH;
 }
