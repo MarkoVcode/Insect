@@ -58,7 +58,7 @@ public class Properties {
     private static String HOST_IP = "192.168.56.100";
     // Use this when working on localhost
     //private static String HOST_IP = "localhost";
-    private static final String VERSION = "0.1.3";
+    private static final String VERSION = "0.1.4";
     private static final Integer REDIS_PORT= 6379;
     private static String REDIS_HOST= "127.0.0.1";
     private static Integer REDIS_DEFAULT_SESSION_EXPIRATION = 60*60; //1 hour from start
@@ -67,7 +67,7 @@ public class Properties {
     private static final String  WEBSOCKETS_ROOT = "";
     private static final String  WEBSOCKETS_SERVLET_PATH = "/inspush";
     private static final String  WEBSOCKETS_HOST = "127.0.0.1";
-    private static final Integer MOCK_SLOTS_NO = 5;
+    private static final Integer MOCK_SLOTS_NO = 0;
     private static String WEBSOCKETS_WEB_PROTO = "ws";
     private static String WEBSOCKETS_WEB_HOST = HOST_IP;
     private static final Integer WEBAPP_PUBLIC_PORT = 9080;

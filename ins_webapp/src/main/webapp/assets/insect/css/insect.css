@@ -6,3 +6,15 @@ pre {
     background-color: #ededed;
     border-color: #ededed;
 }
+
+.tight {
+    margin-bottom: 0px;
+    height: 24px;
+}
+
+.tightinput {
+    margin-bottom: 0px;
+    height: 24px;
+    padding: 6px 4px;
+    color: #000;
+}

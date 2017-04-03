@@ -65,8 +65,10 @@
                 {{#is_active}}
                     <button type="button" class="btn btn-lg btn-success" id="indicator-proxy">Proxy Active</button>
                 {{/is_active}}
-                 <!--   <button type="button" class="btn btn-lg btn-danger" id="indicator-proxy">Mock Inactive</button>
-                    <button type="button" class="btn btn-lg btn-danger" id="indicator-proxy">Mock-1 Active</button> -->
+                {{#has_mock}}
+                    <button type="button" class="btn btn-lg btn-danger" id="indicator-mock">Mock Inactive</button>
+                {{/has_mock}}
+    <!--      <button type="button" class="btn btn-lg btn-danger" id="indicator-proxy">Mock-1 Active</button> -->
                 <button type="button" class="btn btn-lg btn-danger" id="session-timeout">00:00</button>
 {{/has_ownership}}
                 </li>
@@ -114,26 +116,26 @@
                               <td><strong id="endpoint-url">{{new_api_endpoint}}</strong>&nbsp;&nbsp;<button type="button" id="proxy-endpoint-clipboard" class="btn btn-xs btn-purple" data-clipboard-action="copy" data-clipboard-target="#endpoint-url"><i class="fa fa-copy"></i> Copy</button></td>
                               <td>{{#has_ownership}}
                                   {{^is_active}}
-                                      <button type="button" id="proxy-endpoint-testget" class="btn btn-xs btn-purple" disabled>Make test GET request</button>
+                                      <button type="button" id="proxy-endpoint-testget" class="btn btn-xs btn-purple" disabled>Test GET</button>
                                   {{/is_active}}
                                   {{#is_active}}
-                                      <button type="button" id="proxy-endpoint-testget" class="btn btn-xs btn-purple">Make test GET request</button>
+                                      <button type="button" id="proxy-endpoint-testget" class="btn btn-xs btn-purple">Test GET</button>
                                   {{/is_active}}
                               {{/has_ownership}}</td>
                           </tr>
                           <tr>
                               <td>Upstream:</td>
                               <td>
-                                  <div class="form-group">
+                                  <div class="form-group tight">
                                   {{^has_ownership}}
-                                      <input type="text" id="api-endpoint" class="form-control" value="{{proxy_api_endpoint}}" size="70" disabled>
+                                      <input type="text" id="api-endpoint" class="form-control tightinput" value="{{proxy_api_endpoint}}" size="70" disabled>
                                   {{/has_ownership}}
                                   {{#has_ownership}}
                                       {{^is_active}}
-                                          <input type="text" id="api-endpoint" class="form-control" value="{{proxy_api_endpoint}}" size="80">
+                                          <input type="text" id="api-endpoint" class="form-control tightinput" value="{{proxy_api_endpoint}}" size="80">
                                       {{/is_active}}
                                       {{#is_active}}
-                                          <input type="text" id="api-endpoint" class="form-control" value="{{proxy_api_endpoint}}" size="80" disabled>
+                                          <input type="text" id="api-endpoint" class="form-control tightinput" value="{{proxy_api_endpoint}}" size="80" disabled>
                                       {{/is_active}}
                                   {{/has_ownership}}
                                   </div>
@@ -153,12 +155,12 @@
                                   <td></td>
                                   <td>
                                       {{^is_active}}
-                                          <button type="button" id="proxy-start" class="btn btn-lg btn-success"><i class="fa fa-caret-square-o-right"></i> Start</button>
-                                          <button type="button" id="proxy-stop" class="btn btn-lg btn-danger" disabled><i class="fa fa-square"></i> Stop</button>
+                                          <button type="button" id="proxy-start" class="btn btn btn-success"><i class="fa fa-caret-square-o-right"></i> Start</button>
+                                          <button type="button" id="proxy-stop" class="btn btn btn-danger" disabled><i class="fa fa-square"></i> Stop</button>
                                       {{/is_active}}
                                       {{#is_active}}
-                                          <button type="button" id="proxy-start" class="btn btn-lg btn-success" disabled><i class="fa fa-caret-square-o-right"></i> Start</button>
-                                          <button type="button" id="proxy-stop" class="btn btn-lg btn-danger"><i class="fa fa-square"></i> Stop</button>
+                                          <button type="button" id="proxy-start" class="btn btn btn-success" disabled><i class="fa fa-caret-square-o-right"></i> Start</button>
+                                          <button type="button" id="proxy-stop" class="btn btn btn-danger"><i class="fa fa-square"></i> Stop</button>
                                       {{/is_active}}
                                   </td>
                                   <td></td>
@@ -215,8 +217,8 @@
                                 <tr>
                                     <td></td>
                                     <td>
-                                        <button type="button" data-mock-group="{{key}}" class="btn btn-lg btn-success mock-save"><i class="fa fa-caret-square-o-right"></i> Save</button>
-                                        <button type="button" data-mock-group="{{key}}" class="btn btn-lg btn-danger mock-deploy"><i class="fa fa-square"></i> Save & Deploy</button>
+                                        <button type="button" data-mock-group="{{key}}" class="btn btn btn-success mock-save"><i class="fa fa-caret-square-o-right"></i> Save</button>
+                                        <button type="button" data-mock-group="{{key}}" class="btn btn btn-danger mock-deploy"><i class="fa fa-square"></i> Save & Deploy</button>
                                     </td>
                                     <td></td>
                                 </tr>
@@ -285,7 +287,7 @@
                     <button type="button" class="btn btn-xs btn-outline btn-danger remove-line" data-section-id="<%augment.tid%>"><i class="fa fa-close"></i></button>
                 </td>
                 <td>
-                    &nbsp;<span class="label label-primary">Dispatch Timestamp</span>&nbsp;<%proxy.general.dateDispatch%>&nbsp;<span class="label label-primary">Response Time [us]</span>&nbsp;<%proxy.general.responseTime%>
+                    &nbsp;<span class="label label-primary">Date</span>&nbsp;<%augment.timestamp%>&nbsp;&nbsp;<span class="label label-primary">Response Time [us]</span>&nbsp;<%proxy.general.responseTime%>
                 </td>
             </tr>
             <tr></tr>

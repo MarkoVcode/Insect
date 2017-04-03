@@ -185,8 +185,11 @@ $(document).ready(function(){
             var responsebodyobj = JSON.parse(atob(data.proxy.response.body));
             responsebodypp = JSON.stringify(responsebodyobj, " ", 2);
         }
+        //data.proxy.general.dateDispatch
+        var date = new Date();
         data['augment'] = { codecolor: color,
                             tid: tid,
+                            timestamp: date.toLocaleString(),
                             methodcolor: color1,
                             protocolor: colorProto,
                             requestheader: atob(data.proxy.request.header),
