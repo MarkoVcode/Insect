@@ -34,7 +34,17 @@ $(document).ready(function(){
         var data = {group: group,
                     tid: Math.random().toString(36).substring(18)};
         $("#mock-methods-container-"+group).append(template(data));
+        new Clipboard('#mock-endpoint-clipboard-'+data.group+'-'+data.tid);
     });
+
+    $(document).delegate('.mock-resource-path', 'keyup', function(e) {
+        updateDisplayPath($(this));
+    });
+
+    //ON MOUSE PASTE
+    //$(document).delegate('.mock-resource-path', 'keyup', function(e) {
+    //    updateDisplayPath($(this));
+    //});
 
     $(document).delegate('.mock-delete-resource-button', 'click', function(e) {
         var group = $( this ).data("mock-group");
@@ -82,6 +92,13 @@ $(document).ready(function(){
             $("#"+payload).show();
         }
     });
+
+    function updateDisplayPath(elem) {
+        var group = elem.data("path-target");
+        var initVal = elem.data("path-init-val");
+        $('#'+group).html(initVal+elem.val());
+
+    }
 
     function changeJsonPayloadView(item, state) {
         var linkedElement = $(this).data("mock-linked");

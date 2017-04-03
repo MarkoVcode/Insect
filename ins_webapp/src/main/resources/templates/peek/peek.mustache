@@ -336,26 +336,25 @@
             <tr>
                 <td width="150">Request Method:</td>
                 <td>
-                    <div class="form-group">
-                        <select class="form-control mock-method-select dropdown-grp-<%group%>" data-mock-method-group="dropdown-grp-<%group%>" data-mock-payload="json-payload-<%group%>-<%tid%>" data-mock-linked="code-dropdown-<%group%>-<%tid%>" id="method-dropdown-<%group%>-<%tid%>" name="method-<%group%>-<%tid%>">
+                    <div class="form-group tightdropdowngroup">
+                        <select class="form-control tightdropdown mock-method-select dropdown-grp-<%group%>" data-mock-method-group="dropdown-grp-<%group%>" data-mock-payload="json-payload-<%group%>-<%tid%>" data-mock-linked="code-dropdown-<%group%>-<%tid%>" id="method-dropdown-<%group%>-<%tid%>" name="method-<%group%>-<%tid%>">
                             <&methods_options&>
                         </select>
                     </div>
                 </td>
-                <td width="40">
+                <td class="narrow" rowspan="4">
                     <button type="button" data-mock-group="<%group%>-<%tid%>" class="btn btn-xs btn-danger mock-delete-method-button"><i class="fa fa-remove"></i></button>
                 </td>
             </tr>
             <tr>
                 <td>Response Code:</td>
                 <td>
-                    <div class="form-group">
-                        <select class="form-control mock-respcode-select" data-mock-payload="json-payload-<%group%>-<%tid%>" data-mock-linked="method-dropdown-<%group%>-<%tid%>" id="code-dropdown-<%group%>-<%tid%>" name="respcode-<%group%>-<%tid%>">
+                    <div class="form-group tightdropdowngroup">
+                        <select class="form-control tightdropdown mock-respcode-select" data-mock-payload="json-payload-<%group%>-<%tid%>" data-mock-linked="method-dropdown-<%group%>-<%tid%>" id="code-dropdown-<%group%>-<%tid%>" name="respcode-<%group%>-<%tid%>">
                             <&codes_options&>
                         </select>
                     </div>
                 </td>
-                <td></td>
             </tr>
             <tr>
                 <td>Headers:</td>
@@ -366,7 +365,7 @@
                             <tr>
                                 <th>Name</th>
                                 <th>Value</th>
-                                <th width="40"><button type="button" data-mock-group="<%group%>-<%tid%>" class="btn btn-xs btn-success mock-add-header-button"><i class="fa fa-plus"></i></button></th>
+                                <th class="narrow"><button type="button" data-mock-group="<%group%>-<%tid%>" class="btn btn-xs btn-success mock-add-header-button"><i class="fa fa-plus"></i></button></th>
                             </tr>
                             </thead>
                             <tbody id="mock-headers-container-<%group%>-<%tid%>">
@@ -375,36 +374,33 @@
                         </table>
                     </div>
                 </td>
-                <td></td>
             </tr>
             <tr id="json-payload-<%group%>-<%tid%>">
                 <td>Response JSON Payload:</td>
                 <td>
-                    <div class="form-group">
+                    <div class="form-group tightpayloadgroup">
                         <div id="jsoneditor-<%group%>-<%tid%>"></div>
                         <input type="hidden" id="ijsoneditor-<%group%>-<%tid%>" name="payload-<%group%>-<%tid%>">
                         <!-- <textarea class="form-control json-payload" rows="5" name="payload-<%group%>-<%tid%>"></textarea> -->
                     </div>
                 </td>
-                <td></td>
             </tr>
             </tbody>
         </table>
     </script>
     <script id="mock-headers-template" type="text/x-handlebars-template">
         <tr id="mock-header-<%group%>-<%tid%>">
-            <td><input class="form-control" type="text" name="header-name-<%group%>-<%tid%>" value=""></td>
-            <td><input class="form-control" type="text" name="header-value-<%group%>-<%tid%>" value=""></td>
+            <td><input class="form-control tightinput" type="text" name="header-name-<%group%>-<%tid%>" value=""></td>
+            <td><input class="form-control tightinput" type="text" name="header-value-<%group%>-<%tid%>" value=""></td>
             <td><button type="button" data-mock-group="<%group%>-<%tid%>" class="btn btn-xs btn-danger mock-delete-header-button"><i class="fa fa-remove"></i></button></td>
         </tr>
     </script>
     <script id="mock-resource-template" type="text/x-handlebars-template">
-        <div id="resource-url-copy-<%group%>-<%tid%>" style="display: none"></div>
         <table class="table table-bordered table-striped table-info" id="mock-resource-container-<%group%>-<%tid%>">
             <tbody>
             <tr>
-                <td><div class="form-group"><strong id="resource-url-<%group%>-<%tid%>">{{new_mock_endpoint}}/</strong><input class="form-control" type="text" name="path-<%group%>-<%tid%>" id="resource-path-<%group%>-<%tid%>" value="">&nbsp;&nbsp;<button type="button" id="proxy-endpoint-clipboard" class="btn btn-xs btn-purple" data-clipboard-action="copy" data-clipboard-target="#resource-url-copy-<%group%>-<%tid%>"><i class="fa fa-copy"></i> Copy</button></div></td>
-                <td width="40">
+                <td><div class="form-group"><strong id="resource-url-copy-<%group%>-<%tid%>">{{new_mock_endpoint}}/</strong>&nbsp;&nbsp;<button type="button" id="mock-endpoint-clipboard-<%group%>-<%tid%>" class="btn btn-xs btn-purple" data-clipboard-action="copy" data-clipboard-target="#resource-url-copy-<%group%>-<%tid%>"><i class="fa fa-copy"></i> Copy</button><input class="form-control tightinput mock-resource-path" type="text" name="path-<%group%>-<%tid%>" id="resource-path-<%group%>-<%tid%>" value="" data-path-init-val="{{new_mock_endpoint}}/" data-path-target="resource-url-copy-<%group%>-<%tid%>"></div></td>
+                <td class="narrow">
                     <button type="button" data-mock-group="<%group%>-<%tid%>" class="btn btn-xs btn-danger mock-delete-resource-button"><i class="fa fa-remove"></i></button>
                 </td>
             </tr>

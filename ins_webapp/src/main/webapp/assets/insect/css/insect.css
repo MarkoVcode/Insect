@@ -18,3 +18,23 @@ pre {
     padding: 6px 4px;
     color: #000;
 }
+
+.tightdropdown {
+    margin-bottom: 0px;
+    height: 34px;
+    padding: 6px 4px;
+    color: #000;
+}
+
+.tightdropdowngroup {
+    margin-bottom: 0px;
+    height: 33px;
+}
+
+.tightpayloadgroup {
+    margin-bottom: 0px;
+}
+
+.narrow {
+    width: 37px;
+}
