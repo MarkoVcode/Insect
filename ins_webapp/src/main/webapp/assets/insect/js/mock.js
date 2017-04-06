@@ -37,14 +37,9 @@ $(document).ready(function(){
         new Clipboard('#mock-endpoint-clipboard-'+data.group+'-'+data.tid);
     });
 
-    $(document).delegate('.mock-resource-path', 'keyup', function(e) {
+    $(document).delegate('.mock-resource-path', 'input', function(e) {
         updateDisplayPath($(this));
     });
-
-    //ON MOUSE PASTE
-    //$(document).delegate('.mock-resource-path', 'keyup', function(e) {
-    //    updateDisplayPath($(this));
-    //});
 
     $(document).delegate('.mock-delete-resource-button', 'click', function(e) {
         var group = $( this ).data("mock-group");
@@ -64,60 +59,93 @@ $(document).ready(function(){
         var dropdownGroup = $(this).data("mock-method-group");
         var payload = $(this).data("mock-payload");
         var item=$(this);
-        if(item.val() === 'DELETE') { //change to in array httpMethodsNoBody
-            changeJsonPayloadView(item, false);
-            $("#"+payload).hide();
-        } else {
-            changeJsonPayloadView(item, true);
-            $("#"+payload).show();
-        }
-        $('.'+dropdownGroup).each(function(i, obj) {
-            if(item[0].name !== obj.name) {
-                for (var i=0; i<obj.length; i++){
-                    if (obj.options[i].value == item.val())
-                        obj.remove(i);
-                }
-            }
-        });
+        updatePayloadView(item[0].id, linkedElement, payload);
+        updateMethodGroupWhenChanged(dropdownGroup, item);
     });
 
     $(document).delegate('.mock-respcode-select', 'change', function(e) {
+        var linkedElement = $(this).data("mock-linked");
         var payload = $(this).data("mock-payload");
         var item=$(this);
-        if(item.val() === '204') { //change to in array httpCodesNoBody
-            changeJsonPayloadView(item, false);
-            $("#"+payload).hide();
-        } else {
-            changeJsonPayloadView(item, true);
-            $("#"+payload).show();
-        }
+        updatePayloadView(linkedElement, item[0].id, payload);
     });
+
+    function updateMethodGroupWhenChanged(dropdownGroup) {
+        var selectedMethods=[];
+        //build list of selected items
+        $('.'+dropdownGroup).each(function(i, obj) {
+            selectedMethods.push(obj.value);
+        });
+        var availableMethods = arrayDiff(httpMethods, selectedMethods);
+        //update available options
+        $('.'+dropdownGroup).each(function(i, obj) {
+            for(var i = 0; i<obj.length; i++) {
+                if(obj.value !== obj[i].value) {
+                    obj[i].remove();
+                }
+            }
+        });
+        for(var i = 0; i<selectedMethods.length; i++) {
+            $('.'+dropdownGroup).append('<option name="'+selectedMethods[i]+'">'+selectedMethods[i]+'</option>');
+        }
+    }
+
+    function updatePayloadView(methodId, codeId, payloadId) {
+        if(isPayloadVisible(methodId, codeId)) {
+            $("#"+payloadId).show();
+        } else {
+            $("#"+payloadId).hide();
+        }
+    }
+
+    function isPayloadVisible(methodId, codeId) {
+        var noPayloadOptions = httpMethodsNoBody.concat(httpCodesNoBody);
+        var method = $('#'+methodId).val();
+        var code = $('#'+codeId).val();
+        if(noPayloadOptions.indexOf(method) > -1 || noPayloadOptions.indexOf(code) > -1) {
+            return false;
+        }
+        return true;
+    }
 
     function updateDisplayPath(elem) {
         var group = elem.data("path-target");
         var initVal = elem.data("path-init-val");
-        $('#'+group).html(initVal+elem.val());
-
+        $('#'+group).html(initVal+escape(elem.val()));//url encode !!!
     }
-
-    function changeJsonPayloadView(item, state) {
-        var linkedElement = $(this).data("mock-linked");
-    }
-//$("option[value='foo']").remove();
-//or better (if you have few selects in the page):
-//$("#select_id option[value='foo']").remove();
-
 
     $(document).delegate('.mock-delete-header-button', 'click', function(e) {
         var group = $( this ).data("mock-group");
         $("#mock-header-"+group).remove();
     });
 
+    function filterUsedMethods(httpMethods, group) {
+        var selected = [];
+        $('.dropdown-grp-'+group).each(function(i, obj) {
+            selected.push(obj.selectedOptions['0'].label);
+        });
+        return arrayDiff(httpMethods, selected);
+    }
+
+    function arrayDiff(httpMethods, selected) {
+        if(selected.length === 0) {
+            return httpMethods;
+        }
+        var newSelection =[];
+        for(var i = 0; i<httpMethods.length; i++) {
+            if(selected.indexOf(httpMethods[i]) === -1) {
+                newSelection.push(httpMethods[i]);
+            }
+        }
+        return newSelection;
+    }
+
     $(document).delegate('.mock-add-method-button', 'click', function(e) {
         var group = $( this ).data("mock-group");
         var template = Handlebars.compile(getTemplate("#mock-method-template"));
+        var nonUsedMethods = filterUsedMethods(httpMethods, group);
         var data = {group: group,
-                    methods_options: generateDropdownList(httpMethods),
+                    methods_options: generateDropdownList(nonUsedMethods),
                     codes_options: generateDropdownList(httpCodes),
                     tid: Math.random().toString(36).substring(18)};
         $("#mock-methods-"+group).append(template(data));
@@ -133,23 +161,22 @@ $(document).ready(function(){
         var container = document.getElementById(editorId);
 
         editors[editorId] = new JSONEditor(container, editorOptions, json);
-
+        if(nonUsedMethods.length === 1) {
+            $('#'+group).prop('disabled', true);
+        }
     });
 
     $(document).delegate('.mock-delete-method-button', 'click', function(e) {
         var group = $( this ).data("mock-group");
+        var topGroup = separateTopGroupFromId(group);
         $("#mock-method-container-"+group).remove();
+        $('#'+topGroup).prop('disabled', false);
     });
 
-    //this implemented by
-    //do this on change keyup and paste
-    //$(document).delegate('.json-payload', 'change', function(e) {
-        //var jsonPayload = $(this).val();
-        //catch
-        //var obj = JSON.parse(jsonPayload);
-        // if err mark this red
-        //console.log("change json");
-    //});
+    function separateTopGroupFromId(group) {
+        var parts = group.split("-", 2);
+        return parts[0] + "-" + parts[1];
+    }
 
     function generateDropdownList(inputList) {
         var output = "";
@@ -192,7 +219,6 @@ $(document).ready(function(){
                 getConfigParams(elems[i], oout);
             }
         }
-
         localStorage.setItem('mock'+id, JSON.stringify(convertToSettingsObject(oout)));
         localStorage.setItem('mocko'+id, JSON.stringify(oout));
     }
