@@ -127,6 +127,24 @@ public class DB {
         JEDIS.expire(key, getRealExpirationTime(psid));
     }
 
+    public String fetchDeployedMockSlot(String psid) {
+        String key = SIDTool.buildMockSessionsKey(psid);
+        String mock = JEDIS.get(key);
+        if(mock.isEmpty()) {
+            return null;
+        }
+        //TODO improve this code:
+        int index = mock.indexOf("mockid\":\"");
+        String mockid = mock.substring(index);
+        String[] parts = mockid.split("\"");
+        String name = parts[2];
+        //mockid":"mock1"}
+        //check this for mock1 - 5
+        //{"mockid":"mock1","mock":[{"path":"","methods":{"GET":{"code":"200","payload":{"array":[1,2,3],"boolean":true,"null":null,"number":123,"object":{"a":"b","c":"d"},"string":"Hello World"},"headers":{}},"POST":{"code":"200","payload":{"array":[1,2,3],"boolean":true,"null":null,"number":123,"object":{"a":"b","c":"d"},"string":"Hello World"},"headers":{}}}}]}
+        //{"mock":[{"path":"","methods":{"GET":{"code":"200","payload":{"array":[1,2,3],"boolean":true,"null":null,"number":123,"object":{"a":"b","c":"d"},"string":"Hello World"},"headers":{}},"POST":{"code":"200","payload":{"array":[1,2,3],"boolean":true,"null":null,"number":123,"object":{"a":"b","c":"d"},"string":"Hello World"},"headers":{}}}}]}
+        return name;
+    }
+
     private Integer getRealExpirationTime(String psid) {
         String key = SIDTool.buildExpireSessionsKey(psid);
         Long futureTime = Long.parseLong(JEDIS.get(key));

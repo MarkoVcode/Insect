@@ -70,6 +70,7 @@ public class PeekModel extends AbstractModel {
         model.put("has_ownership", db.isSessionOwner(sessionId ,psid));
         model.put("version", PROP.getVersionForWeb());
         model.put("build_info", PROP.getWebSignature());
+        model.put("mock_deployed", db.fetchDeployedMockSlot(psid));
     }
 
     public AjaxResponse processAjaxRequest() {

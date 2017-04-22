@@ -66,7 +66,12 @@
                     <button type="button" class="btn btn-lg btn-success" id="indicator-proxy">Proxy Active</button>
                 {{/is_active}}
                 {{#has_mock}}
-                    <button type="button" class="btn btn-lg btn-danger" id="indicator-mock">Mock Inactive</button>
+                    {{^mock_deployed}}
+                        <button type="button" class="btn btn-lg btn-danger" id="indicator-mock">Mock Inactive</button>
+                    {{/mock_deployed}}
+                    {{#mock_deployed}}
+                        <button type="button" class="btn btn-lg btn-success" id="indicator-mock">Deployed {{mock_deployed}}</button>
+                    {{/mock_deployed}}
                 {{/has_mock}}
     <!--      <button type="button" class="btn btn-lg btn-danger" id="indicator-proxy">Mock-1 Active</button> -->
                 <button type="button" class="btn btn-lg btn-danger" id="session-timeout">00:00</button>
@@ -100,7 +105,7 @@
 {{#has_ownership}}
     {{#has_mock}}
                 <li role="presentation">
-                    <a href="#mock" aria-controls="profile" role="tab" data-toggle="tab">API Mock</a>
+                    <a href="#mock" aria-controls="profile" role="tab" data-toggle="tab" class="mockview" data-load-mock="1">API Mock</a>
                 </li>
     {{/has_mock}}
 {{/has_ownership}}
@@ -186,7 +191,7 @@
                 <ul class="nav nav-tabs" role="tablist">
                     {{#mock_no}}
                         <li role="presentation" class="{{#value}}active{{/value}}">
-                            <a href="#mock{{key}}" aria-controls="messages" role="tab" data-toggle="tab">Mock-{{key}}</a>
+                            <a href="#mock{{key}}" aria-controls="messages" role="tab" data-toggle="tab" class="mockview" data-load-mock="{{key}}">Mock-{{key}}</a>
                         </li>
                     {{/mock_no}}
                 </ul>
@@ -195,7 +200,10 @@
                 <div class="tab-content">
         {{#mock_no}}
                     <div role="tabpanel" class="tab-pane {{#value}}active{{/value}}{{^value}}fade{{/value}}" id="mock{{key}}">
-                        <form id="mock-form-{{key}}">
+
+                        <button type="button" id="mock-button-{{key}}" class="btn btn-round btn-lg btn-primary create-new-mock-button" data-mock-group="{{key}}" data-mock-form="mock-form-{{key}}">+Create a new mock in this slot</button>
+
+                        <form id="mock-form-{{key}}" style="display: none;">
                             <table class="table table-bordered table-striped table-info">
                                 <tbody>
                                 <tr>
@@ -337,7 +345,7 @@
                 <td width="150">Request Method:</td>
                 <td>
                     <div class="form-group tightdropdowngroup">
-                        <select class="form-control tightdropdown mock-method-select dropdown-grp-<%group%>" data-mock-method-group="dropdown-grp-<%group%>" data-mock-payload="json-payload-<%group%>-<%tid%>" data-mock-linked="code-dropdown-<%group%>-<%tid%>" id="method-dropdown-<%group%>-<%tid%>" name="method-<%group%>-<%tid%>">
+                        <select class="form-control tightdropdown mock-method-select dropdown-grp-<%group%>" data-mock-method-group="dropdown-grp-<%group%>" data-mock-payload="jsonpayload-<%group%>-<%tid%>" data-mock-linked="code-dropdown-<%group%>-<%tid%>" id="method-dropdown-<%group%>-<%tid%>" name="method-<%group%>-<%tid%>">
                             <&methods_options&>
                         </select>
                     </div>
@@ -350,7 +358,7 @@
                 <td>Response Code:</td>
                 <td>
                     <div class="form-group tightdropdowngroup">
-                        <select class="form-control tightdropdown mock-respcode-select" data-mock-payload="json-payload-<%group%>-<%tid%>" data-mock-linked="method-dropdown-<%group%>-<%tid%>" id="code-dropdown-<%group%>-<%tid%>" name="respcode-<%group%>-<%tid%>">
+                        <select class="form-control tightdropdown mock-respcode-select" data-mock-payload="jsonpayload-<%group%>-<%tid%>" data-mock-linked="method-dropdown-<%group%>-<%tid%>" id="code-dropdown-<%group%>-<%tid%>" name="respcode-<%group%>-<%tid%>">
                             <&codes_options&>
                         </select>
                     </div>
@@ -375,13 +383,13 @@
                     </div>
                 </td>
             </tr>
-            <tr id="json-payload-<%group%>-<%tid%>">
+            <tr id="jsonpayload-<%group%>-<%tid%>">
                 <td>Response JSON Payload:</td>
                 <td>
                     <div class="form-group tightpayloadgroup">
                         <div id="jsoneditor-<%group%>-<%tid%>"></div>
-                        <input type="hidden" id="ijsoneditor-<%group%>-<%tid%>" name="payload-<%group%>-<%tid%>">
-                        <!-- <textarea class="form-control json-payload" rows="5" name="payload-<%group%>-<%tid%>"></textarea> -->
+                        <input type="hidden" id="ijsoneditor-<%group%>-<%tid%>" name="payload-<%group%>-<%tid%>" value="jsoneditor-<%group%>-<%tid%>">
+                        <input type="hidden" id="indjsonpayload-<%group%>-<%tid%>" name="indjsonpayload-<%group%>-<%tid%>" value="true">
                     </div>
                 </td>
             </tr>
@@ -390,8 +398,8 @@
     </script>
     <script id="mock-headers-template" type="text/x-handlebars-template">
         <tr id="mock-header-<%group%>-<%tid%>">
-            <td><input class="form-control tightinput" type="text" name="header-name-<%group%>-<%tid%>" value=""></td>
-            <td><input class="form-control tightinput" type="text" name="header-value-<%group%>-<%tid%>" value=""></td>
+            <td><input class="form-control tightinput" type="text" name="headername-<%group%>-<%tid%>" value="<%name%>"></td>
+            <td><input class="form-control tightinput" type="text" name="headervalue-<%group%>-<%tid%>" value="<%value%>"></td>
             <td><button type="button" data-mock-group="<%group%>-<%tid%>" class="btn btn-xs btn-danger mock-delete-header-button"><i class="fa fa-remove"></i></button></td>
         </tr>
     </script>
@@ -399,7 +407,7 @@
         <table class="table table-bordered table-striped table-info" id="mock-resource-container-<%group%>-<%tid%>">
             <tbody>
             <tr>
-                <td><div class="form-group"><strong id="resource-url-copy-<%group%>-<%tid%>">{{new_mock_endpoint}}/</strong>&nbsp;&nbsp;<button type="button" id="mock-endpoint-clipboard-<%group%>-<%tid%>" class="btn btn-xs btn-purple" data-clipboard-action="copy" data-clipboard-target="#resource-url-copy-<%group%>-<%tid%>"><i class="fa fa-copy"></i> Copy</button><input class="form-control tightinput mock-resource-path" type="text" name="path-<%group%>-<%tid%>" id="resource-path-<%group%>-<%tid%>" value="" data-path-init-val="{{new_mock_endpoint}}/" data-path-target="resource-url-copy-<%group%>-<%tid%>"></div></td>
+                <td><div class="form-group"><strong id="resource-url-copy-<%group%>-<%tid%>">{{new_mock_endpoint}}</strong>&nbsp;&nbsp;<button type="button" id="mock-endpoint-clipboard-<%group%>-<%tid%>" class="btn btn-xs btn-purple" data-clipboard-action="copy" data-clipboard-target="#resource-url-copy-<%group%>-<%tid%>"><i class="fa fa-copy"></i> Copy</button><input class="form-control tightinput mock-resource-path" type="text" name="path-<%group%>-<%tid%>" id="resource-path-<%group%>-<%tid%>" value="" data-path-init-val="{{new_mock_endpoint}}" data-path-target="resource-url-copy-<%group%>-<%tid%>"></div></td>
                 <td class="narrow">
                     <button type="button" data-mock-group="<%group%>-<%tid%>" class="btn btn-xs btn-danger mock-delete-resource-button"><i class="fa fa-remove"></i></button>
                 </td>

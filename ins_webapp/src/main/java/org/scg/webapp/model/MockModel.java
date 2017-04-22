@@ -2,7 +2,6 @@ package org.scg.webapp.model;
 
 import org.scg.db.DB;
 import org.scg.webapp.dto.ajax.AjaxResponse;
-import org.scg.webapp.dto.form.MockSettings;
 import spark.Request;
 
 /**
@@ -22,15 +21,11 @@ public class MockModel extends AbstractModel {
 
     public AjaxResponse processAjaxRequest() {
         AjaxResponse ar = new AjaxResponse();
-        MockSettings proxyMockBean = (MockSettings) populateRequestBean(MockSettings.class);
-
-      /*  if("activate".equalsIgnoreCase(proxyMockBean.getActivity()) && proxyMockBean.getProxyurl().length() > 10) {
-            db.updateProxyApiEndpoint(psid, proxyMockBean.getProxyurl());
-            ar.setBody("{\"active\": true}");
-        } else {
-            db.updateProxyApiEndpoint(psid, "");
-            ar.setBody("{\"active\": false}");
-        }*/
+        if(db.isSessionOwner(sessionId ,psid)) {
+            String body = request.body();
+            ar.setBody("{\"status\":\"OK\"}");
+            db.updateMockConfig(psid, body);
+        }
         return ar;
     }
 

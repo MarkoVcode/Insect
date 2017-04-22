@@ -66,7 +66,7 @@ public class HomePage {
         });
 
         //Deploy mock
-        post("/mock/:psid", (rq, rs) -> {
+        post("/service/mock/:psid", (rq, rs) -> {
             rs.type("application/json");
             MockModel pm = new MockModel(rq);
             AjaxResponse response = pm.processAjaxRequest();

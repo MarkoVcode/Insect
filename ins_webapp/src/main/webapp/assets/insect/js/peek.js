@@ -171,9 +171,23 @@ $(document).ready(function(){
             requestheaderpp = JSON.stringify(requestheaderobj, " ", 2);
         }
         var requestbodypp = "";
+        var requestbodysourcedisplay = "";
         if(data.proxy.request.body !== "") {
-            var requestbodyobj = JSON.parse(atob(data.proxy.request.body));
-            requestbodypp = JSON.stringify(requestbodyobj, " ", 2);
+            var requestbodysource = atob(data.proxy.request.body);
+            var requestbodyobj;
+            try {
+                requestbodyobj = JSON.parse(requestbodysource);
+                requestbodypp = JSON.stringify(requestbodyobj, " ", 2);
+                requestbodysourcedisplay = requestbodysource;
+            } catch (err) {
+                requestbodyobj = {};
+                requestbodypp = 'Not JSON response!';
+                if(requestbodysource.indexOf("html") !== -1 || requestbodysource.indexOf("HTML") !== -1) {
+                    requestbodysourcedisplay = 'HTML Content -not displayed-';
+                } else if (requestbodysource.indexOf("xml") !== -1 || requestbodysource.indexOf("XML") !== -1) {
+                    requestbodysourcedisplay = 'XML Content -not displayed-';
+                }
+            }
         }
         var responseheaderpp = "";
         if(data.proxy.response.header !== "") {
@@ -181,10 +195,25 @@ $(document).ready(function(){
             responseheaderpp = JSON.stringify(responseheaderobj, " ", 2);
         }
         var responsebodypp = "";
+        var responsebodysourcedisplay = "";
         if(data.proxy.response.body !== "") {
-            var responsebodyobj = JSON.parse(atob(data.proxy.response.body));
-            responsebodypp = JSON.stringify(responsebodyobj, " ", 2);
+            var responsebodysource = atob(data.proxy.response.body);
+            var responsebodyobj;
+            try {
+                responsebodyobj = JSON.parse(responsebodysource);
+                responsebodypp = JSON.stringify(responsebodyobj, " ", 2);
+                responsebodysourcedisplay = responsebodysource;
+            } catch (err) {
+                responsebodyobj = {};
+                responsebodypp = 'Not JSON response!';
+                if(responsebodysource.indexOf("html") !== -1 || responsebodysource.indexOf("HTML") !== -1) {
+                    responsebodysourcedisplay = 'HTML Content -not displayed-';
+                } else if (responsebodysource.indexOf("xml") !== -1 || responsebodysource.indexOf("XML") !== -1) {
+                    responsebodysourcedisplay = 'XML Content -not displayed-';
+                }
+            }
         }
+
         //data.proxy.general.dateDispatch
         var date = new Date();
         data['augment'] = { codecolor: color,
@@ -193,9 +222,9 @@ $(document).ready(function(){
                             methodcolor: color1,
                             protocolor: colorProto,
                             requestheader: atob(data.proxy.request.header),
-                            requestbody: atob(data.proxy.request.body),
+                            requestbody: requestbodysourcedisplay,
                             responseheader: atob(data.proxy.response.header),
-                            responsebody: atob(data.proxy.response.body),
+                            responsebody: responsebodysourcedisplay,
                             requestheaderhtml: requestheaderpp,
                             requestbodyhtml: requestbodypp,
                             responseheaderhtml: responseheaderpp,

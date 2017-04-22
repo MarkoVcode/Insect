@@ -67,7 +67,7 @@ public class Properties {
     private static final String  WEBSOCKETS_ROOT = "";
     private static final String  WEBSOCKETS_SERVLET_PATH = "/inspush";
     private static final String  WEBSOCKETS_HOST = "127.0.0.1";
-    private static final Integer MOCK_SLOTS_NO = 5;
+    private static final Integer MOCK_SLOTS_NO = 0;
     private static String WEBSOCKETS_WEB_PROTO = "ws";
     private static String WEBSOCKETS_WEB_HOST = HOST_IP;
     private static final Integer WEBAPP_PUBLIC_PORT = 9080;
