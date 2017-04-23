@@ -163,7 +163,7 @@ $(document).ready(function(){
         } else {
             color = "danger";
         }
-        var tid = Math.random().toString(36).substring(1);
+        var tid = Math.random().toString(36).substring(3);
 
         var requestheaderpp = "";
         if(data.proxy.request.header !== "") {
