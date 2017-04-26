@@ -129,7 +129,22 @@
                               {{/has_ownership}}</td>
                           </tr>
                           <tr>
-                              <td>Upstream:</td>
+                              <td>{{^has_ownership}}
+                                    Upstream:
+                                  {{/has_ownership}}
+                                  {{#has_ownership}}
+                                          <div class="dropdown dropdown-small" id="upstream-list" {{#is_active}} style="display: none;" {{/is_active}}>
+                                              <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                                  Upstream:
+                                                  <span class="caret"></span>
+                                              </button>
+                                              <ul class="dropdown-menu" aria-labelledby="dropdownMenu1" id="historical-upstreams"></ul>
+                                          </div>
+                                          <div id="upstream-nolist" {{^is_active}} style="display: none;" {{/is_active}}>
+                                              Upstream:
+                                          </div>
+                                  {{/has_ownership}}
+                              </td>
                               <td>
                                   <div class="form-group tight">
                                   {{^has_ownership}}
@@ -402,6 +417,9 @@
             <td><input class="form-control tightinput" type="text" name="headervalue-<%group%>-<%tid%>" value="<%value%>"></td>
             <td><button type="button" data-mock-group="<%group%>-<%tid%>" class="btn btn-xs btn-danger mock-delete-header-button"><i class="fa fa-remove"></i></button></td>
         </tr>
+    </script>
+    <script id="historical-upstreams-template" type="text/x-handlebars-template">
+        <li><a class="histupstreamoption" href="#"><%upstream_url%></a></li>
     </script>
     <script id="mock-resource-template" type="text/x-handlebars-template">
         <table class="table table-bordered table-striped table-info" id="mock-resource-container-<%group%>-<%tid%>">

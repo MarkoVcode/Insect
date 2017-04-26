@@ -8,6 +8,7 @@ $(document).ready(function(){
     var httpMethodsNoBody = ['DELETE'];
     var httpCodes = ['200', '201', '204', '304', '400', '401', '403', '404', '405', '410', '415', '422', '429', '500'];
     var httpCodesNoBody = ['204'];
+    var httpDefaultHeaders = ['Content-Type', 'Location'];
     var httpMethodTemplate = {'GET':{code: 304, payload: {}, body: true,  headers: {'Content-Type': 'application/json'}},
                              'POST':{code: 201, payload: {}, body: true,  headers: {'Content-Type': 'application/json', Location:'http://192.168.56.100:9180/service/mock'}},
                               'PUT':{code: 201, payload: {}, body: true,  headers: {'Content-Type': 'application/json', Location:'http://192.168.56.100:9180/service/mock'}},

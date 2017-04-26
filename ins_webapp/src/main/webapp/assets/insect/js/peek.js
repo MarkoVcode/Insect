@@ -41,13 +41,71 @@ $(document).ready(function(){
             localStorage.setItem('created-'+configObj.psid, currentTimestamp);
         }
         var storageTime = parseInt(localStorage.getItem('created-'+configObj.psid));
-        var configTime = configObj.sessionTimeout;
-        var timeout = storageTime + configTime - currentTimestamp;
-        if(timeout < 0) {
+        if(!isProxySessionActive(storageTime, currentTimestamp)) {
             window.open("/peek","_self");
         } else {
             var display = $('#session-timeout');
-            startTimer(timeout, display);
+            startTimer(calculateTimeout(storageTime, currentTimestamp), display);
+        }
+        cleanLocalStorage(currentTimestamp);
+        fetchEndpointHistory();
+        //console.log(history);
+    }
+
+    function addHistoricalUpstream(upstreamurl) {
+        var template = Handlebars.compile(getTemplate("#historical-upstreams-template"));
+        var data = {upstream_url: upstreamurl};
+        $("#historical-upstreams").append(template(data));
+    }
+
+    function isProxySessionActive(storageTime, currentTimestamp) {
+        if(calculateTimeout(storageTime, currentTimestamp) < 0) {
+            return false;
+        }
+        return true;
+    }
+
+    function calculateTimeout(storageTime, currentTimestamp) {
+        var configTime = configObj.sessionTimeout;
+        return storageTime + configTime - currentTimestamp;
+    }
+
+    function fetchEndpointHistory() {
+        var history = [];
+        for (var i = 0; i < localStorage.length; i++){
+            if(localStorage.key(i).startsWith('endpoint-') && !localStorage.key(i).startsWith('endpoint-latest')) {
+                var upstream = localStorage.getItem(localStorage.key(i));
+                if(history.indexOf(upstream) === -1) {
+                    history.push(upstream);
+                    addHistoricalUpstream(upstream);
+                }
+            }
+        }
+    }
+//
+// function get recently used unique URLs as list
+// to populate in dropdown
+//
+    function getTemplate(template) {
+        var source  = $(template).html();
+        var sourcep = source.replace(new RegExp("<%", 'g'), "{{")
+                            .replace(new RegExp("%>", 'g'), "}}")
+                            .replace(new RegExp("<&", 'g'), "{{{")
+                            .replace(new RegExp("&>", 'g'), "}}}");
+        return sourcep;
+    }
+
+    function cleanLocalStorage(currentTimestamp) {
+        var currentTimestamp = parseInt(currentTimestamp);
+        for (var i = 0; i < localStorage.length; i++){
+            if(localStorage.key(i).startsWith('created')) {
+                var storageTime = parseInt(localStorage.getItem(localStorage.key(i)));
+                var newTimestamp = storageTime + 5;
+                if(!isProxySessionActive(newTimestamp, currentTimestamp)) {
+                    console.log("delete:" + localStorage.key(i));
+                    localStorage.removeItem(localStorage.key(i));
+                }
+            }
         }
     }
 
@@ -326,6 +384,11 @@ $(document).ready(function(){
         changeProxyState("activate");
     });
 
+    $(document).delegate('.histupstreamoption', 'click', function(e) {
+        var item=$(this);
+        $('#api-endpoint').val(item[0].innerHTML);
+    });
+
     function changeProxyState(state) {
         var endpoint = $('#api-endpoint').val();
         var validation = validateEndpoint(endpoint);
@@ -378,12 +441,16 @@ $(document).ready(function(){
         $('#proxy-start').prop('disabled', true);
         $('#proxy-stop').prop('disabled', false);
         $('#api-endpoint').prop('disabled', true);
+        $('#upstream-list').hide();
+        $('#upstream-nolist').show();
     }
 
     function updateInactivePresentation() {
         $('#proxy-start').prop('disabled', false);
         $('#proxy-stop').prop('disabled', true);
         $('#api-endpoint').prop('disabled', false);
+        $('#upstream-list').show();
+        $('#upstream-nolist').hide();
     }
 
     function getCookie(name) {

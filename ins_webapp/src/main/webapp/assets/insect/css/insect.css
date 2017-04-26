@@ -38,3 +38,7 @@ pre {
 .narrow {
     width: 37px;
 }
+
+.dropdown-small {
+    padding: 1px 12px;
+}
