@@ -425,15 +425,14 @@
         <table class="table table-bordered table-striped table-info" id="mock-resource-container-<%group%>-<%tid%>">
             <tbody>
             <tr>
-                <td><div class="form-group"><strong id="resource-url-copy-<%group%>-<%tid%>">{{new_mock_endpoint}}</strong>&nbsp;&nbsp;<button type="button" id="mock-endpoint-clipboard-<%group%>-<%tid%>" class="btn btn-xs btn-purple" data-clipboard-action="copy" data-clipboard-target="#resource-url-copy-<%group%>-<%tid%>"><i class="fa fa-copy"></i> Copy</button><input class="form-control tightinput mock-resource-path" type="text" name="path-<%group%>-<%tid%>" id="resource-path-<%group%>-<%tid%>" value="" data-path-init-val="{{new_mock_endpoint}}" data-path-target="resource-url-copy-<%group%>-<%tid%>"></div></td>
+                <td><div class="form-group"><strong id="resource-url-copy-<%group%>-<%tid%>">{{new_mock_endpoint}}</strong>&nbsp;&nbsp;<button type="button" id="mock-endpoint-clipboard-<%group%>-<%tid%>" class="btn btn-xs btn-purple" data-clipboard-action="copy" data-clipboard-target="#resource-url-copy-<%group%>-<%tid%>"><i class="fa fa-copy"></i> Copy</button>
+                    <input class="form-control tightinput mock-resource-path" type="text" name="path-<%group%>-<%tid%>" id="resource-path-<%group%>-<%tid%>" value="<%path%>" data-path-init-val="{{new_mock_endpoint}}" data-path-target="resource-url-copy-<%group%>-<%tid%>"></div></td>
                 <td class="narrow">
                     <button type="button" data-mock-group="<%group%>-<%tid%>" class="btn btn-xs btn-danger mock-delete-resource-button"><i class="fa fa-remove"></i></button>
                 </td>
             </tr>
             <tr>
                 <td id="mock-methods-<%group%>-<%tid%>">
-
-
 
                 </td>
                 <td>

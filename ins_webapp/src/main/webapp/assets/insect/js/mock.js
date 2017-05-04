@@ -38,16 +38,19 @@ $(document).ready(function(){
 
     $('.mock-add-resource-button').click(function(e){
         var group = $( this ).data("mock-group");
-        addResource(group);
+        addResource(group, "");
     });
 
-    function addResource(group) {
+    function addResource(group, path) {
         var template = Handlebars.compile(getTemplate("#mock-resource-template"));
         var tid = Math.random().toString(36).substring(18);
         var data = {group: group,
+                    path: path,
                     tid: tid};
         $("#mock-methods-container-"+group).append(template(data));
         new Clipboard('#mock-endpoint-clipboard-'+data.group+'-'+data.tid);
+        var elem = $("#resource-path-"+group+"-"+tid);
+        updateDisplayPath(elem);
         addMethod(group+"-"+tid, null);
     }
 
@@ -56,13 +59,22 @@ $(document).ready(function(){
     });
 
     $(document).delegate('.create-new-mock-button', 'click', function(e) {
-        var gform = $( this ).data("mock-form");
         var group = $( this ).data("mock-group");
-        $( this ).hide();
-        $("#"+gform).show();
-        addResource(group);
+        changeMockWizardVisibility(group, true);
+        addResource(group, "");
     });
 
+    function changeMockWizardVisibility(group, show) {
+        var gform = "mock-form-"+group;
+        var gbutton = "mock-button-"+group;
+        if(show) {
+            $("#"+gbutton).hide();
+            $("#"+gform).show();
+        } else {
+            $("#"+gform).hide();
+            $("#"+gbutton).show();
+        }
+    }
 
     $(document).delegate('.mockview', 'click', function(e) {
         var mockId = $( this ).data("load-mock");
@@ -85,6 +97,12 @@ $(document).ready(function(){
         if ($('#mock-methods-container-'+parts[0]).children().length < 1) {
             hideEmptyMock(parts[0]);
         }
+        deleteLocalStorageMock(parts[0]);
+    }
+
+    function deleteLocalStorageMock(group) {
+        localStorage.removeItem("mock"+group);
+        localStorage.removeItem("mocko"+group);
     }
 
     $(document).delegate('.mock-add-header-button', 'click', function(e) {
@@ -370,18 +388,23 @@ $(document).ready(function(){
         if(null !== mockJson) {
             var inputObject = JSON.parse(mockJson);
             for(var i = 0; i<inputObject.mock.length; i++) {
-                // create resource with: inputObject.mock[i].path
-                for (var key in inputObject.mock[i].methods) {
-                   if (inputObject.mock[i].methods.hasOwnProperty(key)) {
-               //       addMethodFromJson(group+"-"+tid, key, inputObject.mock[i].methods[key]);
-                   }
-                }
+                loadResource(inputObject.mock[i], id);
             }
         }
-        //loop create resource
-            //loop create method
-        //end
     }
+
+    function loadResource(resource, group) {
+        addResource(group, resource.path);
+        changeMockWizardVisibility(group, true);
+        for (var key in resource.methods) {
+            if (resource.methods.hasOwnProperty(key)) {
+            //load methods here
+            //       addMethodFromJson(group+"-"+tid, key, inputObject.mock[i].methods[key]);
+            }
+        }
+    }
+
+
 
     //##################  JSON EDITORS
     // group - mock slot (1,2,3 ...)
@@ -487,7 +510,7 @@ $(document).ready(function(){
                 obj['mockname'] = mock;
                 for(var resource in fromFormObject[key]) {
                     if(fromFormObject[key].hasOwnProperty(resource)) {
-                        var resourcePath = {path: fromFormObject[key][resource]['path'], methods: {}};
+                        var resourcePath = {path: processRawPath(fromFormObject[key][resource]['path']), methods: {}};
                         for(var method in fromFormObject[key][resource]) {
                             if (method !== 'path') {
                                 if(fromFormObject[key][resource].hasOwnProperty(method)) {
@@ -507,6 +530,18 @@ $(document).ready(function(){
         }
         return obj;
     }
+
+    function processRawPath(path) {
+        var returnPath = "";
+        if(path !== null) {
+            returnPath = decodeURIComponent(path);
+            if(!returnPath.startsWith("/")) {
+                return "/"+returnPath;
+            }
+        }
+        return returnPath;
+    }
+
     function buildMockHeaders(allHeaders, resource, method) {
         var headersResult = {};
         if(typeof allHeaders[resource] !== 'undefined') {
