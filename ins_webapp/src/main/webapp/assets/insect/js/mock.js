@@ -38,10 +38,10 @@ $(document).ready(function(){
 
     $('.mock-add-resource-button').click(function(e){
         var group = $( this ).data("mock-group");
-        addResource(group, "");
+        addResource(group, "", true);
     });
 
-    function addResource(group, path) {
+    function addResource(group, path, addDefaultMethod) {
         var template = Handlebars.compile(getTemplate("#mock-resource-template"));
         var tid = Math.random().toString(36).substring(18);
         var data = {group: group,
@@ -51,7 +51,10 @@ $(document).ready(function(){
         new Clipboard('#mock-endpoint-clipboard-'+data.group+'-'+data.tid);
         var elem = $("#resource-path-"+group+"-"+tid);
         updateDisplayPath(elem);
-        addMethod(group+"-"+tid, null);
+        if(addDefaultMethod) {
+            addMethod(group+"-"+tid, null, null, null);
+        }
+        return tid;
     }
 
     $(document).delegate('.mock-resource-path', 'input', function(e) {
@@ -61,7 +64,7 @@ $(document).ready(function(){
     $(document).delegate('.create-new-mock-button', 'click', function(e) {
         var group = $( this ).data("mock-group");
         changeMockWizardVisibility(group, true);
-        addResource(group, "");
+        addResource(group, "", true);
     });
 
     function changeMockWizardVisibility(group, show) {
@@ -177,11 +180,6 @@ $(document).ready(function(){
 
     function updatePayloadView(methodId, codeId, payloadId) {
         changePayloadEditorVisibility(payloadId, isPayloadVisible(methodId, codeId));
-        //if(isPayloadVisible(methodId, codeId)) {
-        //    $("#"+payloadId).show();
-        //} else {
-        //    $("#"+payloadId).hide();
-        //}
     }
 
     function isPayloadVisible(methodId, codeId) {
@@ -243,10 +241,10 @@ $(document).ready(function(){
                     'object': {'a': 'b', 'c': 'd'},
                     'string': 'Hello World'
                 };
-        addMethod(group, json);
+        addMethod(group, json, null, null);
     });
 
-    function addMethod(group, body) {
+    function addMethod(group, body, methodObject, methodName) {
         var template = Handlebars.compile(getTemplate("#mock-method-template"));
         var nonUsedMethods = filterUsedMethods(httpMethods, group);
         var tid = Math.random().toString(36).substring(18);
@@ -266,7 +264,29 @@ $(document).ready(function(){
             $('#'+group).prop('disabled', true);
         }
         updateMethodGroupWhenChanged("dropdown-grp-"+group);
-        populateMethodTemplate(group,tid);
+        if(methodObject !== null) {
+            populateMethodFromObject(group, tid, methodObject, methodName);
+        } else {
+            populateMethodTemplate(group, tid);
+        }
+    }
+
+    function populateMethodFromObject(group, tid, methodObject, methodName) {
+        $("#method-dropdown-"+group+"-"+tid).val(methodName);
+        $("#code-dropdown-"+group+"-"+tid).val(methodObject.code);
+        for (var key in methodObject.headers) {
+           if (methodObject.headers.hasOwnProperty(key)) {
+              addHeaderLineItemDuplicateAware(group+"-"+tid, key, methodObject.headers[key]);
+           }
+        }
+        if(methodObject.body) {
+            changePayloadEditorVisibility("jsonpayload-"+group+"-"+tid, true);
+            //$("#json-payload-"+group+"-"+tid).show();
+        } else {
+            changePayloadEditorVisibility("jsonpayload-"+group+"-"+tid, false);
+            //$("#json-payload-"+group+"-"+tid).hide();
+        }
+        console.log("add method: " + JSON.stringify(methodObject));
     }
 
     function populateMethodTemplate(group,tid) {
@@ -394,17 +414,23 @@ $(document).ready(function(){
     }
 
     function loadResource(resource, group) {
-        addResource(group, resource.path);
+        var tid = addResource(group, resource.path, false);
         changeMockWizardVisibility(group, true);
         for (var key in resource.methods) {
             if (resource.methods.hasOwnProperty(key)) {
-            //load methods here
-            //       addMethodFromJson(group+"-"+tid, key, inputObject.mock[i].methods[key]);
+                loadMethod(group, tid, key, resource.methods[key]);
             }
         }
     }
 
-
+    function loadMethod(group, tid, methodName, methodObject) {
+        var rgroup = group+"-"+tid;
+        if(methodObject.body) {
+            addMethod(rgroup, methodObject.payload, methodObject, methodName);
+        } else {
+            addMethod(rgroup, null, methodObject, methodName);
+        }
+    }
 
     //##################  JSON EDITORS
     // group - mock slot (1,2,3 ...)
@@ -517,9 +543,8 @@ $(document).ready(function(){
                                     resourcePath['methods'][fromFormObject[key][resource][method]['method']] = {
                                         code: fromFormObject[key][resource][method]['respcode'],
                                         payload: fetchJSONEditorContent(fromFormObject[key][resource][method]['payload']),
-                                        body: fromFormObject[key][resource][method]['indjsonpayload'], //convert to boolean
+                                        body: processRawBoolean(fromFormObject[key][resource][method]['indjsonpayload']),
                                         headers: buildMockHeaders(fromFormObject['headers'], resource, method)};
-                   // btoa atob  btoa()
                                 }
                             }
                         }
@@ -531,11 +556,15 @@ $(document).ready(function(){
         return obj;
     }
 
+    function processRawBoolean(string) {
+        return string === 'true';
+    }
+
     function processRawPath(path) {
         var returnPath = "";
         if(path !== null) {
             returnPath = decodeURIComponent(path);
-            if(!returnPath.startsWith("/")) {
+            if(!returnPath.startsWith("/") && returnPath.length > 1) {
                 return "/"+returnPath;
             }
         }
@@ -548,7 +577,7 @@ $(document).ready(function(){
             if(typeof allHeaders[resource][method] !== 'undefined') {
                 for (var key in allHeaders[resource][method]) {
                     if (allHeaders[resource][method].hasOwnProperty(key)) {
-                        headersResult[allHeaders[resource][method][key]['headername']] = allHeaders[resource][method][key]['headervalue'];
+                        headersResult[decodeURIComponent(allHeaders[resource][method][key]['headername'])] = decodeURIComponent(allHeaders[resource][method][key]['headervalue']);
                     }
                 }
             }
@@ -559,6 +588,5 @@ $(document).ready(function(){
     function fetchJSONEditorContent(id) {
         var groups = id.split("-", 3);
         return pullEditor(groups[1]+"-"+groups[2], id).get();
-        //JSON.stringify();
     }
 });

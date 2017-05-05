@@ -88,8 +88,8 @@
     </header>
 
     <main class="container-fluid">
-
-      <div class="row">
+      <div id="loading-spinner" class="row loading"></div>
+      <div id="loaded-content" class="row" style="display:none;">
 
           <article class="col-md-12 main-content" role="main">
               <button type="button" id="proxy-reset" class="btn btn-xs btn-primary">{{^has_ownership}}Get yourself own session!{{/has_ownership}}
@@ -117,7 +117,10 @@
                       <table class="table table-bordered table-striped table-info">
                           <tbody>
                           <tr>
-                              <td>Endpoint:</td>
+                              <td>
+                                  <div class="dropdown dropdown-small">
+                                      Endpoint:
+                                  </div></td>
                               <td><strong id="endpoint-url">{{new_api_endpoint}}</strong>&nbsp;&nbsp;<button type="button" id="proxy-endpoint-clipboard" class="btn btn-xs btn-purple" data-clipboard-action="copy" data-clipboard-target="#endpoint-url"><i class="fa fa-copy"></i> Copy</button></td>
                               <td>{{#has_ownership}}
                                   {{^is_active}}
@@ -130,17 +133,19 @@
                           </tr>
                           <tr>
                               <td>{{^has_ownership}}
-                                    Upstream:
+                                    <div class="dropdown dropdown-small">
+                                        Upstream:
+                                    </div>
                                   {{/has_ownership}}
                                   {{#has_ownership}}
                                           <div class="dropdown dropdown-small" id="upstream-list" {{#is_active}} style="display: none;" {{/is_active}}>
+                                              Upstream:
                                               <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                                                  Upstream:
                                                   <span class="caret"></span>
                                               </button>
                                               <ul class="dropdown-menu" aria-labelledby="dropdownMenu1" id="historical-upstreams"></ul>
                                           </div>
-                                          <div id="upstream-nolist" {{^is_active}} style="display: none;" {{/is_active}}>
+                                          <div class="dropdown dropdown-small" id="upstream-nolist" {{^is_active}} style="display: none;" {{/is_active}}>
                                               Upstream:
                                           </div>
                                   {{/has_ownership}}

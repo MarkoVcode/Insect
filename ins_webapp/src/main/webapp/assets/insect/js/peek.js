@@ -2,6 +2,7 @@ $(document).ready(function(){
 
     var websocket;
     var versionChangeAlertShown = false;
+    showContent();
     setSessionTimer();
     establishWSConnection();
     new Clipboard('#proxy-endpoint-clipboard');
@@ -33,6 +34,11 @@ $(document).ready(function(){
       "hideEasing": "linear",
       "showMethod": "fadeIn",
       "hideMethod": "fadeOut"
+    }
+
+    function showContent() {
+        $('#loading-spinner').hide();
+        $('#loaded-content').show();
     }
 
     function setSessionTimer() {
