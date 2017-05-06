@@ -5,12 +5,14 @@ var session = require('./lib/session.js');
 var config = require('./lib/config.js');
 var iconsole = require('./lib/iconsole.js');
 var representation = require('./lib/representation.js');
+var mock = require('./lib/mock.js');
 var timecounter = require('./lib/timecounter.js');
 
 var ws;
 
 const TOKEN_LENGTH= config.getTokenLength();
 const SERVICE_PATH= config.getServicePath();
+const SERVICE_MOCK_PATH= config.getServiceMockPath();
 const SERVICE_TEST_PATH= config.getServiceTestPath();
 const PORT= config.getPort();
 
@@ -33,6 +35,20 @@ function handleRequest(request, response){
         response.setHeader("Content-Length", Buffer.byteLength(sendContent));
         response.writeHead(200);
         response.end(sendContent);
+    } else if(url.indexOf(SERVICE_MOCK_PATH) != -1) {
+        var mockSettings = mock.process(request);
+        if(null != mockSettings) {
+            iconsole.log('Mock Found!');
+            mock.populateHeaders(response, mockSettings);
+            response.writeHead(mockSettings.code);
+            response.end(mockSettings.bodystring);
+        } else {
+            iconsole.log('Mock 404');
+            response.setHeader("Content-Type","application/json");
+            response.setHeader("Content-Length", Buffer.byteLength(""));
+            response.writeHead(404);
+            response.end("");
+        }
     } else {
         ws = require('./lib/websockets.js');
         var sessionConfig = extractSessionConfig(url);

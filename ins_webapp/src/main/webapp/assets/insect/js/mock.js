@@ -9,8 +9,8 @@ $(document).ready(function(){
     var httpCodes = ['200', '201', '204', '304', '400', '401', '403', '404', '405', '410', '415', '422', '429', '500'];
     var httpCodesNoBody = ['204'];
     var httpDefaultHeaders = ['Content-Type', 'Location'];
-    var httpMethodTemplate = {'GET':{code: 304, payload: {}, body: true,  headers: {'Content-Type': 'application/json'}},
-                             'POST':{code: 201, payload: {}, body: true,  headers: {'Content-Type': 'application/json', Location:'http://192.168.56.100:9180/service/mock'}},
+    var httpMethodTemplate = {'GET':{code: 200, payload: {}, body: true,  headers: {'Content-Type': 'application/json'}},
+                             'POST':{code: 200, payload: {}, body: true,  headers: {'Content-Type': 'application/json', Location:'http://192.168.56.100:9180/service/mock'}},
                               'PUT':{code: 201, payload: {}, body: true,  headers: {'Content-Type': 'application/json', Location:'http://192.168.56.100:9180/service/mock'}},
                             'PATCH':{code: 200, payload: {}, body: true,  headers: {'Content-Type': 'application/json'}},
                            'DELETE':{code: 204, payload: {}, body: false, headers: {}}};
@@ -21,10 +21,29 @@ $(document).ready(function(){
         ace: ace
     };
 
+    toastr.options = {
+      "closeButton": true,
+      "debug": false,
+      "newestOnTop": true,
+      "progressBar": false,
+      "positionClass": "toast-top-center",
+      "preventDuplicates": false,
+      "onclick": null,
+      "showDuration": "300",
+      "hideDuration": "1000",
+      "timeOut": "1600",
+      "extendedTimeOut": "1000",
+      "showEasing": "swing",
+      "hideEasing": "linear",
+      "showMethod": "fadeIn",
+      "hideMethod": "fadeOut"
+    }
+
     $( document ).delegate( '.mock-save', 'click', function(e) {
         var id = $(this).data("mock-group")
         if(isMockValid(id)) {
             saveMock(id);
+            toastr["success"]("The mock is saved.", "Ta Da!");
         }
     });
 
@@ -82,7 +101,6 @@ $(document).ready(function(){
     $(document).delegate('.mockview', 'click', function(e) {
         var mockId = $( this ).data("load-mock");
         if (!loadedMockReg.hasOwnProperty(mockId)) {
-            console.log("loaded - mock" + mockId);
             loadMock(mockId);
             loadedMockReg[mockId] = true;
         }
@@ -281,12 +299,9 @@ $(document).ready(function(){
         }
         if(methodObject.body) {
             changePayloadEditorVisibility("jsonpayload-"+group+"-"+tid, true);
-            //$("#json-payload-"+group+"-"+tid).show();
         } else {
             changePayloadEditorVisibility("jsonpayload-"+group+"-"+tid, false);
-            //$("#json-payload-"+group+"-"+tid).hide();
         }
-        console.log("add method: " + JSON.stringify(methodObject));
     }
 
     function populateMethodTemplate(group,tid) {
@@ -366,10 +381,11 @@ $(document).ready(function(){
                 contentType: 'application/json',
                 data: localStorage.getItem('mock'+id),
                 success: function (response) {
-                    console.log(response);
                     updateMockIndicator(true, 'mock'+id);
-                    //var pContent = $(response).find("#ajax-form-container");
-                    //$("#ajax-form-container").html(pContent);
+                    toastr["success"]("Your mock had just been saved and deployed.", "Bring it on!");
+                },
+                error: function () {
+                    toastr["error"]("There is an error with deployment.", "This is rare!");
                 }
             });
         }

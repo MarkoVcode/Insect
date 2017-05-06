@@ -8,6 +8,7 @@
     },
     "TOKEN_LENGTH": 11,
     "SERVICE_PATH": "/service/proxy/",
+    "SERVICE_MOCK_PATH": "/service/mock/",
     "SERVICE_TEST_PATH": "/service/selftest",
     "PORT": 9180,
     "CONSOLE_OUT": true,
