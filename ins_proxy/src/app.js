@@ -7,6 +7,7 @@ var iconsole = require('./lib/iconsole.js');
 var representation = require('./lib/representation.js');
 var mock = require('./lib/mock.js');
 var timecounter = require('./lib/timecounter.js');
+var repository = require('./lib/repository.js');
 
 var ws;
 
@@ -29,13 +30,14 @@ client.on('error', function() {
 function handleRequest(request, response){
     var timer = timecounter.getStartingTime();
     var url = request.url;
-    if(url.indexOf(SERVICE_TEST_PATH) != -1) {
+    if(url.indexOf(SERVICE_TEST_PATH) === 0) {
         response.setHeader("Content-Type","application/json");
         var sendContent = JSON.stringify(representation.generate(request, timer));
         response.setHeader("Content-Length", Buffer.byteLength(sendContent));
         response.writeHead(200);
         response.end(sendContent);
-    } else if(url.indexOf(SERVICE_MOCK_PATH) != -1) {
+    } else if(url.indexOf(SERVICE_MOCK_PATH) === 0) {
+        iconsole.log('QQ'+url.indexOf(SERVICE_MOCK_PATH));
         var mockSettings = mock.process(request);
         if(null != mockSettings) {
             iconsole.log('Mock Found!');
