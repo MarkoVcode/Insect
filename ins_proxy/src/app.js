@@ -1,5 +1,4 @@
 var http = require('http');
-var redis = require('redis');
 var urlObj = require('url');
 var session = require('./lib/session.js');
 var config = require('./lib/config.js');
@@ -17,15 +16,8 @@ const SERVICE_MOCK_PATH= config.getServiceMockPath();
 const SERVICE_TEST_PATH= config.getServiceTestPath();
 const PORT= config.getPort();
 
-var client = redis.createClient(config.getRedisPort(), config.getRedisHost());
 iconsole.log(config.environment());
 iconsole.log(config.getRedisHost());
-client.on('connect', function() {
-    iconsole.log('redis connected');
-});
-client.on('error', function() {
-    iconsole.log('redis NOT UP!');
-});
 
 function handleRequest(request, response){
     var timer = timecounter.getStartingTime();
@@ -55,10 +47,8 @@ function handleRequest(request, response){
         ws = require('./lib/websockets.js');
         var sessionConfig = extractSessionConfig(url);
         if(isSessionIDValid(sessionConfig)) {
-            client.get(sessionConfig.sessionId, function(err1, pUrl) {
-                client.hgetall(sessionConfig.sessionId+'_WS', function(err2, wsUrls) {
-                    doProxyRequest(pUrl, wsUrls, sessionConfig, request, response, timer)
-                })
+            repository.fetchProxyRequestData(sessionConfig, function(data) {
+                doProxyRequest(data.proxyURL, data.webSockets, sessionConfig, request, response, timer);
             });
         } else {
             response.writeHead(404);
