@@ -22,6 +22,7 @@ iconsole.log(config.getRedisHost());
 function handleRequest(request, response){
     var timer = timecounter.getStartingTime();
     var url = request.url;
+    iconsole.log('Request path: '+url);
     if(url.indexOf(SERVICE_TEST_PATH) === 0) {
         response.setHeader("Content-Type","application/json");
         var sendContent = JSON.stringify(representation.generate(request, timer));
@@ -29,26 +30,16 @@ function handleRequest(request, response){
         response.writeHead(200);
         response.end(sendContent);
     } else if(url.indexOf(SERVICE_MOCK_PATH) === 0) {
-        iconsole.log('QQ'+url.indexOf(SERVICE_MOCK_PATH));
-        var mockSettings = mock.process(request);
-        if(null != mockSettings) {
-            iconsole.log('Mock Found!');
-            mock.populateHeaders(response, mockSettings);
-            response.writeHead(mockSettings.code);
-            response.end(mockSettings.bodystring);
-        } else {
-            iconsole.log('Mock 404');
-            response.setHeader("Content-Type","application/json");
-            response.setHeader("Content-Length", Buffer.byteLength(""));
-            response.writeHead(404);
-            response.end("");
-        }
+        var mockSessionId = mock.extractSessionId(request);
+        repository.fetchMockConfig(mockSessionId, function(data) {
+            mock.process(data, request, response);           
+        });
     } else {
         ws = require('./lib/websockets.js');
         var sessionConfig = extractSessionConfig(url);
         if(isSessionIDValid(sessionConfig)) {
             repository.fetchProxyRequestData(sessionConfig, function(data) {
-                doProxyRequest(data.proxyURL, data.webSockets, sessionConfig, request, response, timer);
+                doProxyRequest(data.proxyURL, data.webSocketsURLs, sessionConfig, request, response, timer);
             });
         } else {
             response.writeHead(404);

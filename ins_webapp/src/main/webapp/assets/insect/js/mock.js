@@ -3,17 +3,19 @@ $(document).ready(function(){
     var editors = {};
     var formHeaders = {};
     var loadedMockReg = {};
-
-    var httpMethods = ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'];
-    var httpMethodsNoBody = ['DELETE'];
-    var httpCodes = ['200', '201', '204', '304', '400', '401', '403', '404', '405', '410', '415', '422', '429', '500'];
+    var httpMethods = ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'COPY', 'HEAD', 'OPTIONS'];
+    var httpMethodsNoBody = ['DELETE','HEAD','OPTIONS'];
+    var httpCodes = ['200', '201', '204', '304', '400', '401', '403', '404', '405', '410', '415', '422', '429', '500', '502', '507'];
     var httpCodesNoBody = ['204'];
     var httpDefaultHeaders = ['Content-Type', 'Location'];
     var httpMethodTemplate = {'GET':{code: 200, payload: {}, body: true,  headers: {'Content-Type': 'application/json'}},
-                             'POST':{code: 200, payload: {}, body: true,  headers: {'Content-Type': 'application/json', Location:'http://192.168.56.100:9180/service/mock'}},
-                              'PUT':{code: 201, payload: {}, body: true,  headers: {'Content-Type': 'application/json', Location:'http://192.168.56.100:9180/service/mock'}},
+                             'POST':{code: 200, payload: {}, body: true,  headers: {'Content-Type': 'application/json', Location:'https://api.insectin.space/service/mock'}},
+                              'PUT':{code: 201, payload: {}, body: true,  headers: {'Content-Type': 'application/json', Location:'https://api.insectin.space/service/mock'}},
                             'PATCH':{code: 200, payload: {}, body: true,  headers: {'Content-Type': 'application/json'}},
-                           'DELETE':{code: 204, payload: {}, body: false, headers: {}}};
+                           'DELETE':{code: 204, payload: {}, body: false, headers: {}},
+                             'COPY':{code: 204, payload: {}, body: false, headers: {}},
+                             'HEAD':{code: 200, payload: {}, body: false, headers: {}},
+                          'OPTIONS':{code: 200, payload: {}, body: false, headers: {'Allow': 'OPTIONS, GET, HEAD, POST'}}};
 
     var editorOptions = {
         modes: ['text', 'code', 'tree', 'form', 'view'],
@@ -62,7 +64,7 @@ $(document).ready(function(){
 
     function addResource(group, path, addDefaultMethod) {
         var template = Handlebars.compile(getTemplate("#mock-resource-template"));
-        var tid = Math.random().toString(36).substring(18);
+        var tid = generateTID();
         var data = {group: group,
                     path: path,
                     tid: tid};
@@ -134,15 +136,21 @@ $(document).ready(function(){
     function addHeaderLineItem(group, name, value) {
         var template = Handlebars.compile(getTemplate("#mock-headers-template"));
         var data = {group: group,
-                    tid: Math.random().toString(36).substring(18),
+                    tid: generateTID(),
                     name: name,
                     value: value};
         $("#mock-headers-container-"+group).append(template(data));
     }
 
     function addHeaderLineItemDuplicateAware(group, name, value) {
-        //check for duplicates here
-        addHeaderLineItem(group, name, value);
+        var canBeAdded = true;
+        var headers = $("#mock-headers-container-"+group).find(".unique-header-name");
+        for(var i = 0; i < headers.length; i++) {
+            if(headers[i].value === name) {
+                canBeAdded = false;
+            }
+        }
+        if(canBeAdded) addHeaderLineItem(group, name, value);
     }
 
     $(document).delegate('.mock-method-select', 'change', function(e) {
@@ -265,7 +273,7 @@ $(document).ready(function(){
     function addMethod(group, body, methodObject, methodName) {
         var template = Handlebars.compile(getTemplate("#mock-method-template"));
         var nonUsedMethods = filterUsedMethods(httpMethods, group);
-        var tid = Math.random().toString(36).substring(18);
+        var tid = generateTID();
         var data = {group: group,
                     methods_options: generateDropdownList(nonUsedMethods),
                     codes_options: generateDropdownList(httpCodes),
@@ -287,6 +295,12 @@ $(document).ready(function(){
         } else {
             populateMethodTemplate(group, tid);
         }
+    }
+
+    function generateTID() {
+        var rString = Math.random().toString(36);
+        if(rString.length >= 12) return rString.substring(2,18);
+        return rString.substring(2,rString.length);
     }
 
     function populateMethodFromObject(group, tid, methodObject, methodName) {
@@ -584,6 +598,7 @@ $(document).ready(function(){
                 return "/"+returnPath;
             }
         }
+        if(returnPath === "") return "/";
         return returnPath;
     }
 
@@ -603,6 +618,14 @@ $(document).ready(function(){
 
     function fetchJSONEditorContent(id) {
         var groups = id.split("-", 3);
-        return pullEditor(groups[1]+"-"+groups[2], id).get();
+        var content="";
+        try {
+            content = pullEditor(groups[1]+"-"+groups[2], id).get();
+        } catch (err) {
+            if(err.message.indexOf("got 'EOF'") === -1) {
+                toastr["warning"]("Representation ignored due to errors.", "JSON parsing!");
+            }
+        }
+        return content;
     }
 });
