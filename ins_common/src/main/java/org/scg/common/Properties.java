@@ -87,7 +87,7 @@ public class Properties {
             MOCK_API_ENDPOINT = "https://api.insectin.space/service/mock/";
             SELFTEST_WEB_PROXY = "https://www.insectin.space/selftest/";
             SELFTEST_API = "https://api.insectin.space/service/selftest";
-            MOCKDEPLOY_API = "https://www.insectin.space/service/mock";
+            MOCKDEPLOY_API = "https://www.insectin.space/service/mock/";
             WEBSOCKETS_WEB_PROTO = "wss";
             WEBSOCKETS_WEB_HOST = "ws.insectin.space";
             WEBSOCKETS_WEB_PORT = 443;
