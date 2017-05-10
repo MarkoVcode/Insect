@@ -10,7 +10,7 @@ Mock.prototype.extractSessionId = function (request) {
 
 Mock.prototype.process = function (data, request, response) {
     var mockFound = false;
-        if(null != data.mockConfig) {
+        if(null != data.mockConfig && null != data.webSocketsURLs) {
             iconsole.log('Mock Resource Found!');
             var mockObject = JSON.parse(data.mockConfig);
             var requestedMockPath = unpackPath(request);

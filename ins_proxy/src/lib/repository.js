@@ -22,9 +22,13 @@ Repository.prototype.fetchWSUrls = function () {
 
 Repository.prototype.fetchMockConfig = function (proxySessionId, callback) {
     client.get(proxySessionId+'_MOCK', function(err1, mockConfig) {
+        client.hgetall(proxySessionId+'_WS', function(err2, wsUrls) {
             var data = {err1:err1,
-                        mockConfig:mockConfig};
+                        err2:err2,
+                        mockConfig:mockConfig,
+                        webSocketsURLs:wsUrls};
             callback(data);
+        })
     });
 }
 
