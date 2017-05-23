@@ -370,7 +370,7 @@
                         </select>
                     </div>
                 </td>
-                <td class="narrow" rowspan="4">
+                <td class="narrow" rowspan="5">
                     <button type="button" data-mock-group="<%group%>-<%tid%>" class="btn btn-xs btn-danger mock-delete-method-button"><i class="fa fa-remove"></i></button>
                 </td>
             </tr>
@@ -403,13 +403,20 @@
                     </div>
                 </td>
             </tr>
+            <tr>
+                <td>Response Body:</td>
+                <td>
+                    <div class="form-group tightpayloadgroup">
+                        <input type="checkbox" class="form-control mock-body-present" data-mock-payload="jsonpayload-<%group%>-<%tid%>" id="indjsonpayload-<%group%>-<%tid%>" name="indjsonpayload-<%group%>-<%tid%>" value="true">
+                    </div>
+                </td>
+            </tr>
             <tr id="jsonpayload-<%group%>-<%tid%>">
                 <td>Response JSON Payload:</td>
                 <td>
                     <div class="form-group tightpayloadgroup">
                         <div id="jsoneditor-<%group%>-<%tid%>"></div>
                         <input type="hidden" id="ijsoneditor-<%group%>-<%tid%>" name="payload-<%group%>-<%tid%>" value="jsoneditor-<%group%>-<%tid%>">
-                        <input type="hidden" id="indjsonpayload-<%group%>-<%tid%>" name="indjsonpayload-<%group%>-<%tid%>" value="true">
                     </div>
                 </td>
             </tr>

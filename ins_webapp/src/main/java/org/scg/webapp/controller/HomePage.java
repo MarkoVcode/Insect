@@ -54,7 +54,7 @@ public class HomePage {
     private void setupRoutes() {
         get("/", (rq, rs) -> new ModelAndView(null, PROP.getWebappTemplatesDir()+"home/home.mustache"), new MustacheTemplateEngine());
         get("/changelog", (rq, rs) -> new ModelAndView((new ChangelogModel()).getModel(), PROP.getWebappTemplatesDir()+"changelog/changelog.mustache"), new MustacheTemplateEngine());
-        get("/doc", (rq, rs) -> new ModelAndView((new DocModel()).getModel(), PROP.getWebappTemplatesDir()+"doce/doc.mustache"), new MustacheTemplateEngine());
+        get("/doc", (rq, rs) -> new ModelAndView((new DocModel()).getModel(), PROP.getWebappTemplatesDir()+"doc/doc.mustache"), new MustacheTemplateEngine());
 
         //Proxy self test GET request
         post("/selftest/:psid", (rq, rs) -> {

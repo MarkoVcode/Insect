@@ -163,6 +163,11 @@ $(document).ready(function(){
         populateMethodTemplate(getGroup(linkedElement),getTid(linkedElement));
     });
 
+    $(document).delegate('.mock-body-present', 'change', function(e) {
+        var payload = $(this).data("mock-payload");
+        changePayloadEditorVisibility(payload, $(this).is(":checked"));
+    });
+
     function getGroup(id) {
         //code-dropdown-1-3dddeu3di-gv4fg5vcxr
         var parts = id.split("-", 5);
@@ -222,13 +227,17 @@ $(document).ready(function(){
         var group = elem.data("path-target");
         var initVal = elem.data("path-init-val");
         var fwSlash = "/";
-        if(elem.val().length > 0 && elem.val().startsWith(fwSlash)) {
-            fwSlash = "";
+        if(elem.val().length > 0) {
+            if (elem.val().startsWith(fwSlash)) {
+                fwSlash = "";
+            } else {
+                elem.val(fwSlash + elem.val());
+            }
         }
         if(elem.val().length == 0) {
             fwSlash = "";
         }
-        $('#'+group).html(initVal+fwSlash+escape(elem.val()));//url encode !!!
+        $('#'+group).html(initVal+escape(elem.val()));
     }
 
     $(document).delegate('.mock-delete-header-button', 'click', function(e) {
@@ -259,14 +268,7 @@ $(document).ready(function(){
 
     $(document).delegate('.mock-add-method-button', 'click', function(e) {
         var group = $( this ).data("mock-group");
-                var json = {
-                    'array': [1, 2, 3],
-                    'boolean': true,
-                    'null': null,
-                    'number': 123,
-                    'object': {'a': 'b', 'c': 'd'},
-                    'string': 'Hello World'
-                };
+        var json = {};
         addMethod(group, json, null, null);
     });
 
@@ -339,11 +341,10 @@ $(document).ready(function(){
     }
 
     function changePayloadEditorVisibility(group, show) {
+        $("#ind"+group).prop('checked', show);
         if(show) {
             $("#"+group).show();
-            $("#ind"+group).val("true");
         } else {
-            $("#ind"+group).val("false");
             $("#"+group).hide();
         }
     }
@@ -598,7 +599,6 @@ $(document).ready(function(){
                 return "/"+returnPath;
             }
         }
-        if(returnPath === "") return "/";
         return returnPath;
     }
 
