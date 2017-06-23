@@ -17,7 +17,7 @@ Mock.prototype.process = function (data, request, response) {
                if(hasMatchingURI(mockObject.mock[i].path, unpackPath(request))) {
                    if(mockObject.mock[i].methods.hasOwnProperty(request.method)) {
                        var mockMethod = mockObject.mock[i].methods[request.method];
-                       populateHeaders(response, mockMethod.headers);
+                       populateHeaders(response, mockMethod);
                        if(!mockMethod.body) {
                         response.setHeader("Content-Length", Buffer.byteLength(""));
                         response.writeHead(mockMethod.code);
@@ -42,7 +42,7 @@ Mock.prototype.process = function (data, request, response) {
 
 var hasMatchingURI = function(mockPath, requestPath) {
     if(requestPath === '/') {
-        return mockPath === '';
+        return (mockPath === '' || mockPath === '/');
     }
     var lastChar = mockPath.substr(mockPath.length -1);
     if(lastChar === '/') {
@@ -85,9 +85,12 @@ var unpackPath = function(request) {
     return path;
 }
 
-var populateHeaders = function (response, headers) {
+var populateHeaders = function (response, mockMethod) {
+    var headers = mockMethod.headers;
     var defaultHeader = "Content-Type";
-    response.setHeader(defaultHeader, "application/json");
+    if(mockMethod.body) {
+        response.setHeader(defaultHeader, "application/json");
+    }
     for (var key in headers) {
         if (headers.hasOwnProperty(key)) {
             response.setHeader(key, headers[key]);

@@ -82,7 +82,6 @@
                         <li><a href="#proxyhowdoesitwork">How does it work?</a></li>
                         <li><a href="#proxyusing-setup">Setting Up</a></li>
                         <li><a href="#proxyusing-test">Testing</a></li>
-                        <li><a href="#proxyunderthehood">Under The Hood</a></li>
                     </ul>
                 </li>
                 <li>
@@ -91,9 +90,9 @@
                         <li><a href="#mockhowdoesitwork">How does it work?</a></li>
                         <li><a href="#mockusing-setup">Setting Up</a></li>
                         <li><a href="#mockusing-test">Testing</a></li>
-                        <li><a href="#mockunderthehood">Under The Hood</a></li>
                     </ul>
                 </li>
+                <li><a href="#underthehood">Insect - Under The Hood</a></li>
                 <li><a href="#devroadmap">Development Roadmap</a></li>
             </ul>
 
@@ -110,7 +109,12 @@
             </header>
 
             <section>
-                <h2 id="proxyhowdoesitwork">How does it work?</h2>
+                <h2 id="proxyusing">Proxy introduction</h2>
+                <p>Use follwoing contextual classes to change color of text.</p>
+            </section>
+
+            <section>
+                <h3 id="proxyhowdoesitwork">Proxy - How does it work?</h3>
                 <p>Here's what you need to write and style your documents.</p>
                 <img src="/assets/insect/img/InsectConceptA.png" alt="logo">
                 <p>Here's what you need to write and style your documents.</p>
@@ -119,114 +123,54 @@
                 <p>Here's what you need to write and style your documents.</p>
                 <p>All HTML headings, <code>&lt;h1&gt;</code> through <code>&lt;h6&gt;</code>, are available. <code>.h1</code> through <code>.h6</code> classes are also available, for when you want to match the font styling of a heading but still want your text to be displayed inline.</p>
 
-                <div class="code-snippet">
-                    <div class="code-preview">
-                        <h1>h1. theDocs heading</h1>
-                        <h2>h2. theDocs heading</h2>
-                        <h3>h3. theDocs heading</h3>
-                        <h4>h4. theDocs heading</h4>
-                        <h5>h5. theDocs heading</h5>
-                        <h6>h6. theDocs heading</h6>
-                    </div>
-
-                    <pre class="line-numbers"><code class="language-markup">
-&lt;h1&gt;h1. theDocs heading&lt;/h1&gt;
-&lt;h2&gt;h2. theDocs heading&lt;/h2&gt;
-&lt;h3&gt;h3. theDocs heading&lt;/h3&gt;
-&lt;h4&gt;h4. theDocs heading&lt;/h4&gt;
-&lt;h5&gt;h5. theDocs heading&lt;/h5&gt;
-&lt;h6&gt;h6. theDocs heading&lt;/h6&gt;
-</code></pre>
-                </div>
 
                 <p>Create lighter, secondary text in any heading with a generic <code>&lt;small&gt;</code> tag or the <code>.small</code> class.</p>
 
-                <div class="code-window">
-                    <div class="code-preview">
-                        <h1>h1. theDocs heading <small>Secondary text</small></h1>
-                        <h2>h2. theDocs heading <small>Secondary text</small></h2>
-                        <h3>h3. theDocs heading <small>Secondary text</small></h3>
-                        <h4>h4. theDocs heading <small>Secondary text</small></h4>
-                        <h5>h5. theDocs heading <small>Secondary text</small></h5>
-                        <h6>h6. theDocs heading <small>Secondary text</small></h6>
-                    </div>
+            </section>
 
-                    <pre class="line-numbers"><code class="language-markup">
-&lt;h1&gt;h1. theDocs heading &lt;small&gt;Secondary text&lt;/small&gt;&lt;/h1&gt;
-&lt;h2&gt;h2. theDocs heading &lt;small&gt;Secondary text&lt;/small&gt;&lt;/h2&gt;
-&lt;h3&gt;h3. theDocs heading &lt;small&gt;Secondary text&lt;/small&gt;&lt;/h3&gt;
-&lt;h4&gt;h4. theDocs heading &lt;small&gt;Secondary text&lt;/small&gt;&lt;/h4&gt;
-&lt;h5&gt;h5. theDocs heading &lt;small&gt;Secondary text&lt;/small&gt;&lt;/h5&gt;
-&lt;h6&gt;h6. theDocs heading &lt;small&gt;Secondary text&lt;/small&gt;&lt;/h6&gt;
-</code></pre>
-                </div>
-
-                <h3 id="heading-anchor">Anchor titles</h3>
-                <p>Add an <code>id</code> attribute to a heading, if you want to make the accessible through a link.</p>
-
-                <div class="code-window">
-                    <div class="code-preview">
-                        <div style="padding-left: 30px;">
-                            <h1 id="sample-heading1">h1. theDocs heading</h1>
-                            <h6 id="sample-heading6">h6. theDocs heading</h6>
-                        </div>
-                    </div>
-
-                    <pre class="line-numbers"><code class="language-markup">
-&lt;h1 id=&quot;sample-heading1&quot;&gt;h1. theDocs heading&lt;/h1&gt;
-&lt;h6 id=&quot;sample-heading6&quot;&gt;h6. theDocs heading&lt;/h6&gt;
-</code></pre>
-                </div>
+            <section>
+                <h3 id="proxyusing-setup">Proxy - Setting Up</h3>
+                <p>Use follwoing contextual classes to change color of text.</p>
 
             </section>
 
             <section>
-                <h2 id="proxyusing">Using proxy</h2>
+                <h3 id="proxyusing-test">Proxy - Testing</h3>
                 <p>Use follwoing contextual classes to change color of text.</p>
             </section>
 
             <section>
-                <h3 id="proxyusing-setup">Setting Up</h3>
-                <p>Use follwoing contextual classes to change color of text.</p>
-
-                <div class="code-window">
-                    <div class="code-preview">
-                        <p>This is a normal paragraph without any contectual classes.</p>
-                        <p class="text-primary">A paragraph with .text-primary class.</p>
-                        <p class="text-success">A paragraph with .text-success class.</p>
-                        <p class="text-info">A paragraph with .text-info class.</p>
-                        <p class="text-warning">A paragraph with .text-warning class.</p>
-                        <p class="text-danger">A paragraph with .text-danger class.</p>
-                        <p class="text-purple">A paragraph with .text-purple class.</p>
-                        <p class="text-teal">A paragraph with .text-teal class.</p>
-                        <p class="text-gray">A paragraph with .text-gray class.</p>
-                        <p class="text-dark">A paragraph with .text-dark class.</p>
-                        <p class="text-white" style="background-color: #999;">A paragraph with .text-white class.</p>
-                    </div>
-
-                    <pre class="line-numbers"><code class="language-markup">
-&lt;p&gt;This is a normal paragraph without any contectual classes.&lt;/p&gt;
-&lt;p class=&quot;text-primary&quot;&gt;A paragraph with .text-primary class.&lt;/p&gt;
-&lt;p class=&quot;text-success&quot;&gt;A paragraph with .text-success class.&lt;/p&gt;
-&lt;p class=&quot;text-info&quot;&gt;A paragraph with .text-info class.&lt;/p&gt;
-&lt;p class=&quot;text-warning&quot;&gt;A paragraph with .text-warning class.&lt;/p&gt;
-&lt;p class=&quot;text-danger&quot;&gt;A paragraph with .text-danger class.&lt;/p&gt;
-&lt;p class=&quot;text-purple&quot;&gt;A paragraph with .text-purple class.&lt;/p&gt;
-&lt;p class=&quot;text-teal&quot;&gt;A paragraph with .text-teal class.&lt;/p&gt;
-&lt;p class=&quot;text-gray&quot;&gt;A paragraph with .text-gray class.&lt;/p&gt;
-&lt;p class=&quot;text-dark&quot;&gt;A paragraph with .text-dark class.&lt;/p&gt;
-&lt;p class=&quot;text-white&quot;&gt;A paragraph with .text-white class.&lt;/p&gt;
-</code></pre>
-                </div>
-            </section>
-
-            <section>
-                <h3 id="proxyusing-test">Testing</h3>
+                <h2 id="mockusing">Mock introduction</h2>
                 <p>Use follwoing contextual classes to change color of text.</p>
             </section>
 
             <section>
-                <h2 id="proxyunderthehood">Under The Hood</h2>
+                <h3 id="mockhowdoesitwork">Mock - How does it work?</h3>
+                <p>Here's what you need to write and style your documents.</p>
+                <img src="/assets/insect/img/InsectConceptA.png" alt="logo">
+                <p>Here's what you need to write and style your documents.</p>
+                <p>Here's what you need to write and style your documents.</p>
+                <img src="/assets/insect/img/InsectConceptB.png" alt="logo">
+                <p>Here's what you need to write and style your documents.</p>
+                <p>All HTML headings, <code>&lt;h1&gt;</code> through <code>&lt;h6&gt;</code>, are available. <code>.h1</code> through <code>.h6</code> classes are also available, for when you want to match the font styling of a heading but still want your text to be displayed inline.</p>
+
+
+                <p>Create lighter, secondary text in any heading with a generic <code>&lt;small&gt;</code> tag or the <code>.small</code> class.</p>
+
+            </section>
+
+            <section>
+                <h3 id="mockusing-setup">Mock - Setting Up</h3>
+                <p>Use follwoing contextual classes to change color of text.</p>
+            </section>
+
+            <section>
+                <h3 id="mockusing-test">Mock - Testing</h3>
+                <p>Use follwoing contextual classes to change color of text.</p>
+            </section>
+
+            <section>
+                <h2 id="underthehood">Insect - Under The Hood</h2>
                 <p>Use follwoing contextual classes to change color of text.</p>
             </section>
 
